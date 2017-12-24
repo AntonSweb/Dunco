@@ -1,0 +1,29 @@
+.swiper-container {
+  width: 100%;
+  height: 100%;
+}
+
+.sp-global{
+  display: none;
+}
+
+.sp-g {
+
+  .swiper-pagination-bullet {
+    width: 10px;
+    background: #000 url("../img/pagination-icon.png") no-repeat center;
+    opacity: 0.3;
+
+    &-active {
+      width: 20px;
+      height: 20px!important;
+      background: transparent url("../img/pagination-icon-active.png") no-repeat center;
+      opacity: 1;
+    }
+  }
+}
+
+.swiper-container-vertical>.swiper-pagination-bullets .swiper-pagination-bullet{
+  margin: 12px auto;
+  height: 10px;
+}

@@ -1,0 +1,71 @@
+.section__gallery{
+  padding-top: 195px;
+  height: 100vh;
+  background-color: $empty-bg;
+}
+
+.s-gallery{
+
+  .swiper-slide {
+    background-size: cover;
+    background-position: center;
+  }
+
+  &__photo{
+
+    
+    &0{
+      background-image: url("../img/slide-window-snow.jpg");
+    }
+    &1{
+      background-image: url("../img/slide-window.jpg");
+    }
+    &2{
+      background-image: url("../img/slide-window2.jpg");
+    }
+    &3{
+      background-image: url("../img/slide-window3.jpg");
+    }
+    &4{
+      background-image: url("../img/slide-doors.jpg");
+    }
+    &5{
+      background-image: url("../img/slide-doors2.jpg");
+    }
+    &6{
+      background-image: url("../img/slide-jalousie.jpg");
+    }
+    &7{
+      background-image: url("../img/slide-roller.jpg");
+    }
+    &8{
+      background-image: url("../img/slide-gate.jpg");
+    }
+    &9{
+      background-image: url("../img/slide-gate2.jpg");
+    }
+  }
+}
+.s-gallery-top {
+  height: 80%;
+  width: 100%;
+}
+.s-gallery-thumbs {
+  height: 20%;
+  box-sizing: border-box;
+  padding: 10px 0;
+}
+.s-gallery-thumbs .swiper-slide {
+  width: 25%;
+  height: 100%;
+  opacity: 0.4;
+}
+.s-gallery-thumbs .swiper-slide-active {
+  opacity: 1;
+}
+.sbp-gallery{
+  left: 5%;
+}
+.sbn-gallery{
+  right: 5%;
+}

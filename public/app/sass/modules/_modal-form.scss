@@ -1,0 +1,156 @@
+
+.modal__close{
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    font-size: 14px;
+    width: 35px;
+    height: 30px;
+    background: linear-gradient(to top, $btn-left-border 10%, $btn-right-border);
+    color: #fff;
+    cursor: pointer;
+    border: 0;
+
+    &:hover{
+       font-size: 15px;
+    }
+}
+
+.mask{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    // background: rgba(52, 73, 94, 0.8);
+    background: rgba(0,0,0,.85);
+    z-index: 50;
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.7s;
+}
+
+.modal{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    justify-content: center;
+    align-items: center;
+    margin-left: -220px;
+    margin-top: -261px;
+    width: 440px;
+    height: 522px;
+    background: white;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    border-radius: 3px;
+    z-index: 100;
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.5s ease-out;
+    transform: translateY(45px);
+}
+
+.active{
+    visibility: visible;
+    opacity: 1;
+}
+
+.active + .modal{
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.modal{
+
+    &__order{
+        font-family: $Roboto;
+        padding: 15px;
+        text-align: center;
+    }
+
+    &__title{
+        margin-bottom: 5px; 
+        font-weight: bold;
+        font-size: 30px;
+        text-transform: uppercase;
+        letter-spacing: 1px
+    }
+
+    &__subtitle{
+        font-weight: 300;
+        color: #666;
+    }
+
+    &__form{
+        margin: 20px 0 30px 0;
+    }
+}
+
+.form{
+
+    &__field:not(:last-child){
+        margin-bottom: 10px
+    }
+
+    &__in{
+        display: block;
+        font-family: $Roboto;
+        font-size: 18px;
+        width: 100%;
+        text-align: center;
+        border: none;
+
+        &:focus, &:active{
+            outline: none;
+        }
+    }
+
+    &__input{
+        font-weight: 300;
+        padding: 0 15px;
+        height: 50px;
+        background: 0 0;
+        border-bottom: 2px solid #eee;
+
+        &:focus{
+            border-color: $btn-left-border;
+            transition: border-color .5s ease-in-out;
+
+            &::placeholder{
+                color: transparent;
+            }
+        }
+    }
+
+    &__submit{
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 30px;
+        width: 100%;
+        height: 50px;
+        background: white;
+        border-left: 2px solid $btn-left-border;
+        border-right: 2px solid $btn-right-border;
+        text-transform: uppercase;
+        box-shadow: 0 10px 30px 0 rgba(221,221,221,1);
+        background: linear-gradient(to right, $btn-left-border 40%, $btn-right-border);
+        transition: all .2s linear;
+        color: white;
+        cursor: pointer;
+        letter-spacing: 1px;
+
+        &:hover{
+            transition: all .2s linear;
+            transform: scale(1.1);
+        }
+    }
+
+    &__hint{
+        font-size: 13px;
+        font-weight: 300;
+        line-height: 1.3; 
+    }
+}

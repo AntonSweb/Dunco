@@ -1,0 +1,24 @@
+@import "variables";
+
+//Import base style
+@import "base";
+
+//Import style for Sprites
+@import "../sprites/sprite";
+@import "../sprites/sprite-menu";
+
+//Import modules for project
+@import "modules/header";
+@import "modules/global-slide";
+@import "modules/front-slide";
+@import "modules/mouse-scroll";
+@import "modules/slides";
+@import "modules/menu";
+@import "modules/modal-form";
+@import "modules/video";
+@import "modules/trust";
+@import "modules/people";
+@import "modules/our-products";
+@import "modules/gallery";
+@import "modules/order";
+@import "modules/footer";

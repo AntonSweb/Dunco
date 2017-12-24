@@ -1,0 +1,89 @@
+.section__menu{
+  width: 100%;
+  min-height: 145px;
+  //background: #f9f9f9;
+  background-color: white;
+
+  &.fixed{
+    top: 50px;
+    opacity: 0.9;
+    z-index: 9;
+  }
+}
+.menu{
+
+  &__flex{
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 1070px;
+  }
+
+  &__item{
+    display: block;
+    flex-basis: 14.285%;
+    text-align: center;
+    text-decoration: none;
+
+    &:hover{
+      //text-decoration: none;
+
+      .menu__caption{
+        text-decoration: underline;
+      }
+    }
+
+    &:hover{
+
+      .menu__icon{
+        transition: transform .2s ease-in-out;
+        transform: scale(1.1);
+      }
+    }
+
+    &7{
+      padding-top: 15px;
+    }
+  }
+
+  &__icon{
+    display: block;
+    margin: 0 auto;
+    transition: transform .2s ease-in-out;
+
+    &1{
+      @include sprite($window-icon);
+    }
+    &2{
+      @include sprite($doors-icon);
+    }
+    &3{
+      @include sprite($jalousie-icon);
+    }
+    &4{
+      @include sprite($roller-icon);
+    }
+    &5{
+      @include sprite($gate-icon);
+    }
+    &6{
+      @include sprite($call-icon);
+    }
+    &7{
+      @include sprite($contract-icon);
+    }
+  }
+
+  &__caption{
+    display: block;
+    margin-top: 10px;
+    font-family: $Roboto;
+    font-weight: 300;
+    color: $text-color;
+
+    &7{
+      margin: 14px auto 0 auto;
+      max-width: 125px;
+    }
+  }
+}

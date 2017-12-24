@@ -1,0 +1,45 @@
+.front-slide{
+
+  &2{
+
+    .front-slide__title{
+      font-size: 70px;
+    }
+
+    .front-slide__bg {
+      background-image: url("../img/slide-doors.jpg");
+    }
+  }
+  &3{
+
+    .front-slide__title{
+      font-size: 69px;
+      letter-spacing: -3px;
+    }
+
+    .front-slide__bg {
+      background-image: url("../img/slide-gate.jpg");
+    }
+  }
+  &4{
+
+    .front-slide__title{
+      font-size: 67px;
+      letter-spacing: -3px;
+    }
+
+    .front-slide__bg {
+      background-image: url("../img/slide-jalousie.jpg");
+    }
+  }
+  &5{
+
+    .front-slide__title{
+      font-size: 67px;
+    }
+
+    .front-slide__bg {
+      background-image: url("../img/slide-roller.jpg");
+    }
+  }
+}

@@ -1,0 +1,83 @@
+.header{
+  position: fixed;
+  top: 0;
+  width: 100%;
+  font-size: 13px;
+  height: 50px;
+  z-index: 9;
+  background-color: $violet-bg;
+
+  &__container{
+    height: 100%;
+  }
+
+  &__flex{
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+  }
+
+  &__tel{
+    position: relative;
+    padding-left: 26px;
+    font-family: $SFUIDispaly-Bold;
+    color: white;
+
+    &:before{
+      content:'';
+      position: absolute;
+      top: 0;
+      left: 0;
+      @include sprite($phone-icon);
+    }
+  }
+
+  &__search{
+    @include sprite($search-icon);
+  }
+  &__menu{
+    @include sprite($menu-icon);
+    cursor: pointer;
+  }
+}
+
+.nav{
+
+  &__link{
+    position: relative;
+    padding-left: 25px;
+    padding-right: 45px;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:before{
+      content:'';
+      position: absolute;
+      top: 1px;
+      left: 0;
+    }
+
+    &:hover{
+      text-decoration: underline;
+    }
+
+    &-home:before{
+      @include sprite($home-icon);
+      top: 0;
+    }
+    &-company:before{
+      @include sprite($company-icon);
+    }
+    &-sale:before{
+      @include sprite($sale-icon);
+    }
+    &-gallery:before{
+      @include sprite($gallery-icon);
+      top: 0;
+    }
+    &-contacts:before{
+      @include sprite($contact-icon);
+    }
+  }
+}

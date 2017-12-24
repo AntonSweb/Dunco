@@ -1,0 +1,58 @@
+
+//SFUIDisplay Fonts
+@font-face {
+  font-family: 'SFUIDisplay-Regular';
+  src: url('../fonts/SFUIDisplay/Regular/SFUIDisplay-Regular.eot');
+  src: local('☺'), url('../fonts/SFUIDisplay/Regular/SFUIDisplay-Regular.woff') format('woff'),
+                   url('../fonts/SFUIDisplay/Regular/SFUIDisplay-Regular.ttf') format('truetype'),
+                   url('../fonts/SFUIDisplay/Regular/SFUIDisplay-Regular.svg') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'SFUIDisplay-Bold';
+  src: url('../fonts/SFUIDisplay/Bold/SFUIDisplay-Bold.eot');
+  src: local('☺'), url('../fonts/SFUIDisplay/Bold/SFUIDisplay-Bold.woff') format('woff'),
+                   url('../fonts/SFUIDisplay/Bold/SFUIDisplay-Bold.ttf') format('truetype'),
+                   url('../fonts/SFUIDisplay/Bold/SFUIDisplay-Bold.svg') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'SFUIDisplay-Heavy';
+  src: url('../fonts/SFUIDisplay/Heavy/SFUIDisplay-Heavy.eot');
+  src: local('☺'), url('../fonts/SFUIDisplay/Heavy/SFUIDisplay-Heavy.woff') format('woff'),
+                   url('../fonts/SFUIDisplay/Heavy/SFUIDisplay-Heavy.ttf') format('truetype'),
+                   url('../fonts/SFUIDisplay/Heavy/SFUIDisplay-Heavy.svg') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'SFUIDisplay-Light';
+  src: url('../fonts/SFUIDisplay/Light/SFUIDisplay-Light.eot');
+  src: local('☺'), url('../fonts/SFUIDisplay/Light/SFUIDisplay-Light.woff') format('woff'),
+                   url('../fonts/SFUIDisplay/Light/SFUIDisplay-Light.ttf') format('truetype'),
+                   url('../fonts/SFUIDisplay/Light/SFUIDisplay-Light.svg') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+//Roboto fonts
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,500');
+
+
+
+
+//variables
+$SFUIDispaly-Regular: 'SFUIDisplay-Regular', 'Arial', 'Helvetica', sans-serif;
+$SFUIDispaly-Bold:    'SFUIDisplay-Bold', 'Arial', 'Helvetica', sans-serif;
+$SFUIDispaly-Heavy:   'SFUIDisplay-Heavy', 'Arial', 'Helvetica', sans-serif;
+$SFUIDispaly-Light:   'SFUIDisplay-Light', 'Arial', 'Helvetica', sans-serif;
+$Roboto:              'Roboto', sans-serif;
+
+$violet-bg: #111a37;
+$text-color: #323232;
+$btn-text-color: #a52c2c;
+$btn-left-border: #b24560;
+$btn-right-border: #5840c2;
+$empty-bg: #161616; 
