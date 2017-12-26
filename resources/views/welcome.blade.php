@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ app()->getLocale() }}">
+<html lang="{{ app()->getLocale() }}" xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -14,7 +14,7 @@
     <body>
     <div class="mask" role="dialog"></div>
     <div class="flex modal modal__flex" role="alert">
-        <button class="modal__close" role="button">X</button>
+        <button class="modal__close">X</button>
         <div class="modal__order">
             <div class="section__title modal__title">Отправьте заявку</div>
             <div class="modal__subtitle">И мы свяжемся с Вами в течении 30 минут</div>
@@ -45,50 +45,46 @@
             </div>
         </div>
     </div>
-    <header class="header">
-         <div class="container header__container">
-            <vueheader></vueheader>
-         </div>
-    </header>
+    <header class="header" is="vue-header"></header>
     <section class="section__menu">
-        <vuemenu></vuemenu>
+        <vue-menu></vue-menu>
     </section>
     {{--<main>--}}
         <div class="swiper-container s-global">
         <div class="swiper-wrapper">
             <div class="swiper-slide">
                 <section class="section__front-slider">
-                    <vueswiper></vueswiper>
+                    <vue-swiper></vue-swiper>
                 </section>
             </div>
             <div class="swiper-slide">
                 <section class="section__video">
-                  <vuevideo></vuevideo>
+                  <vue-video></vue-video>
                 </section>
             </div>
             <div class="swiper-slide">
                 <section class="section__trust">
-                    <vuetrust></vuetrust>
+                    <vue-trust></vue-trust>
                 </section>
             </div>
             <div class="swiper-slide">
                 <section class="section__people">
-                    <vuepeople></vuepeople>
+                    <vue-people></vue-people>
                 </section>
             </div>
             <div class="swiper-slide">
                 <section class="section__our-products">
-                    <vueproducts></vueproducts>
+                    <vue-products></vue-products>
                 </section>
             </div>
             <div class="swiper-slide">
                 <section class="section__gallery">
-                    <vuegallery></vuegallery>
+                    <vue-gallery></vue-gallery>
                 </section>
             </div>
             <div class="swiper-slide">
                 <section class="section__order">
-                    <vueorder></vueorder>
+                    <vue-order></vue-order>
                 </section>
             </div>
         </div>
@@ -96,9 +92,7 @@
         <div class="swiper-pagination sp-g sp-global"></div>
     </div>
     {{--</main>--}}
-    <footer class="footer">
-        <vuefooter></vuefooter>
-    </footer>
+    <footer class="footer" is="vue-footer"></footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.6/js/swiper.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
@@ -111,7 +105,7 @@
                 mousewheel: true,
                 pagination: {
                     el: '.sp-global',
-                    clickable: true,
+                    clickable: true
                 },
                 parallax: true
             });
@@ -135,13 +129,12 @@
                 });
                 
                 $(document).keyup(function(e) {
-                    if (e.keyCode == 27 && sGlobal.activeIndex !== 1) {
+                    if (e.keyCode === 27 && sGlobal.activeIndex !== 1) {
                         closeModal();
                     }
                 });
         
                 $(".form__tel").mask("+380(99) 999-99-99");
-
 
                 //CANVAS
                     var c = document.getElementById('canv'), 
