@@ -1,21 +1,23 @@
 <template>
     <!--footer-->
-    <footer class="footer" v-show="show">
-        <div class="flex footer__flex">
-            <a href="" class="flex footer__circle footer__circle-skype">
-                <img src="app/img/skype-icon.png" alt="dunco footer skype icon" class="footer__icon footer__icon-skype">
-            </a>
-            <a href="" class="flex footer__circle">
-                <img src="app/img/fb-icon.png" alt="dunco footer facebook icon"  class="footer__icon footer__icon-fb tada">
-            </a>
-            <a href="" class="flex footer__circle">
-                <img src="app/img/youtube-icon.png" alt="dunco footer youtube icon" class="footer__icon footer__icon-youtube tada">
-            </a>
-            <a href="" class="flex footer__circle footer__circle-insta">
-                <img src="app/img/insta-icon.png" alt="dunco footer instagram icon" class="footer__icon footer__icon-insta tada">
-            </a>
-        </div>
-    </footer>
+    <transition name="fade">
+        <footer class="footer" v-show="show">
+            <div class="flex footer__flex">
+                <a href="" class="flex footer__circle footer__circle-skype">
+                    <img src="app/img/skype-icon.png" alt="dunco footer skype icon" class="footer__icon footer__icon-skype">
+                </a>
+                <a href="" class="flex footer__circle">
+                    <img src="app/img/fb-icon.png" alt="dunco footer facebook icon"  class="footer__icon footer__icon-fb tada">
+                </a>
+                <a href="" class="flex footer__circle">
+                    <img src="app/img/youtube-icon.png" alt="dunco footer youtube icon" class="footer__icon footer__icon-youtube tada">
+                </a>
+                <a href="" class="flex footer__circle footer__circle-insta">
+                    <img src="app/img/insta-icon.png" alt="dunco footer instagram icon" class="footer__icon footer__icon-insta tada">
+                </a>
+            </div>
+        </footer>
+    </transition>
 </template>
 
 <script>
@@ -39,3 +41,16 @@
         },
     }
 </script>
+
+<style lang="scss" scoped>
+    .fade-enter-active, .fade-leave-active {
+        -webkit-transition: opacity .6s;
+        -moz-transition: opacity .6s;
+        -ms-transition: opacity .6s;
+        -o-transition: opacity .6s;
+        transition: opacity .6s;
+    }
+    .fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
+        opacity: 0
+    }
+</style>

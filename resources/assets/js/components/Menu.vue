@@ -43,6 +43,12 @@
                 fixed: 'fixed'
             };
         },
+        mounted () {
+            sGlobal.on('slideChange', this.changeSlideFunc);
+        },
+        destroyed () {
+
+        },
         methods: {
             changeSlideFunc: function (){
                 if (sGlobal.activeIndex !== 0){
@@ -51,12 +57,19 @@
                     this.show = false
                 }
             },
-        },
-        created () {
-            sGlobal.on('slideChange', this.changeSlideFunc);
-        },
-        // destroyed () {
-            // window.removeEventListener('mousewheel', this.scrollFunc);
-        // }
+        }
     }
 </script>
+
+<style lang="scss" scoped>
+    .fade-enter-active, .fade-leave-active {
+        -webkit-transition: opacity .8s;
+        -moz-transition: opacity .8s;
+        -ms-transition: opacity .8s;
+        -o-transition: opacity .8s;
+        transition: opacity .8s;
+    }
+    .fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
+        opacity: 0
+    }
+</style>

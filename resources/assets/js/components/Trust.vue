@@ -2,23 +2,23 @@
     <section class="section__trust" v-if="show">
         <div class="container flex trust__flex_outer">
             <div class="trust__wrap">
-                <h3 class="section__title title__numbers">Почему нам стоит доверять?</h3>
+                <h3 class="section__title title__numbers hidden" v-bind:class="{visible : isVisible[0]}">Почему нам стоит доверять?</h3>
                 <div class="flex trust__flex trust__numbers">
-                    <div class="trust__number">
+                    <div class="trust__number hidden" v-bind:class="{visible : isVisible[1]}">
                         <div class="flex number__flex">
                             <img src="app/img/one.jpg" alt="Почему нам стоит доверять пункт первый">
                             <span class="number__caption number__caption1">Мы​ ​на​ ​связи​ 24/7</span>
                         </div>
                     </div>
-                    <div class="trust__number">
+                    <div class="trust__number hidden" v-bind:class="{visible : isVisible[2]}">
                         <div class="flex number__flex">
                             <img src="app/img/two.jpg" alt="Почему нам стоит доверять пункт второй">
                             <span class="number__caption">
-                                Вы​ ​ получите​  идеи/стиль<br/>и​ ​правильное решение​ в​ ​подборе​​ комплектующих
+                                Вы​ получите​ идеи/стиль<br/>и​ ​правильное решение​ в​ ​подборе​​ комплектующих
                             </span>
                         </div>
                     </div>
-                    <div class="trust__number">
+                    <div class="trust__number hidden" v-bind:class="{visible : isVisible[3]}">
                         <div class="flex number__flex">
                             <img src="app/img/three.jpg" alt="Почему нам стоит доверять пункт третий">
                             <span class="number__caption">
@@ -26,7 +26,7 @@
                             </span>
                         </div>
                     </div>
-                    <div class="trust__number">
+                    <div class="trust__number hidden" v-bind:class="{visible : isVisible[4]}">
                         <div class="flex number__flex">
                             <img src="app/img/four.jpg" alt="Почему нам стоит доверять пункт четвертый">
                             <span class="number__caption">
@@ -34,7 +34,7 @@
                             </span>
                         </div>
                     </div>
-                    <div class="trust__number">
+                    <div class="trust__number hidden" v-bind:class="{visible : isVisible[5]}">
                         <div class="flex number__flex">
                             <img src="app/img/five.jpg" alt="Почему нам стоит доверять пункт пятый">
                             <span class="number__caption">
@@ -42,7 +42,7 @@
                             </span>
                         </div>
                     </div>
-                    <div class="trust__number">
+                    <div class="trust__number hidden" v-bind:class="{visible : isVisible[6]}">
                         <div class="flex number__flex">
                             <img src="app/img/six.jpg" alt="Почему нам стоит доверять пункт шестой">
                             <span class="number__caption">
@@ -51,8 +51,8 @@
                         </div>
                     </div>
                 </div>
-                <h3 class="section__title title__stage">Как мы работаем</h3>
-                <div class="flex stage__flex trust__stage">
+                <h3 class="section__title title__stage hidden" v-bind:class="{visible : isVisible[7]}">Как мы работаем</h3>
+                <div class="flex stage__flex trust__stage hidden" v-bind:class="{visible : isVisible[8]}">
                     <img class="stage__img" src="app/img/stage.jpg" alt="Этапи роботы компании Данко">
                     <div class="g-btn trust__btn" v-on:click="modalOpen">
                         <span class="g-btn__bg trust__btn_bg"></span>
@@ -68,25 +68,40 @@
     module.exports = {
         data: function () {
             return {
-                show: false
+                show: false,
+                isVisible: {
+                    0: false,
+                    1: false,
+                    2: false,
+                    3: false,
+                    4: false,
+                    5: false,
+                    6: false,
+                    7: false,
+                    8: false
+                },
+                counter: 0,
             };
+        },
+        mounted () {
+            sGlobal.on('slideChange', this.changeSlideFunc);
         },
         methods: {
             changeSlideFunc: function () {
+                let that = this;
                 if (sGlobal.activeIndex === 2) {
                     this.show = true;
+                    for (let key in this.isVisible){
+                        this.counter = key * 300;
+                        setTimeout(function (){
+                            that.isVisible[key] = true;
+                        }, that.counter);
+                    }
                 }
             },
             modalOpen: function (){
               $('.mask').addClass('active');
-            }
-        },
-        created() {
-            sGlobal.on('slideChange', this.changeSlideFunc);
-        },
+            },
+         }
     }
 </script>
-
-<style scoped>
-
-</style>

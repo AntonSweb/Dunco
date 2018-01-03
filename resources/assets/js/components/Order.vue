@@ -1,7 +1,7 @@
 <template>
     <section class="section__order">
-        <h3 class="section__title order__title-our">Наши партнеры</h3>
-        <div class="swiper-container s-partners">
+        <h3 class="section__title order__title-our hidden" v-bind:class="{visible : isVisible[0]}">Наши партнеры</h3>
+        <div class="swiper-container s-partners hidden" v-bind:class="{visible : isVisible[1]}">
             <div class="swiper-wrapper">
                 <div class="swiper-slide">
                     <div class="s-partners__logo">
@@ -59,11 +59,11 @@
             <div class="swiper-button-prev sbp-partners"></div>
         </div>
         <div class="order flex order__flex">
-            <video class="video" autoplay loop muted preload v-if="show">
+            <video class="video" autoplay loop muted preload>
                 <source src="app/video/dunco_bottom.webm" type="video/webm">
                 <source src="app/video/dunco_bottom.mp4" type="video/mp4">
             </video>
-            <div class="order__content">
+            <div class="order__content hidden" v-bind:class="{visible : isVisible[2]}">
                 <div class="order__ask">
                     <h3 class="section__title order__title">У Вас остались вопросы?</h3>
                     <p class="order__subtitle order__subtitle-ask">Задайте их нам!</p>
@@ -88,6 +88,12 @@
             return {
                 infinite: true,
                 show: false,
+                isVisible: {
+                    0: false,
+                    1: false,
+                    2: false
+                },
+                counter: 0
             };
         },
         mounted: function () {
@@ -105,23 +111,24 @@
                     prevEl: '.sbp-partners',
                 },
             });
+
+            sGlobal.on('slideChange', this.showOrderFunc);
         },
         methods: {
             showOrderFunc: function (){
-                if (sGlobal.activeIndex === 6){
-                     this.show = true
+                let that = this;
+                if (sGlobal.activeIndex === 6) {
+                    for (let key in this.isVisible){
+                        this.counter = key * 200;
+                        setTimeout(function (){
+                            that.isVisible[key] = true;
+                        }, that.counter);
+                    }
                 }
             },
             modalOpen: function (){
               $('.mask').addClass('active');
             }
-        },
-        created () {
-           sGlobal.on('slideChange', this.showOrderFunc);
-        },
+        }
     }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

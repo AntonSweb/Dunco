@@ -1,7 +1,7 @@
 <template>
     <section class="section__our-products">
         <div class="our-products__inner">
-            <div class="container" v-bind:class="{active: isActive}">
+            <div class="container no-padding" v-bind:class="{active: isActive}">
                 <div class="flex our-products__flex">
                     <div data-target='1' class="slide slide--1">
                         <div class="slide-inner">
@@ -68,14 +68,15 @@
     module.exports = {
         data: function () {
             return {
-                isActive : false,
-                show: false
+                isActive : false
             }
+        },
+        mounted () {
+            sGlobal.on('slideChange', this.showProductsAnim);
         },
         methods: {
            showProductsAnim: function () {
                if (sGlobal.activeIndex === 4){
-                   this.show = true;
                    this.isActive = 'active';
                    this.animation();
                }
@@ -177,13 +178,6 @@
                     initialAnim = false;
                 }, initialAnimDur + animDelay);
             }
-        },
-        created () {
-             sGlobal.on('slideChange', this.showProductsAnim);
         }
     }
 </script>
-
-<style scoped>
-
-</style>

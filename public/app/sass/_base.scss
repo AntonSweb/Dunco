@@ -28,9 +28,15 @@ body{
 }
 .hidden{
   visibility: hidden;
+  opacity: 0;
 }
 .visible{
   visibility: visible;
+  opacity: 1;
+  transition: opacity 1s ease-in;
+}
+.no-padding{
+  padding: 0;
 }
 .g-btn{
   position: relative;
@@ -43,7 +49,7 @@ body{
   transition: all .3s ease-in-out;
   overflow: hidden;
 
-  &::before, &::after{
+  &::before, &::after {
     content: "";
     position: absolute;
     width: 100%;

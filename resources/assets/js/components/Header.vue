@@ -20,11 +20,6 @@
 
 <script>
     module.exports = {
-        data: function() {
-            return {
-               
-            };
-        },
         methods: {
             changeSlide: function (e){
                 if (e){

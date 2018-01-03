@@ -30,19 +30,22 @@
 
 
 <script>
-    import Swiperslide from './SwiperSlide.vue'
+    import Swiperslide from './local/SwiperSlide.vue'
     module.exports = {
         data: function() {
             return {
                 infinite: true,
+                sFront: {},
+                show: false
             };
         },
         mounted: function () {
-            const sFront = new Swiper ('.s-front', {
+            // let that = this;
+            this.sFront = new Swiper ('.s-front', {
                 loop: this.infinite,
-                    autoplay: {
-                        delay: 6000
-                    },
+                autoplay: {
+                    delay: 6000
+                },
                 pagination: {
                     el: '.sp-front',
                     clickable: true
@@ -50,18 +53,31 @@
                 navigation: {
                     nextEl: '.sbn-front',
                     prevEl: '.sbp-front'
-                }
+                },
             });
+
+            this.sFront.on('slideChange', function () {
+                // that.slideChange();
+            });
+
         },
         methods: {
-
+            slideChange: function () {
+                // this.$emit('slideChangeInner', this.sFront.activeIndex);
+                // console.log(this.sFront.activeIndex);
+            }
         },
         components: {
             Swiperslide
-        },
+        }
     }
 </script>
 
-<style scoped>
-    
+<style lang="scss" scoped>
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity .9s
+    }
+    .fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
+        opacity: 0
+    }
 </style>

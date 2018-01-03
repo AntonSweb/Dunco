@@ -8,7 +8,22 @@ var gulp         = require('gulp'),
     imagemin     = require('gulp-imagemin'),
     pngquant     = require('imagemin-pngquant'),
     imageminSvgo = require('imagemin-svgo'),
-    spritesmith  = require('gulp.spritesmith');
+    spritesmith  = require('gulp.spritesmith'),
+    source       = require('vinyl-source-stream'),
+    browserify   = require('browserify'),
+    // watchify     = require('watchify'),
+    vueify       = require('vueify');
+
+gulp.task('vueify', function () {
+    browserify('resources/assets/js/app.js')
+        .transform(vueify)
+        .bundle()
+        .pipe(source('build.js'))
+        .pipe(gulp.dest("public/app/js/"))
+});
+gulp.task('set-prod-node-env', function() {
+    return process.env.NODE_ENV = 'production';
+});
 
 //COMPILE SASS
 gulp.task('sass', function(){

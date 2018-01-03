@@ -10,10 +10,10 @@
 // window.Vue = require('vue');
 
 const Vue         = require('vue');
+// import VueVisible from 'vue-visible';
 const Vueheader   = require('./components/Header.vue');
 const Vueswiper   = require('./components/Swiper.vue');
 const Vuemenu     = require('./components/Menu.vue');
-const Vueform     = require('./components/ModalForm.vue');
 const Vuevideo    = require('./components/Video.vue');
 const Vuetrust    = require('./components/Trust.vue');
 const Vuepeople   = require('./components/People.vue');
@@ -21,6 +21,9 @@ const Vueproducts = require('./components/Products.vue');
 const Vuegallery  = require('./components/Gallery.vue');
 const Vueorder    = require('./components/Order.vue');
 const Vuefooter   = require('./components/Footer.vue');
+
+// const VueVisible = require('vue-visible');
+// Vue.use(VueVisible);
 
 new Vue({
     el: '.header',
@@ -33,10 +36,6 @@ new Vue({
 new Vue({
     el: '.section__menu',
     render: h => h(Vuemenu)
-});
-new Vue({
-    el: '.g-btn',
-    render: h => h(Vueform)
 });
 new Vue({
    el: '.section__video',
