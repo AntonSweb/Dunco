@@ -12,14 +12,22 @@
         <link rel="stylesheet" href="app/css/style.css">
     </head>
     <body>
-    <div class="mask" role="dialog"></div>
-    <div class="flex modal modal__flex" role="alert">
-        <button class="modal__close">X</button>
+    <div class="mask mask__thanks" role="dialog"></div>
+    <div class="flex modal modal__flex modal__thanks" role="alert">
+        <button class="modal__close modal__thanks-close">X</button>
+    </div>
+    <div class="mask mask__order" role="dialog"></div>
+    <div class="flex modal modal__flex modal__order-wrap" role="alert">
+        <button class="modal__close modal__order-close">X</button>
         <div class="modal__order">
             <div class="section__title modal__title">Отправьте заявку</div>
             <div class="modal__subtitle">И мы свяжемся с Вами в течении 30 минут</div>
             <div class="modal__form">
-                <form class="form">
+                <form id="order-form" class="form">
+                    {{ csrf_field() }}
+                    <input type="hidden" name="project_name" value="dunco.com.ua">
+                    <input type="hidden" name="admin_email" value="asaltskyi@gmail.com">
+                    <input type="hidden" name="form_subject" value="Заявка с сайта dunco.com.ua">
                     <div class="form__field">
                         <input class="form__input form__in" type="text" name="name" placeholder="Как Вас зовут?" required>
                     </div>
@@ -31,11 +39,6 @@
                     </div>
                     <div class="form__field">
                         <input class="form__in form__submit" type="submit" value="Свяжитесь со мной" name="send">
-                    </div>
-                    <div class="form__field">
-                        <input type="hidden" name="from">
-                        <input type="hidden" name="type">
-                        <input type="hidden" name="url" value="/">
                     </div>
                 </form>
             </div>
@@ -93,8 +96,25 @@
 
         $(function(){
 
+            //E-mail Ajax Send
+            $("#order-form").submit(function(e) {
+                e.preventDefault();
+                var order = $(this);
+                $.ajax({
+                    type: "post",
+                    url: "/order",
+                    data: order.serialize()
+                }).done(function() {
+                    order.trigger("reset");
+                    setTimeout(function() {
+                        closeModal($('.mask__order'));
+                        $('.mask__thanks').addClass('active');
+                    }, 1000);
+                });
+            });
+
             //Global pagination
-            sGlobal.on('slideChange', function(){
+            sGlobal.on('slideChange', function() {
                 if (sGlobal.activeIndex !== 0){
                     $('.sp-global').show();
                 } else {
@@ -103,12 +123,15 @@
             });
 
             //Modal form
-            function closeModal(){
-                $(".mask").removeClass("active");
+            function closeModal(el){
+                el.removeClass("active");
             }
 
-            $(".modal__close, .mask").on("click", function(){
-                closeModal();
+            $(".modal__order-close, .mask__order").on("click", function(){
+                closeModal($('.mask__order'));
+            });
+            $(".modal__thanks-close, .mask__thanks").on("click", function(){
+                closeModal($('.mask__thanks'));
             });
 
             $(document).keyup(function(e) {

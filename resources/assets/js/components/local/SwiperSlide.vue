@@ -52,7 +52,7 @@
         },
         methods: {
             modalOpen: function (){
-                $('.mask').addClass('active');
+                $('.mask__order').addClass('active');
             }
         },
         props: {
