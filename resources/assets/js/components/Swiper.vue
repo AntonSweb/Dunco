@@ -43,9 +43,9 @@
             // let that = this;
             this.sFront = new Swiper ('.s-front', {
                 loop: this.infinite,
-                autoplay: {
-                    delay: 6000
-                },
+                // autoplay: {
+                    // delay: 6000
+                // },
                 pagination: {
                     el: '.sp-front',
                     clickable: true

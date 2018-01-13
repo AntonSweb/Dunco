@@ -1,8 +1,11 @@
 .section__people{
-  padding-top: 195px;
+  padding-top: 170px;
   height: 100vh;
   background: url("../img/people.jpg") no-repeat center bottom;
   background-size: cover;
+  @media screen and(max-height: 768px){
+    padding-top: 50px;
+  }
 }
 
 .people{

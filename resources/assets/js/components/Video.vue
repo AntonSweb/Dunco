@@ -7,8 +7,8 @@
             <transition name="fade">
                 <div class="video__inner" v-show="showContent">
                     <img src="app/img/dunco-logo_big.png" alt="Логотип компании Дунко" class="video__logo">
-                    <h3 class="section__title section__title-video">DUNCO – компетенции, инновации, безопасность</h3>
-                    <div class="spiral"><span class="spiral__icon"></span></div>
+                    <h3 class="section__title section__title-video">компетенции, инновации, безопасность</h3>
+                    <!--<div class="spiral"><span class="spiral__icon"></span></div>!-->
                     <div class="play-video__wrap">
                         <a id="play-video" class="video-play-button" v-on:click.prevent="playFunc">
                             <span></span>

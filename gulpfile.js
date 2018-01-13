@@ -12,17 +12,20 @@ var gulp         = require('gulp'),
     source       = require('vinyl-source-stream'),
     browserify   = require('browserify'),
     // watchify     = require('watchify'),
-    vueify       = require('vueify');
+    vueify       = require('vueify'),
+    envify = require('envify/custom');
+
 
 gulp.task('vueify', function () {
     browserify('resources/assets/js/app.js')
         .transform(vueify)
+        // .transform(
+        //     { global: true },
+        //     envify({ NODE_ENV: 'production' })
+        // )
         .bundle()
         .pipe(source('build.js'))
         .pipe(gulp.dest("public/app/js/"))
-});
-gulp.task('set-prod-node-env', function() {
-    return process.env.NODE_ENV = 'production';
 });
 
 //COMPILE SASS

@@ -22,6 +22,9 @@
     padding-left: 26px;
     font-family: $SFUIDispaly-Bold;
     color: white;
+    @media screen and (max-width: 768px){
+      padding-right: 26px
+    }
 
     &:before{
       content:'';
@@ -42,6 +45,9 @@
 }
 
 .nav{
+  @media screen and (max-width: 768px){
+    display: none;
+  }
 
   &__link{
     position: relative;
@@ -50,6 +56,10 @@
     color: white;
     text-decoration: none;
     cursor: pointer;
+    @media screen and (max-width: 992px){
+      padding-right: 10px;
+      padding-left: 20px;
+    }
 
     &:before{
       content:'';

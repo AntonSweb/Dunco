@@ -1,14 +1,26 @@
 .section__menu{
   width: 100%;
-  min-height: 145px;
-  //background: #f9f9f9;
-  background-color: white;
+  height: 120px;
+  z-index: 9;
+  background-color: rgba(255,255,255,0.6);
 
-  &.fixed{
-    top: 50px;
-    opacity: 0.9;
-    z-index: 9;
+  @media screen and(max-height: 768px) and(min-width: 768px){
+    opacity: 0;
+    transition: opacity .6s linear;
+
+    &:hover{
+      opacity: 1;
+      transition: opacity .6s linear;
+    }
   }
+}
+.top{
+  top: 50px;
+  bottom: auto;
+}
+.bottom{
+  top: auto;
+  bottom: 0;
 }
 .menu{
 

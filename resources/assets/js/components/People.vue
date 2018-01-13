@@ -56,8 +56,16 @@
         mounted: function () {
          const sPeople = new Swiper('.s-people', {
                 slidesPerView: 4,
-                // centeredSlides: true,
                 slidesPerGroup: 4,
+                // centeredSlides: true,
+                breakpoints: {
+                    // when window width is <= 768px
+                    768: {
+                        slidesPerView: 3,
+                        slidesPerGroup: 3,
+                        // centeredSlides: false
+                    }
+                },
                 loop: this.infinite,
                 loopFillGroupWithBlank: true,
                 autoplay: {

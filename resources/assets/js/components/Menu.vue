@@ -1,6 +1,6 @@
 <template>
     <transition name="fade">
-        <section class="flex section__menu" v-show="show" v-bind:class="fixed">
+        <section class="flex fixed section__menu" v-show="show" v-bind:class="posChange">
             <div class="flex menu__flex container">
                 <a href="" class="menu__item">
                     <span class="menu__icon menu__icon1"></span>
@@ -28,7 +28,7 @@
                 </a>
                 <a href="" class="menu__item menu__item7">
                     <span class="menu__icon menu__icon7"></span>
-                    <span class="menu__caption menu__caption7">Подписать договор на дому</span>
+                    <span class="menu__caption menu__caption7">Подписать договор</span>
                 </a>
             </div>
         </section>
@@ -39,24 +39,21 @@
     module.exports = {
         data: function() {
             return {
-                show: false,
-                fixed: 'fixed'
+                show: true,
+                posChange: 'bottom'
             };
         },
         mounted () {
             sGlobal.on('slideChange', this.changeSlideFunc);
         },
-        destroyed () {
-
-        },
         methods: {
             changeSlideFunc: function (){
                 if (sGlobal.activeIndex !== 0){
-                    return this.show = true
+                    this.posChange = 'top'
                 } else {
-                    this.show = false
+                    this.posChange = 'bottom'
                 }
-            },
+            }
         }
     }
 </script>

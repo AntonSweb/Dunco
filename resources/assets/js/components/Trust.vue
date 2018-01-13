@@ -53,7 +53,7 @@
                 </div>
                 <h3 class="section__title title__stage hidden" v-bind:class="{visible : isVisible[7]}">Как мы работаем</h3>
                 <div class="flex stage__flex trust__stage hidden" v-bind:class="{visible : isVisible[8]}">
-                    <img class="stage__img" src="app/img/stage.jpg" alt="Этапи роботы компании Данко">
+                    <img class="stage__img" src="app/img/stage.png" alt="Этапи роботы компании Данко">
                     <div class="g-btn trust__btn" v-on:click="modalOpen">
                         <span class="g-btn__bg trust__btn_bg"></span>
                         <span class="g-btn__text trust__btn-text">Оставить заявку на выезд мастера</span>

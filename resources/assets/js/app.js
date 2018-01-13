@@ -10,7 +10,6 @@
 // window.Vue = require('vue');
 
 const Vue         = require('vue');
-// import VueVisible from 'vue-visible';
 const Vueheader   = require('./components/Header.vue');
 const Vueswiper   = require('./components/Swiper.vue');
 const Vuemenu     = require('./components/Menu.vue');
@@ -21,9 +20,6 @@ const Vueproducts = require('./components/Products.vue');
 const Vuegallery  = require('./components/Gallery.vue');
 const Vueorder    = require('./components/Order.vue');
 const Vuefooter   = require('./components/Footer.vue');
-
-// const VueVisible = require('vue-visible');
-// Vue.use(VueVisible);
 
 new Vue({
     el: '.header',
@@ -68,6 +64,7 @@ new Vue({
     //     return createElement(Vuefooter)
     // }
 });
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
