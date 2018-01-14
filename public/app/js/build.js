@@ -8573,7 +8573,7 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
   }
 })()}
 },{"vue":2,"vueify/node_modules/vue-hot-reload-api":4}],9:[function(require,module,exports){
-var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("/* line 62, stdin */\n.fade-enter-active[data-v-0029833a], .fade-leave-active[data-v-0029833a] {\n  -webkit-transition: opacity .8s;\n  -moz-transition: opacity .8s;\n  -ms-transition: opacity .8s;\n  -o-transition: opacity .8s;\n  transition: opacity .8s; }\n\n/* line 69, stdin */\n.fade-enter[data-v-0029833a], .fade-leave-to[data-v-0029833a] {\n  opacity: 0; }")
+var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("/* line 68, stdin */\n.fade-enter-active[data-v-0029833a], .fade-leave-active[data-v-0029833a] {\n  -webkit-transition: opacity .8s;\n  -moz-transition: opacity .8s;\n  -ms-transition: opacity .8s;\n  -o-transition: opacity .8s;\n  transition: opacity .8s; }\n\n/* line 75, stdin */\n.fade-enter[data-v-0029833a], .fade-leave-to[data-v-0029833a] {\n  opacity: 0; }")
 ;(function(){
 'use strict';
 
@@ -8581,8 +8581,14 @@ module.exports = {
     data: function data() {
         return {
             show: true,
-            posChange: 'bottom'
+            posChange: 'bottom',
+            screenWidth: window.matchMedia('(max-width: 768px)').matches
         };
+    },
+    created: function created() {
+        if (this.screenWidth) {
+            this.show = false;
+        }
     },
     mounted: function mounted() {
         sGlobal.on('slideChange', this.changeSlideFunc);
@@ -8638,6 +8644,10 @@ module.exports = {
             slidesPerView: 3,
             slidesPerGroup: 3,
             breakpoints: {
+                640: {
+                    slidesPerView: 1,
+                    slidesPerGroup: 1
+                },
                 768: {
                     slidesPerView: 2,
                     slidesPerGroup: 2
@@ -8676,7 +8686,7 @@ module.exports = {
             }
         },
         modalOpen: function modalOpen() {
-            $('.mask').addClass('active');
+            $('.mask__order').addClass('active');
         }
     }
 };
@@ -8716,8 +8726,15 @@ module.exports = {
         var sPeople = new Swiper('.s-people', {
             slidesPerView: 4,
             slidesPerGroup: 4,
-
             breakpoints: {
+                480: {
+                    slidesPerView: 1,
+                    slidesPerGroup: 1
+                },
+                640: {
+                    slidesPerView: 2,
+                    slidesPerGroup: 2
+                },
                 768: {
                     slidesPerView: 3,
                     slidesPerGroup: 3
@@ -9013,7 +9030,7 @@ module.exports = {
             }
         },
         modalOpen: function modalOpen() {
-            $('.mask').addClass('active');
+            $('.mask__order').addClass('active');
         }
     }
 };
@@ -9034,7 +9051,7 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
   }
 })()}
 },{"vue":2,"vueify/node_modules/vue-hot-reload-api":4}],15:[function(require,module,exports){
-var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("/* line 93, stdin */\n.fade-enter-active[data-v-9bca31a0], .fade-leave-active[data-v-9bca31a0] {\n  -webkit-transition: opacity 3s;\n  -moz-transition: opacity 3s;\n  -ms-transition: opacity 3s;\n  -o-transition: opacity 3s;\n  transition: opacity 3s; }\n\n/* line 100, stdin */\n.fade-enter[data-v-9bca31a0], .fade-leave-to[data-v-9bca31a0] {\n  opacity: 0; }")
+var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("/* line 106, stdin */\n.fade-enter-active[data-v-9bca31a0], .fade-leave-active[data-v-9bca31a0] {\n  -webkit-transition: opacity 3s;\n  -moz-transition: opacity 3s;\n  -ms-transition: opacity 3s;\n  -o-transition: opacity 3s;\n  transition: opacity 3s; }\n\n/* line 113, stdin */\n.fade-enter[data-v-9bca31a0], .fade-leave-to[data-v-9bca31a0] {\n  opacity: 0; }")
 ;(function(){
 'use strict';
 
@@ -9044,13 +9061,23 @@ module.exports = {
             showContent: false,
             showVideo: false,
             showClose: false,
+            showVideoMob: true,
             isActive: false,
-            counter: 0
+            counter: 0,
+            screenWidth: window.matchMedia('(max-width: 768px)').matches
         };
+    },
+    created: function created() {
+        if (this.screenWidth) {
+            return this.showVideoMob = false;
+        } else {
+            this.showVideoMob = true;
+        }
     },
     mounted: function mounted() {
         sGlobal.on('slideChange', this.showBgVideo);
         document.addEventListener('keyup', this.closeFuncKeyup);
+        console.log(this.screenWidth);
     },
 
     methods: {
@@ -9062,7 +9089,10 @@ module.exports = {
         playFunc: function playFunc() {
             this.showVideo = true;
             this.isActive = true;
-            if (this.counter === 1) {
+            if (this.screenWidth) {
+                this.showClose = true;
+            }
+            if (this.counter === 1 && this.screenWidth) {
                 this.playOn();
             }
         },
@@ -9095,7 +9125,7 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('section',{staticClass:"section__video"},[_c('video',{staticClass:"video",attrs:{"autoplay":"","loop":"","muted":"","preload":""},domProps:{"muted":true}},[_c('source',{attrs:{"src":"app/video/dunco.webm","type":"video/webm"}}),_vm._v(" "),_c('source',{attrs:{"src":"app/video/dunco.mp4","type":"video/mp4"}})]),_vm._v(" "),_c('transition',{attrs:{"name":"fade"}},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.showContent),expression:"showContent"}],staticClass:"video__inner"},[_c('img',{staticClass:"video__logo",attrs:{"src":"app/img/dunco-logo_big.png","alt":"Логотип компании Дунко"}}),_vm._v(" "),_c('h3',{staticClass:"section__title section__title-video"},[_vm._v("компетенции, инновации, безопасность")]),_vm._v(" "),_c('div',{staticClass:"play-video__wrap"},[_c('a',{staticClass:"video-play-button",attrs:{"id":"play-video"},on:{"click":function($event){$event.preventDefault();_vm.playFunc($event)}}},[_c('span')])]),_vm._v(" "),_c('div',{staticClass:"container about-company__wrap"},[_c('p',{staticClass:"about-company"},[_vm._v("\n                    Добро пожаловать на сайт компании окон и дверей - «Данко»!\n                    Компания «Данко» — это продукция высокого качества, безупречное отношение к Клиенту, многолетний опыт на рынке и ответственный подход  к каждому заказу.\n                    Компания «Данко» специализируется по таким направлениям как: окна и балконные конструкции, распашные и раздвижные входные и межофисные двери  из ПВХ и алюминия, индивидуальное архитектурное проектирование конструкций для остекления фасадов жилых и промышленных зданий, торговых центров, витрин и др.\n                    При выборе компании каждый Клиент задает себе вопрос: «Почему я готов довериться именно этой компании?»  Мы понимаем Ваше волнение и готовы предоставить ряд наших преимуществ и помочь Вам сделать правильный выбор!\n                    Наши преимущества:\n                    Мы всегда внимательно прислушиваемся к пожеланиям наших Клиентов и внедряем проверенные передовые технологии.  Многочисленные отзывы и рекомендации наших Клиентов — лучшее признание качества нашей продукции и услуг. Уникальный ассортимент готовых комплексных решений и широкие возможности для создания любого нестандартного индивидуального решения позволяют «Данко»  прочно удерживать позиции лидера на рынке Киева и Киевской области.  Вам буде предложено несколько вариантов коммерческих предложений, которые будут соответствовать Вашим пожеланиям, всем стандартам и технологиям. Наш график работы  7/24. У нас есть рекомендательные письма от известных загородных клубов, учебных заведений и известных людей которые нам доверились! Обращайте и Вы,  всегда рады Вам помочь!\n                ")])])])]),_vm._v(" "),_c('div',{staticClass:"video-overlay",class:{open: _vm.isActive},attrs:{"id":"video-overlay"},on:{"click":_vm.closeFunc}},[_c('div',{staticClass:"video-overlay-inner",on:{"mouseover":_vm.mouseOver,"mouseleave":_vm.mouseLeave}},[_c('a',{directives:[{name:"show",rawName:"v-show",value:(_vm.showClose),expression:"showClose"}],staticClass:"video-overlay-close",on:{"click":function($event){$event.preventDefault();_vm.closeFunc($event)}}},[_vm._v("×")]),_vm._v(" "),(_vm.showVideo)?_c('iframe',{attrs:{"id":"Youtube","src":"https://www.youtube.com/embed/mAhPgohwsQI?enablejsapi=1&autoplay=1","frameborder":"0","gesture":"media","allow":"encrypted-media","allowfullscreen":""}}):_vm._e()])])],1)}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('section',{staticClass:"section__video"},[(_vm.showVideoMob)?_c('video',{staticClass:"video",attrs:{"autoplay":"","loop":"","muted":"","preload":""},domProps:{"muted":true}},[_c('source',{attrs:{"src":"app/video/dunco.webm","type":"video/webm"}}),_vm._v(" "),_c('source',{attrs:{"src":"app/video/dunco.mp4","type":"video/mp4"}})]):_vm._e(),_vm._v(" "),_c('transition',{attrs:{"name":"fade"}},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.showContent),expression:"showContent"}],staticClass:"video__inner"},[_c('img',{staticClass:"video__logo",attrs:{"src":"app/img/dunco-logo_big.png","alt":"Логотип компании Дунко"}}),_vm._v(" "),_c('h3',{staticClass:"section__title section__title-video"},[_vm._v("компетенции, инновации, безопасность")]),_vm._v(" "),_c('div',{staticClass:"play-video__wrap"},[_c('a',{staticClass:"video-play-button",attrs:{"id":"play-video"},on:{"click":function($event){$event.preventDefault();_vm.playFunc($event)}}},[_c('span')])]),_vm._v(" "),_c('div',{staticClass:"container about-company__wrap"},[_c('p',{staticClass:"about-company"},[_vm._v("\n                    Добро пожаловать на сайт компании окон и дверей - «Данко»!\n                    Компания «Данко» — это продукция высокого качества, безупречное отношение к Клиенту, многолетний опыт на рынке и ответственный подход  к каждому заказу.\n                    Компания «Данко» специализируется по таким направлениям как: окна и балконные конструкции, распашные и раздвижные входные и межофисные двери  из ПВХ и алюминия, индивидуальное архитектурное проектирование конструкций для остекления фасадов жилых и промышленных зданий, торговых центров, витрин и др.\n                    При выборе компании каждый Клиент задает себе вопрос: «Почему я готов довериться именно этой компании?»  Мы понимаем Ваше волнение и готовы предоставить ряд наших преимуществ и помочь Вам сделать правильный выбор!\n                    Наши преимущества:\n                    Мы всегда внимательно прислушиваемся к пожеланиям наших Клиентов и внедряем проверенные передовые технологии.  Многочисленные отзывы и рекомендации наших Клиентов — лучшее признание качества нашей продукции и услуг. Уникальный ассортимент готовых комплексных решений и широкие возможности для создания любого нестандартного индивидуального решения позволяют «Данко»  прочно удерживать позиции лидера на рынке Киева и Киевской области.  Вам буде предложено несколько вариантов коммерческих предложений, которые будут соответствовать Вашим пожеланиям, всем стандартам и технологиям. Наш график работы  7/24. У нас есть рекомендательные письма от известных загородных клубов, учебных заведений и известных людей которые нам доверились! Обращайте и Вы,  всегда рады Вам помочь!\n                ")])])])]),_vm._v(" "),_c('div',{staticClass:"video-overlay",class:{open: _vm.isActive},attrs:{"id":"video-overlay"},on:{"click":_vm.closeFunc}},[_c('div',{staticClass:"video-overlay-inner",on:{"mouseover":_vm.mouseOver,"mouseleave":_vm.mouseLeave}},[_c('a',{directives:[{name:"show",rawName:"v-show",value:(_vm.showClose),expression:"showClose"}],staticClass:"video-overlay-close",on:{"click":function($event){$event.preventDefault();_vm.closeFunc($event)}}},[_vm._v("×")]),_vm._v(" "),(_vm.showVideo)?_c('iframe',{attrs:{"id":"Youtube","src":"https://www.youtube.com/embed/mAhPgohwsQI?enablejsapi=1&autoplay=1","frameborder":"0","gesture":"media","allow":"encrypted-media","allowfullscreen":""}}):_vm._e()])])],1)}
 __vue__options__.staticRenderFns = []
 __vue__options__._scopeId = "data-v-9bca31a0"
 if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-hot-reload-api")

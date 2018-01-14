@@ -57,13 +57,18 @@
          const sPeople = new Swiper('.s-people', {
                 slidesPerView: 4,
                 slidesPerGroup: 4,
-                // centeredSlides: true,
                 breakpoints: {
-                    // when window width is <= 768px
+                    480: {
+                        slidesPerView: 1,
+                        slidesPerGroup: 1
+                    },
+                    640: {
+                        slidesPerView: 2,
+                        slidesPerGroup: 2
+                    },
                     768: {
                         slidesPerView: 3,
-                        slidesPerGroup: 3,
-                        // centeredSlides: false
+                        slidesPerGroup: 3
                     }
                 },
                 loop: this.infinite,

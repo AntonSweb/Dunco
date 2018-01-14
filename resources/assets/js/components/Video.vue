@@ -1,6 +1,6 @@
 <template>
         <section class="section__video">
-            <video class="video" autoplay loop muted preload>
+            <video class="video" autoplay loop muted preload v-if="showVideoMob">
                  <source src="app/video/dunco.webm" type="video/webm">
                  <source src="app/video/dunco.mp4" type="video/mp4">
             </video>
@@ -41,13 +41,23 @@
                 showContent: false,
                 showVideo: false,
                 showClose: false,
+                showVideoMob: true,
                 isActive: false,
                 counter: 0,
+                screenWidth: window.matchMedia('(max-width: 768px)').matches
             };
+        },
+        created (){
+            if (this.screenWidth){
+              return this.showVideoMob = false;
+            } else {
+               this.showVideoMob = true;
+            }
         },
         mounted (){
             sGlobal.on('slideChange', this.showBgVideo);
-            document.addEventListener('keyup', this.closeFuncKeyup)
+            document.addEventListener('keyup', this.closeFuncKeyup);
+            console.log(this.screenWidth);
         },
         methods: {
             showBgVideo: function (){
@@ -58,8 +68,11 @@
             playFunc: function (){
                  this.showVideo = true;
                  this.isActive = true;
-                 if (this.counter === 1){
-                     this.playOn()
+                 if (this.screenWidth){
+                     this.showClose = true;
+                 }
+                 if (this.counter === 1 && this.screenWidth){
+                     this.playOn();
                 } 
             },
             closeFunc: function (){

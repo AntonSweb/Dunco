@@ -40,10 +40,16 @@
         data: function() {
             return {
                 show: true,
-                posChange: 'bottom'
+                posChange: 'bottom',
+                screenWidth: window.matchMedia('(max-width: 768px)').matches
             };
         },
-        mounted () {
+        created (){
+            if (this.screenWidth){
+              this.show = false;
+            }
+        },
+        mounted (){
             sGlobal.on('slideChange', this.changeSlideFunc);
         },
         methods: {

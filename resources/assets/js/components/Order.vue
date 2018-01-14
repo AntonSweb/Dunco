@@ -104,10 +104,13 @@
                 slidesPerView: 3,
                 slidesPerGroup: 3,
                  breakpoints: {
-                    // when window width is <= 768px
+                    640: {
+                        slidesPerView: 1,
+                        slidesPerGroup: 1
+                    },
                     768: {
                         slidesPerView: 2,
-                        slidesPerGroup: 2,
+                        slidesPerGroup: 2
                     }
                 },
                 // centeredSlides: true,
@@ -137,7 +140,7 @@
                 }
             },
             modalOpen: function (){
-              $('.mask').addClass('active');
+                $('.mask__order').addClass('active');
             }
         }
     }

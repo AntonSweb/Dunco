@@ -1,19 +1,38 @@
 .section__trust{
   height: 100vh;
-  @media screen and(max-height: 768px){
+  @media screen and(max-width: 992px){
+    padding-top: 150px;
+  }
+  @media screen and(max-width: 768px){
+    padding-top: 55px;
+  }
+  @media screen and(max-height: 768px) and(min-width: 768px){
     padding-top: 55px;
     height: auto;
   }
 }
 .title__numbers{
   margin: 65px 0;
+  @media screen and(max-width: 640px){
+    font-size: 30px;
+    margin-bottom: 0!important;
+  }
 }
 .title__stage{
   margin-top: 65px;
   margin-bottom: 40px;
+  @media screen and(max-width: 768px){
+    display: none;
+  }
 }
 .title__numbers, .title__stage{
   @media screen and(max-height: 768px){
+    margin: 30px 0;
+  }
+  @media screen and(max-width: 768px){
+    margin: 10px 0;
+  }
+  @media screen and(max-height: 768px) and(max-width: 992px){
     margin: 10px 0;
   }
 }
@@ -36,9 +55,13 @@
   &__number{
     flex-basis: 33.333333%;
     @media screen and (max-width:992px){
-      flex-basis: 50%;
       margin: 20px 0;
       padding-right: 20px;
+      flex-basis: 50%;
+    }
+    @media screen and (max-width:640px){
+      margin: 10px 0;
+      flex-basis: 100%;
     }
   }
 
@@ -48,6 +71,9 @@
     margin-top: 30px;
     width: 330px;
     height: 50px;
+    @media screen and (max-width:640px){
+      margin-top: 15px;
+    }
   }
 
   &__btn_bg{
@@ -96,4 +122,8 @@
 .stage__img{
   width: 100%;
   max-width: 830px;
+  @media screen and(max-width: 768px){
+    display: none;
+  }
+  
 }

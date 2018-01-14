@@ -55,7 +55,7 @@
             <div class="swiper-slide">
                 <section class="section__video">{{--<vue-video></vue-video>--}}</section>
             </div>
-            <div class="swiper-slide">
+            <div class="swiper-slide swiper-slide__trust">
                 <section class="section__trust">{{--<vue-trust></vue-trust>--}}</section>
             </div>
             <div class="swiper-slide">
@@ -91,7 +91,8 @@
                 el: '.sp-global',
                 clickable: true
             },
-            parallax: true
+            parallax: true,
+            
         });
 
         $(function(){
