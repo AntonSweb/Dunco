@@ -44,20 +44,20 @@
                 showVideoMob: true,
                 isActive: false,
                 counter: 0,
-                screenWidth: window.matchMedia('(max-width: 768px)').matches
+                windowWidthSm: window.matchMedia('(max-width: 768px)').matches,
+                windowWidth: 0
             };
-        },
-        created (){
-            if (this.screenWidth){
-              return this.showVideoMob = false;
-            } else {
-               this.showVideoMob = true;
-            }
         },
         mounted (){
             sGlobal.on('slideChange', this.showBgVideo);
             document.addEventListener('keyup', this.closeFuncKeyup);
-            console.log(this.screenWidth);
+            this.$nextTick(function() {
+                window.addEventListener('resize', this.getWindowWidth);
+                this.getWindowWidth();
+            })
+        },
+        beforeDestroy() {
+            window.removeEventListener('resize', this.getWindowWidth);
         },
         methods: {
             showBgVideo: function (){
@@ -68,10 +68,10 @@
             playFunc: function (){
                  this.showVideo = true;
                  this.isActive = true;
-                 if (this.screenWidth){
+                 if (this.windowWidthSm){
                      this.showClose = true;
                  }
-                 if (this.counter === 1 && this.screenWidth){
+                 if (this.counter === 1 && this.windowWidthSm){
                      this.playOn();
                 } 
             },
@@ -97,7 +97,15 @@
             },
             playOn: function (){
                 $('#Youtube')[0].contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*')
-            }
+            },
+            getWindowWidth() {
+                this.windowWidth = document.documentElement.clientWidth;
+                if (this.windowWidth < 768){
+                    return this.showVideoMob = false;
+                } else {
+                    this.showVideoMob = true;
+                }
+            },
         },
     }
 </script>

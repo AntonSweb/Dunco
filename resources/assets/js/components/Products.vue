@@ -1,6 +1,6 @@
 <template>
     <section class="section__our-products">
-        <div class="our-products__inner">
+        <div class="our-products__inner" v-if="show">
             <div class="container no-padding" v-bind:class="{active: isActive}">
                 <div class="flex our-products__flex">
                     <div data-target='1' class="slide slide--1">
@@ -61,6 +61,9 @@
                 </div>
             </div>
         </div>
+        <div class="our-products_mobile" v-if="showMobile">
+
+        </div>
     </section>
 </template>
 
@@ -68,19 +71,39 @@
     module.exports = {
         data: function () {
             return {
-                isActive : false
+                isActive : false,
+                show: true,
+                showMobile: false,
+                windowWidth: 0,
             }
         },
         mounted () {
-            sGlobal.on('slideChange', this.showProductsAnim);
+            this.$nextTick(function() {
+                window.addEventListener('resize', this.getWindowWidth);
+                this.getWindowWidth();
+            })
+        },
+        beforeDestroy() {
+            window.removeEventListener('resize', this.getWindowWidth);
         },
         methods: {
-           showProductsAnim: function () {
-               if (sGlobal.activeIndex === 4){
-                   this.isActive = 'active';
-                   this.animation();
-               }
-           },
+            getWindowWidth() {
+                this.windowWidth = document.documentElement.clientWidth;
+                if (this.windowWidth < 768){
+                    this.show = false;
+                    this.showMobile = true;
+                } else {
+                    sGlobal.on('slideChange', this.showProductsAnim);
+                    this.show = true;
+                    this.showMobile = false;
+                }
+            },
+            showProductsAnim: function () {
+                if (sGlobal.activeIndex === 4){
+                    this.isActive = 'active';
+                    this.animation();
+                }
+            },
             animation: function () {
                 //Animation
                 const $slide = $('.slide');

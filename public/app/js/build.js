@@ -8573,7 +8573,7 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
   }
 })()}
 },{"vue":2,"vueify/node_modules/vue-hot-reload-api":4}],9:[function(require,module,exports){
-var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("/* line 68, stdin */\n.fade-enter-active[data-v-0029833a], .fade-leave-active[data-v-0029833a] {\n  -webkit-transition: opacity .8s;\n  -moz-transition: opacity .8s;\n  -ms-transition: opacity .8s;\n  -o-transition: opacity .8s;\n  transition: opacity .8s; }\n\n/* line 75, stdin */\n.fade-enter[data-v-0029833a], .fade-leave-to[data-v-0029833a] {\n  opacity: 0; }")
+var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("/* line 78, stdin */\n.fade-enter-active[data-v-0029833a], .fade-leave-active[data-v-0029833a] {\n  -webkit-transition: opacity .8s;\n  -moz-transition: opacity .8s;\n  -o-transition: opacity .8s;\n  transition: opacity .8s; }\n\n/* line 84, stdin */\n.fade-enter[data-v-0029833a], .fade-leave-to[data-v-0029833a] {\n  opacity: 0; }")
 ;(function(){
 'use strict';
 
@@ -8582,16 +8582,17 @@ module.exports = {
         return {
             show: true,
             posChange: 'bottom',
-            screenWidth: window.matchMedia('(max-width: 768px)').matches
+            windowWidth: 0
         };
     },
-    created: function created() {
-        if (this.screenWidth) {
-            this.show = false;
-        }
-    },
     mounted: function mounted() {
-        sGlobal.on('slideChange', this.changeSlideFunc);
+        this.$nextTick(function () {
+            window.addEventListener('resize', this.getWindowWidth);
+            this.getWindowWidth();
+        });
+    },
+    beforeDestroy: function beforeDestroy() {
+        window.removeEventListener('resize', this.getWindowWidth);
     },
 
     methods: {
@@ -8600,6 +8601,15 @@ module.exports = {
                 this.posChange = 'top';
             } else {
                 this.posChange = 'bottom';
+            }
+        },
+        getWindowWidth: function getWindowWidth() {
+            this.windowWidth = document.documentElement.clientWidth;
+            if (this.windowWidth < 768) {
+                return this.show = false;
+            } else {
+                sGlobal.on('slideChange', this.changeSlideFunc);
+                this.show = true;
             }
         }
     }
@@ -8644,11 +8654,11 @@ module.exports = {
             slidesPerView: 3,
             slidesPerGroup: 3,
             breakpoints: {
-                640: {
+                768: {
                     slidesPerView: 1,
                     slidesPerGroup: 1
                 },
-                768: {
+                992: {
                     slidesPerView: 2,
                     slidesPerGroup: 2
                 }
@@ -8795,14 +8805,35 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
 module.exports = {
     data: function data() {
         return {
-            isActive: false
+            isActive: false,
+            show: true,
+            showMobile: false,
+            windowWidth: 0
         };
     },
     mounted: function mounted() {
-        sGlobal.on('slideChange', this.showProductsAnim);
+        this.$nextTick(function () {
+            window.addEventListener('resize', this.getWindowWidth);
+            this.getWindowWidth();
+        });
+    },
+    beforeDestroy: function beforeDestroy() {
+        window.removeEventListener('resize', this.getWindowWidth);
     },
 
     methods: {
+        getWindowWidth: function getWindowWidth() {
+            this.windowWidth = document.documentElement.clientWidth;
+            if (this.windowWidth < 768) {
+                this.show = false;
+                this.showMobile = true;
+            } else {
+                sGlobal.on('slideChange', this.showProductsAnim);
+                this.show = true;
+                this.showMobile = false;
+            }
+        },
+
         showProductsAnim: function showProductsAnim() {
             if (sGlobal.activeIndex === 4) {
                 this.isActive = 'active';
@@ -8911,7 +8942,7 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('section',{staticClass:"section__our-products"},[_c('div',{staticClass:"our-products__inner"},[_c('div',{staticClass:"container no-padding",class:{active: _vm.isActive}},[_vm._m(0)])])])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('section',{staticClass:"section__our-products"},[(_vm.show)?_c('div',{staticClass:"our-products__inner"},[_c('div',{staticClass:"container no-padding",class:{active: _vm.isActive}},[_vm._m(0)])]):_vm._e(),_vm._v(" "),(_vm.showMobile)?_c('div',{staticClass:"our-products_mobile"}):_vm._e()])}
 __vue__options__.staticRenderFns = [function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex our-products__flex"},[_c('div',{staticClass:"slide slide--1",attrs:{"data-target":"1"}},[_c('div',{staticClass:"slide-inner"},[_c('div',{staticClass:"slide__text slide__text--1"},[_c('span',[_vm._v("Окна")])]),_vm._v(" "),_c('div',{staticClass:"slide__text slide__text--1 slide__subtext slide__subtext--1"},[_c('p',[_vm._v("Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto cumque distinctio facilis fugit in nisi quisquam recusandae sequi soluta ullam?")])]),_vm._v(" "),_c('div',{staticClass:"slide__bg"}),_vm._v(" "),_c('div',{staticClass:"slide__img"},[_c('div',{staticClass:"slide__img-wrapper"})]),_vm._v(" "),_c('div',{staticClass:"slide__bg-dark"})])]),_vm._v(" "),_c('div',{staticClass:"slide slide--2",attrs:{"data-target":"2"}},[_c('div',{staticClass:"slide-inner"},[_c('div',{staticClass:"slide__text"},[_c('span',[_vm._v("Двери")])]),_vm._v(" "),_c('div',{staticClass:"slide__text slide__text--2 slide__subtext slide__subtext--2"},[_c('p',[_vm._v("Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto cumque distinctio facilis fugit in nisi quisquam recusandae sequi soluta ullam?")])]),_vm._v(" "),_c('div',{staticClass:"slide__bg"}),_vm._v(" "),_c('div',{staticClass:"slide__img"},[_c('div',{staticClass:"slide__img-wrapper"})]),_vm._v(" "),_c('div',{staticClass:"slide__bg-dark"})])]),_vm._v(" "),_c('div',{staticClass:"slide slide--3",attrs:{"data-target":"3"}},[_c('div',{staticClass:"slide-inner"},[_c('div',{staticClass:"slide__text"},[_c('span',[_vm._v("Жалюзи")])]),_vm._v(" "),_c('div',{staticClass:"slide__text slide__text--3 slide__subtext slide__subtext--3"},[_c('p',[_vm._v("Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto cumque distinctio facilis fugit in nisi quisquam recusandae sequi soluta ullam?")])]),_vm._v(" "),_c('div',{staticClass:"slide__bg"}),_vm._v(" "),_c('div',{staticClass:"slide__img"},[_c('div',{staticClass:"slide__img-wrapper"})]),_vm._v(" "),_c('div',{staticClass:"slide__bg-dark"})])]),_vm._v(" "),_c('div',{staticClass:"slide slide--4",attrs:{"data-target":"4"}},[_c('div',{staticClass:"slide-inner"},[_c('div',{staticClass:"slide__text"},[_c('span',[_vm._v("Ролеты")])]),_vm._v(" "),_c('div',{staticClass:"slide__text slide__text--4 slide__subtext slide__subtext--4"},[_c('p',[_vm._v("Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto cumque distinctio facilis fugit in nisi quisquam recusandae sequi soluta ullam?")])]),_vm._v(" "),_c('div',{staticClass:"slide__bg"}),_vm._v(" "),_c('div',{staticClass:"slide__img"},[_c('div',{staticClass:"slide__img-wrapper"})]),_vm._v(" "),_c('div',{staticClass:"slide__bg-dark"})])]),_vm._v(" "),_c('div',{staticClass:"slide slide--5",attrs:{"data-target":"5"}},[_c('div',{staticClass:"slide-inner"},[_c('div',{staticClass:"slide__text"},[_c('span',[_vm._v("Ворота")])]),_vm._v(" "),_c('div',{staticClass:"slide__text slide__text--5 slide__subtext slide__subtext--5"},[_c('p',[_vm._v("Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto cumque distinctio facilis fugit in nisi quisquam recusandae sequi soluta ullam?")])]),_vm._v(" "),_c('div',{staticClass:"slide__bg"}),_vm._v(" "),_c('div',{staticClass:"slide__img"},[_c('div',{staticClass:"slide__img-wrapper"})]),_vm._v(" "),_c('div',{staticClass:"slide__bg-dark"})])])])}]
 if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -9051,7 +9082,7 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
   }
 })()}
 },{"vue":2,"vueify/node_modules/vue-hot-reload-api":4}],15:[function(require,module,exports){
-var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("/* line 106, stdin */\n.fade-enter-active[data-v-9bca31a0], .fade-leave-active[data-v-9bca31a0] {\n  -webkit-transition: opacity 3s;\n  -moz-transition: opacity 3s;\n  -ms-transition: opacity 3s;\n  -o-transition: opacity 3s;\n  transition: opacity 3s; }\n\n/* line 113, stdin */\n.fade-enter[data-v-9bca31a0], .fade-leave-to[data-v-9bca31a0] {\n  opacity: 0; }")
+var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("/* line 114, stdin */\n.fade-enter-active[data-v-9bca31a0], .fade-leave-active[data-v-9bca31a0] {\n  -webkit-transition: opacity 3s;\n  -moz-transition: opacity 3s;\n  -ms-transition: opacity 3s;\n  -o-transition: opacity 3s;\n  transition: opacity 3s; }\n\n/* line 121, stdin */\n.fade-enter[data-v-9bca31a0], .fade-leave-to[data-v-9bca31a0] {\n  opacity: 0; }")
 ;(function(){
 'use strict';
 
@@ -9064,20 +9095,20 @@ module.exports = {
             showVideoMob: true,
             isActive: false,
             counter: 0,
-            screenWidth: window.matchMedia('(max-width: 768px)').matches
+            windowWidthSm: window.matchMedia('(max-width: 768px)').matches,
+            windowWidth: 0
         };
-    },
-    created: function created() {
-        if (this.screenWidth) {
-            return this.showVideoMob = false;
-        } else {
-            this.showVideoMob = true;
-        }
     },
     mounted: function mounted() {
         sGlobal.on('slideChange', this.showBgVideo);
         document.addEventListener('keyup', this.closeFuncKeyup);
-        console.log(this.screenWidth);
+        this.$nextTick(function () {
+            window.addEventListener('resize', this.getWindowWidth);
+            this.getWindowWidth();
+        });
+    },
+    beforeDestroy: function beforeDestroy() {
+        window.removeEventListener('resize', this.getWindowWidth);
     },
 
     methods: {
@@ -9089,10 +9120,10 @@ module.exports = {
         playFunc: function playFunc() {
             this.showVideo = true;
             this.isActive = true;
-            if (this.screenWidth) {
+            if (this.windowWidthSm) {
                 this.showClose = true;
             }
-            if (this.counter === 1 && this.screenWidth) {
+            if (this.counter === 1 && this.windowWidthSm) {
                 this.playOn();
             }
         },
@@ -9118,6 +9149,14 @@ module.exports = {
         },
         playOn: function playOn() {
             $('#Youtube')[0].contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+        },
+        getWindowWidth: function getWindowWidth() {
+            this.windowWidth = document.documentElement.clientWidth;
+            if (this.windowWidth < 768) {
+                return this.showVideoMob = false;
+            } else {
+                this.showVideoMob = true;
+            }
         }
     }
 };

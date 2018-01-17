@@ -41,16 +41,17 @@
             return {
                 show: true,
                 posChange: 'bottom',
-                screenWidth: window.matchMedia('(max-width: 768px)').matches
+                windowWidth: 0
             };
         },
-        created (){
-            if (this.screenWidth){
-              this.show = false;
-            }
-        },
         mounted (){
-            sGlobal.on('slideChange', this.changeSlideFunc);
+            this.$nextTick(function() {
+                window.addEventListener('resize', this.getWindowWidth);
+                this.getWindowWidth();
+            })
+        },
+        beforeDestroy() {
+            window.removeEventListener('resize', this.getWindowWidth);
         },
         methods: {
             changeSlideFunc: function (){
@@ -58,6 +59,15 @@
                     this.posChange = 'top'
                 } else {
                     this.posChange = 'bottom'
+                }
+            },
+            getWindowWidth() {
+                this.windowWidth = document.documentElement.clientWidth;
+                if (this.windowWidth < 768){
+                   return this.show = false;
+                } else {
+                    sGlobal.on('slideChange', this.changeSlideFunc);
+                    this.show = true;
                 }
             }
         }
@@ -68,7 +78,6 @@
     .fade-enter-active, .fade-leave-active {
         -webkit-transition: opacity .8s;
         -moz-transition: opacity .8s;
-        -ms-transition: opacity .8s;
         -o-transition: opacity .8s;
         transition: opacity .8s;
     }

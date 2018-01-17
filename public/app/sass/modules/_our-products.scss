@@ -131,7 +131,7 @@
 
 .slide__text {
   position: absolute;
-  top: 50%;
+  top: 45%;
   left: 5%;
   font-family: $SFUIDispaly-Bold;
   width: 23%;
@@ -143,18 +143,27 @@
   transition: 750ms;
   //opacity: 0;
   z-index: 1;
-}
-@media screen and (max-width: 960px) {
-
-  .slide__text { font-size: 30px; }
+  @media screen and (max-height: 768px) {
+    top: 40%;
+  }
+  @media screen and (max-width: 992px) {
+    font-size: 26px;
+  }
 }
 
 .slide__subtext{
-  top: 60%;
+  top: 55%;
   font-family: $SFUIDispaly-Regular;
   font-size: 20px;
   line-height: 1.5;
   opacity: 0;
+  @media screen and (max-height: 768px) {
+    top: 60%;
+  }
+  @media screen and (max-width: 992px) {
+    top: 55%;
+    font-size: 16px;
+  }
 }
 
 .slide__text--1 { left: 8%; }
