@@ -1,0 +1,61 @@
+.our-products_mobile{
+  display: flex;
+  flex-direction: column;
+  padding-top: 50px;
+  height: 100%;
+}
+.slide_mob{
+  height: 20%;
+  background-size: cover;
+}
+.slide--1_mob{
+  background: url("../img/slide-window2.jpg") center center no-repeat;
+}
+.slide--2_mob{
+  background: url("../img/slide-doors2.jpg") center center no-repeat;
+}
+.slide--3_mob{
+  background: url("../img/slide-jalousie.jpg") center center no-repeat;
+}
+.slide--4_mob{
+  background: url("../img/slide-roller.jpg") center center no-repeat;;
+}
+.slide--5_mob{
+  background: url("../img/slide-gate2.jpg") center center no-repeat;
+}
+
+.slide-inner_mob{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  flex-direction: column;
+}
+
+.slide__title_mob{
+  font-family: $SFUIDispaly-Bold;
+  font-size: 36px;
+  color: #fff;
+  text-align: center;
+}
+
+.slide__text_mob{
+  width: 100%;
+  height: 100%;
+}
+
+.slide__subtext_mob{
+  font-size: 18px;
+  color: white;
+}
+
+.slide__content_mob{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0 20px;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}

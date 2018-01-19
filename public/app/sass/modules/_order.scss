@@ -2,6 +2,9 @@
   padding-bottom: 60px;
   padding-top: 175px;
   height: 100vh;
+  @media screen and(max-height: 768px){
+    padding-top: 55px;
+  }
 }
 
 .order{

@@ -35,6 +35,12 @@ body{
   opacity: 1;
   transition: opacity 1s ease-in;
 }
+.off{
+  display: none;
+}
+.on{
+  display: block;
+}
 .no-padding{
   padding: 0;
 }

@@ -62,7 +62,56 @@
             </div>
         </div>
         <div class="our-products_mobile" v-if="showMobile">
-
+            <div class="slide_mob slide--1_mob">
+                <div class="slide-inner slide-inner_mob">
+                    <div class="slide__text_mob slide__title_mob" v-show="showTitleMob[0]">
+                        <span id="0" class="slide__content_mob" v-on:click="changeText">Окна</span>
+                    </div>
+                    <div class="slide__text_mob slide__subtext_mob" v-show="showTextMob[0]">
+                        <p class="slide__content_mob">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto cumque distinctio facilis fugit in nisi quisquam recusandae sequi soluta ullam?</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide_mob slide--2_mob">
+                <div class="slide-inner slide-inner_mob">
+                    <div class="slide__text_mob slide__title_mob" v-show="showTitleMob[1]">
+                        <span id="1" class="slide__content_mob" v-on:click="changeText">Двери</span>
+                    </div>
+                    <div class="slide__text_mob slide__subtext_mob" v-show="showTextMob[1]">
+                        <p class="slide__content_mob">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto cumque distinctio facilis fugit in nisi quisquam recusandae sequi soluta ullam?</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide_mob slide--3_mob">
+                <div class="slide-inner slide-inner_mob">
+                    <div class="slide__text_mob slide__title_mob" v-show="showTitleMob[2]">
+                        <span id="2" class="slide__content_mob" v-on:click="changeText">Жалюзи</span>
+                    </div>
+                    <div class="slide__text_mob slide__subtext_mob" v-show="showTextMob[2]">
+                        <p class="slide__content_mob">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto cumque distinctio facilis fugit in nisi quisquam recusandae sequi soluta ullam?</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide_mob slide--4_mob">
+                <div class="slide-inner slide-inner_mob">
+                    <div class="slide__text_mob slide__title_mob" v-show="showTitleMob[3]">
+                        <span id="3" class="slide__content_mob" v-on:click="changeText">Ролеты</span>
+                    </div>
+                    <div class="slide__text_mob slide__subtext_mob" v-show="showTextMob[3]">
+                        <p class="slide__content_mob">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto cumque distinctio facilis fugit in nisi quisquam recusandae sequi soluta ullam?</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide_mob slide--5_mob">
+                <div class="slide-inner slide-inner_mob">
+                    <div class="slide__text_mob slide__title_mob" v-show="showTitleMob[4]">
+                        <span id="4" class="slide__content_mob" v-on:click="changeText">Ворота</span>
+                    </div>
+                    <div class="slide__text_mob slide__subtext_mob" v-show="showTextMob[4]">
+                        <p class="slide__content_mob">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto cumque distinctio facilis fugit in nisi quisquam recusandae sequi soluta ullam?</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 </template>
@@ -75,6 +124,20 @@
                 show: true,
                 showMobile: false,
                 windowWidth: 0,
+                showTitleMob: {
+                    0: true,
+                    1: true,
+                    2: true,
+                    3: true,
+                    4: true
+                },
+                showTextMob: {
+                    0: false,
+                    1: false,
+                    2: false,
+                    3: false,
+                    4: false
+                }
             }
         },
         mounted () {
@@ -102,6 +165,20 @@
                 if (sGlobal.activeIndex === 4){
                     this.isActive = 'active';
                     this.animation();
+                }
+            },
+            changeText: function (e){
+
+                if (e){
+                    for (let key in this.showTitleMob){
+                        this.showTitleMob[key] = true;
+                    }
+                    for (let key in this.showTextMob){
+                        this.showTextMob[key] = false;
+                    }
+                    let id = e.target.id;
+                    this.showTitleMob[id] = false;
+                    this.showTextMob[id] = true;
                 }
             },
             animation: function () {
