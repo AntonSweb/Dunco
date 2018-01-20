@@ -8543,16 +8543,34 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
   }
 })()}
 },{"vue":2,"vueify/node_modules/vue-hot-reload-api":4}],8:[function(require,module,exports){
+var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("/* line 96, stdin */\n.fade-enter-active[data-v-6a2f64a8], .fade-leave-active[data-v-6a2f64a8] {\n  -webkit-transition: opacity .3s;\n  -moz-transition: opacity .3s;\n  -o-transition: opacity .3s;\n  transition: opacity .3s; }\n\n/* line 102, stdin */\n.fade-enter[data-v-6a2f64a8], .fade-leave-to[data-v-6a2f64a8] {\n  opacity: 0; }")
 ;(function(){
 "use strict";
 
 module.exports = {
+    data: function data() {
+        return {
+            showMenu: false,
+            isActive: false
+        };
+    },
     methods: {
         changeSlideTo: function changeSlideTo(e) {
             if (e) {
                 var indexTo = e.target.id;
                 sGlobal.slideTo(indexTo, 1000);
             }
+        },
+        changeSlideToContacts: function changeSlideToContacts() {
+            sGlobal.slideTo(6, 1000);
+            this.showMenu = false;
+        },
+        changeSlideToProducts: function changeSlideToProducts() {
+            sGlobal.slideTo(4, 1000);
+            this.showMenu = false;
+        },
+        closeMenu: function closeMenu() {
+            this.showMenu = false;
         }
     }
 };
@@ -8560,20 +8578,22 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('header',{staticClass:"header"},[_c('div',{staticClass:"container header__container"},[_c('div',{staticClass:"flex header__flex"},[_vm._m(0),_vm._v(" "),_c('nav',{staticClass:"nav"},[_c('a',{staticClass:"nav__link nav__link-home",attrs:{"href":"/"}},[_vm._v("Главная")]),_vm._v(" "),_c('a',{staticClass:"nav__link nav__link-company",attrs:{"id":"1"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideTo($event)}}},[_vm._v("О компании")]),_vm._v(" "),_c('a',{staticClass:"nav__link nav__link-sale",attrs:{"href":"javascript:void(0);"}},[_vm._v("Скидки и Акции")]),_vm._v(" "),_c('a',{staticClass:"nav__link nav__link-gallery",attrs:{"href":"javascript:void(0);","id":"5"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideTo($event)}}},[_vm._v("Галерея")]),_vm._v(" "),_c('a',{staticClass:"nav__link nav__link-contacts",attrs:{"href":"javascript:void(0);","id":"6"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideTo($event)}}},[_vm._v("Контакти")])]),_vm._v(" "),_c('span',{staticClass:"header__tel"},[_vm._v("(068) 833-20-20")]),_vm._v(" "),_c('span',{staticClass:"header__search"})])])])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('header',{staticClass:"header"},[_c('div',{staticClass:"container header__container"},[_c('div',{staticClass:"flex header__flex"},[_vm._m(0),_vm._v(" "),_c('nav',{staticClass:"nav"},[_c('a',{staticClass:"nav__link nav__link-home",attrs:{"href":"/"}},[_vm._v("Главная")]),_vm._v(" "),_c('a',{staticClass:"nav__link nav__link-company",attrs:{"id":"1"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideTo($event)}}},[_vm._v("О компании")]),_vm._v(" "),_c('a',{staticClass:"nav__link nav__link-sale",attrs:{"href":"javascript:void(0);"}},[_vm._v("Скидки и Акции")]),_vm._v(" "),_c('a',{staticClass:"nav__link nav__link-gallery",attrs:{"href":"javascript:void(0);","id":"5"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideTo($event)}}},[_vm._v("Галерея")]),_vm._v(" "),_c('a',{staticClass:"nav__link nav__link-contacts",attrs:{"href":"javascript:void(0);","id":"6"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideTo($event)}}},[_vm._v("Контакти")])]),_vm._v(" "),_c('span',{staticClass:"header__tel"},[_vm._v("(068) 833-20-20")]),_vm._v(" "),_c('div',{staticClass:"header__right-side"},[_c('span',{staticClass:"header__search"}),_vm._v(" "),_c('span',{staticClass:"header__menu",on:{"click":function($event){_vm.showMenu = !_vm.showMenu}}})])])]),_vm._v(" "),_c('transition',{attrs:{"name":"fade"}},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.showMenu),expression:"showMenu"}],staticClass:"menu-mob flex menu-mob-g__flex"},[_c('div',{staticClass:"menu-mob__top"},[_c('img',{staticClass:"menu-mob__logo",attrs:{"src":"app/img/dunco-logo_big.png","alt":"Логотип компании Дунко"}}),_vm._v(" "),_c('span',{staticClass:"menu-mob__caption"},[_vm._v("компетенции, инновации, безопасность")])]),_vm._v(" "),_c('div',{staticClass:"flex menu-mob__flex"},[_c('a',{staticClass:"menu__item menu-mob__item",attrs:{"href":"javascript:void(0);","data-num":"4"},on:{"click":_vm.changeSlideToProducts}},[_c('span',{staticClass:"menu__icon icon window-icon-dunco-white"}),_vm._v(" "),_c('span',{staticClass:"menu__caption menu-mob__caption"},[_vm._v("Окна")])]),_vm._v(" "),_c('a',{staticClass:"menu__item menu-mob__item",attrs:{"href":"javascript:void(0);"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideToProducts($event)}}},[_c('span',{staticClass:"menu__icon icon door-icon-dunco-white"}),_vm._v(" "),_c('span',{staticClass:"menu__caption menu-mob__caption"},[_vm._v("Двери")])]),_vm._v(" "),_c('a',{staticClass:"menu__item menu-mob__item",attrs:{"href":"javascript:void(0);"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideToProducts($event)}}},[_c('span',{staticClass:"menu__icon icon roleta-window-icon-dunco-white"}),_vm._v(" "),_c('span',{staticClass:"menu__caption menu-mob__caption"},[_vm._v("Жалюзи")])]),_vm._v(" "),_c('a',{staticClass:"menu__item menu-mob__item",attrs:{"href":"javascript:void(0);"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideToProducts($event)}}},[_c('span',{staticClass:"menu__icon icon roleta-icon-dunco-white"}),_vm._v(" "),_c('span',{staticClass:"menu__caption menu-mob__caption"},[_vm._v("Ролеты")])]),_vm._v(" "),_c('a',{staticClass:"menu__item menu-mob__item",attrs:{"href":"javascript:void(0);"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideToProducts($event)}}},[_c('span',{staticClass:"menu__icon icon vorota-icon-dunco-white"}),_vm._v(" "),_c('span',{staticClass:"menu__caption menu-mob__caption"},[_vm._v("Ворота")])]),_vm._v(" "),_c('a',{staticClass:"menu__item menu-mob__item",attrs:{"href":"javascript:void(0);"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideToContacts($event)}}},[_c('span',{staticClass:"menu__icon icon tel-icon-dunco-white"}),_vm._v(" "),_c('span',{staticClass:"menu__caption menu-mob__caption"},[_vm._v("Вызов мастера")])])]),_vm._v(" "),_c('ul',{staticClass:"menu-mob__list"},[_c('li',{staticClass:"menu-mob__list-item"},[_c('a',{staticClass:"menu-mob__link",attrs:{"href":"javascript:void(0)"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideToContacts($event)}}},[_vm._v("Контакты")])])])])]),_vm._v(" "),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.showMenu),expression:"showMenu"}],staticClass:"menu-mob__mask",on:{"click":_vm.closeMenu}})],1)}
 __vue__options__.staticRenderFns = [function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('a',{staticClass:"header__logo",attrs:{"href":"/"}},[_c('img',{attrs:{"src":"app/img/dunco-logo.png","alt":"Логотип компании Данко"}})])}]
+__vue__options__._scopeId = "data-v-6a2f64a8"
 if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.accept()
+  module.hot.dispose(__vueify_style_dispose__)
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-6a2f64a8", __vue__options__)
   } else {
     hotAPI.reload("data-v-6a2f64a8", __vue__options__)
   }
 })()}
-},{"vue":2,"vueify/node_modules/vue-hot-reload-api":4}],9:[function(require,module,exports){
-var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("/* line 83, stdin */\n.fade-enter-active[data-v-0029833a], .fade-leave-active[data-v-0029833a] {\n  -webkit-transition: opacity .8s;\n  -moz-transition: opacity .8s;\n  -o-transition: opacity .8s;\n  transition: opacity .8s; }\n\n/* line 89, stdin */\n.fade-enter[data-v-0029833a], .fade-leave-to[data-v-0029833a] {\n  opacity: 0; }")
+},{"vue":2,"vueify/lib/insert-css":3,"vueify/node_modules/vue-hot-reload-api":4}],9:[function(require,module,exports){
+var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("/* line 85, stdin */\n.fade-enter-active[data-v-0029833a], .fade-leave-active[data-v-0029833a] {\n  -webkit-transition: opacity .8s;\n  -moz-transition: opacity .8s;\n  -o-transition: opacity .8s;\n  transition: opacity .8s; }\n\n/* line 91, stdin */\n.fade-enter[data-v-0029833a], .fade-leave-to[data-v-0029833a] {\n  opacity: 0; }")
 ;(function(){
 'use strict';
 
@@ -8596,10 +8616,12 @@ module.exports = {
     },
 
     methods: {
-        changeSlideTo: function changeSlideTo(e) {
-            if (e) {
-                sGlobal.slideTo(4, 1000);
-            }
+        changeSlideTo: function changeSlideTo() {
+            sGlobal.slideTo(4, 1000);
+        },
+        changeSlideToContacts: function changeSlideToContacts() {
+            sGlobal.slideTo(6, 1000);
+            this.showMenu = false;
         },
         changeSlideFunc: function changeSlideFunc() {
             if (sGlobal.activeIndex !== 0) {
@@ -8623,7 +8645,7 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('transition',{attrs:{"name":"fade"}},[_c('section',{directives:[{name:"show",rawName:"v-show",value:(_vm.show),expression:"show"}],staticClass:"flex fixed section__menu",class:_vm.posChange},[_c('div',{staticClass:"flex menu__flex container"},[_c('a',{staticClass:"menu__item",attrs:{"href":"javascript:void(0);","data-num":"4"},on:{"click":_vm.changeSlideTo}},[_c('span',{staticClass:"menu__icon menu__icon1"}),_vm._v(" "),_c('span',{staticClass:"menu__caption"},[_vm._v("Окна")])]),_vm._v(" "),_c('a',{staticClass:"menu__item",attrs:{"href":"javascript:void(0);"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideTo($event)}}},[_c('span',{staticClass:"menu__icon menu__icon2"}),_vm._v(" "),_c('span',{staticClass:"menu__caption"},[_vm._v("Двери")])]),_vm._v(" "),_c('a',{staticClass:"menu__item",attrs:{"href":"javascript:void(0);"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideTo($event)}}},[_c('span',{staticClass:"menu__icon menu__icon3"}),_vm._v(" "),_c('span',{staticClass:"menu__caption"},[_vm._v("Жалюзи")])]),_vm._v(" "),_c('a',{staticClass:"menu__item",attrs:{"href":"javascript:void(0);"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideTo($event)}}},[_c('span',{staticClass:"menu__icon menu__icon4"}),_vm._v(" "),_c('span',{staticClass:"menu__caption"},[_vm._v("Ролеты")])]),_vm._v(" "),_c('a',{staticClass:"menu__item",attrs:{"href":"javascript:void(0);"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideTo($event)}}},[_c('span',{staticClass:"menu__icon menu__icon5"}),_vm._v(" "),_c('span',{staticClass:"menu__caption"},[_vm._v("Ворота")])]),_vm._v(" "),_c('a',{staticClass:"menu__item",attrs:{"href":"javascript:void(0);"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideTo($event)}}},[_c('span',{staticClass:"menu__icon menu__icon6"}),_vm._v(" "),_c('span',{staticClass:"menu__caption"},[_vm._v("Вызов мастера")])]),_vm._v(" "),_c('a',{staticClass:"menu__item menu__item7",attrs:{"href":"javascript:void(0);"}},[_c('span',{staticClass:"menu__icon menu__icon7"}),_vm._v(" "),_c('span',{staticClass:"menu__caption menu__caption7"},[_vm._v("Подписать договор")])])])])])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('transition',{attrs:{"name":"fade"}},[_c('section',{directives:[{name:"show",rawName:"v-show",value:(_vm.show),expression:"show"}],staticClass:"flex fixed section__menu",class:_vm.posChange},[_c('div',{staticClass:"flex menu__flex container"},[_c('a',{staticClass:"menu__item",attrs:{"href":"javascript:void(0);","data-num":"4"},on:{"click":_vm.changeSlideTo}},[_c('span',{staticClass:"menu__icon icon window-icon-dunco-black"}),_vm._v(" "),_c('span',{staticClass:"menu__caption"},[_vm._v("Окна")])]),_vm._v(" "),_c('a',{staticClass:"menu__item",attrs:{"href":"javascript:void(0);"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideTo($event)}}},[_c('span',{staticClass:"menu__icon icon door-icon-dunco-black"}),_vm._v(" "),_c('span',{staticClass:"menu__caption"},[_vm._v("Двери")])]),_vm._v(" "),_c('a',{staticClass:"menu__item",attrs:{"href":"javascript:void(0);"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideTo($event)}}},[_c('span',{staticClass:"menu__icon icon roleta-window-icon-dunco-black"}),_vm._v(" "),_c('span',{staticClass:"menu__caption"},[_vm._v("Жалюзи")])]),_vm._v(" "),_c('a',{staticClass:"menu__item",attrs:{"href":"javascript:void(0);"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideTo($event)}}},[_c('span',{staticClass:"menu__icon icon roleta-icon-dunco-black"}),_vm._v(" "),_c('span',{staticClass:"menu__caption"},[_vm._v("Ролеты")])]),_vm._v(" "),_c('a',{staticClass:"menu__item",attrs:{"href":"javascript:void(0);"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideTo($event)}}},[_c('span',{staticClass:"menu__icon icon vorota-icon-dunco-black"}),_vm._v(" "),_c('span',{staticClass:"menu__caption"},[_vm._v("Ворота")])]),_vm._v(" "),_c('a',{staticClass:"menu__item",attrs:{"href":"javascript:void(0);"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideToContacts($event)}}},[_c('span',{staticClass:"menu__icon icon tel-icon-dunco-black"}),_vm._v(" "),_c('span',{staticClass:"menu__caption"},[_vm._v("Вызов мастера")])]),_vm._v(" "),_c('a',{staticClass:"menu__item menu__item7",attrs:{"href":"javascript:void(0);"}},[_c('span',{staticClass:"menu__icon icon mail-icon-dunco-black"}),_vm._v(" "),_c('span',{staticClass:"menu__caption menu__caption7"},[_vm._v("Подписать договор")])])])])])}
 __vue__options__.staticRenderFns = []
 __vue__options__._scopeId = "data-v-0029833a"
 if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-hot-reload-api")
@@ -8835,6 +8857,9 @@ module.exports = {
             window.addEventListener('resize', this.getWindowWidth);
             this.getWindowWidth();
         });
+        if (this.windowWidth < 768) {
+            sGlobal.on('slideChange', this.showProductsAnim);
+        }
     },
     beforeDestroy: function beforeDestroy() {
         window.removeEventListener('resize', this.getWindowWidth);
@@ -8847,7 +8872,6 @@ module.exports = {
                 this.show = false;
                 this.showMobile = true;
             } else {
-                sGlobal.on('slideChange', this.showProductsAnim);
                 this.show = true;
                 this.showMobile = false;
             }

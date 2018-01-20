@@ -9,6 +9,7 @@ var gulp         = require('gulp'),
     pngquant     = require('imagemin-pngquant'),
     imageminSvgo = require('imagemin-svgo'),
     spritesmith  = require('gulp.spritesmith'),
+    svgSprite    = require("gulp-svg-sprites"),
     source       = require('vinyl-source-stream'),
     browserify   = require('browserify'),
     // watchify     = require('watchify'),
@@ -69,12 +70,20 @@ gulp.task('img', function(){
         .pipe(gulp.dest('public/img'))
 });
 //SPRITES
-gulp.task('sprite', function () {
-    var spriteData = gulp.src('public/app/img/icon/*.png').pipe(spritesmith({
-        imgName: 'sprite.png',
-        cssName: 'sprite.scss'
-    }));
-    return spriteData.pipe(gulp.dest('public/app/sprites/'));
+// gulp.task('sprite', function () {
+//     var spriteData = gulp.src('public/app/img/icon/*.png').pipe(spritesmith({
+//         imgName: 'sprite-menu.png',
+//         cssName: 'sprite-menu.scss'
+//     }));
+//     return spriteData.pipe(gulp.dest('public/app/sprites/'));
+// });
+
+gulp.task('sprites-svg', function () {
+    return gulp.src('public/app/img/icons-menu-svg/*.svg')
+        .pipe(svgSprite({
+            cssFile: "sprite-svg.scss"
+        }))
+        .pipe(gulp.dest("public/app/sprites"));
 });
 //WATCHER
 gulp.task('watch', ['sass'], function() {

@@ -11,22 +11,95 @@
                     <a href="javascript:void(0);" id="6" class="nav__link nav__link-contacts" v-on:click.prevent="changeSlideTo">Контакти</a>
                 </nav>
                 <span class="header__tel">(068) 833-20-20</span>
-                <span class="header__search"></span>
-                <!-- <span class="header__menu"></span> -->
+                <div class="header__right-side">
+                    <span class="header__search"></span>
+                    <span class="header__menu" v-on:click="showMenu = !showMenu"></span>
+                </div>
             </div>
         </div>
+        <transition name="fade">
+            <div class="menu-mob flex menu-mob-g__flex" v-show="showMenu">
+                <div class="menu-mob__top">
+                    <img src="app/img/dunco-logo_big.png" alt="Логотип компании Дунко" class="menu-mob__logo">
+                    <span class="menu-mob__caption">компетенции, инновации, безопасность</span>
+                </div>
+                <div class="flex menu-mob__flex">
+                    <a href="javascript:void(0);" class="menu__item menu-mob__item" data-num="4" v-on:click="changeSlideToProducts">
+                        <span class="menu__icon icon window-icon-dunco-white"></span>
+                        <span class="menu__caption menu-mob__caption">Окна</span>
+                    </a>
+                    <a href="javascript:void(0);" class="menu__item menu-mob__item" v-on:click.prevent="changeSlideToProducts">
+                        <span class="menu__icon icon door-icon-dunco-white"></span>
+                        <span class="menu__caption menu-mob__caption">Двери</span>
+                    </a>
+                    <a href="javascript:void(0);" class="menu__item menu-mob__item" v-on:click.prevent="changeSlideToProducts">
+                        <span class="menu__icon icon roleta-window-icon-dunco-white"></span>
+                        <span class="menu__caption menu-mob__caption">Жалюзи</span>
+                    </a>
+                    <a href="javascript:void(0);" class="menu__item menu-mob__item" v-on:click.prevent="changeSlideToProducts">
+                        <span class="menu__icon icon roleta-icon-dunco-white"></span>
+                        <span class="menu__caption menu-mob__caption">Ролеты</span>
+                    </a>
+                    <a href="javascript:void(0);" class="menu__item menu-mob__item" v-on:click.prevent="changeSlideToProducts">
+                        <span class="menu__icon icon vorota-icon-dunco-white"></span>
+                        <span class="menu__caption menu-mob__caption">Ворота</span>
+                    </a>
+                    <a href="javascript:void(0);" class="menu__item menu-mob__item" v-on:click.prevent="changeSlideToContacts">
+                        <span class="menu__icon icon tel-icon-dunco-white"></span>
+                        <span class="menu__caption menu-mob__caption">Вызов мастера</span>
+                    </a>
+                    <!--<a href="javascript:void(0);" class="menu__item menu__item7">-->
+                        <!--<span class="menu__icon icon mail-icon-dunco-white"></span>-->
+                        <!--<span class="menu__caption menu-mob__caption">Подписать договор</span>-->
+                    <!--</a>-->
+                </div>
+                <ul class="menu-mob__list">
+                    <li class="menu-mob__list-item"><a href="javascript:void(0)" class="menu-mob__link" v-on:click.prevent="changeSlideToContacts">Контакты</a></li>
+                </ul>
+            </div>
+        </transition>
+        <div class="menu-mob__mask" v-show="showMenu" v-on:click="closeMenu"></div>
     </header>
 </template>
 
 <script>
     module.exports = {
+        data: function() {
+            return {
+                showMenu: false,
+                isActive: false
+            };
+        },
         methods: {
             changeSlideTo: function (e){
                 if (e){
                     let indexTo = e.target.id;
                     sGlobal.slideTo(indexTo, 1000);
                 }
+            },
+            changeSlideToContacts: function (){
+                sGlobal.slideTo(6, 1000);
+                this.showMenu = false
+            },
+            changeSlideToProducts: function (){
+                sGlobal.slideTo(4, 1000);
+                this.showMenu = false
+            },
+            closeMenu: function(){
+                this.showMenu = false
             }
         },
     }
 </script>
+
+<style lang="scss" scoped>
+    .fade-enter-active, .fade-leave-active {
+        -webkit-transition: opacity .3s;
+        -moz-transition: opacity .3s;
+        -o-transition: opacity .3s;
+        transition: opacity .3s;
+    }
+    .fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
+        opacity: 0
+    }
+</style>

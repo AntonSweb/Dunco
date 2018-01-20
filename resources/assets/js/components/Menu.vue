@@ -3,31 +3,31 @@
         <section class="flex fixed section__menu" v-show="show" v-bind:class="posChange">
             <div class="flex menu__flex container">
                 <a href="javascript:void(0);" class="menu__item" data-num="4" v-on:click="changeSlideTo">
-                    <span class="menu__icon menu__icon1"></span>
+                    <span class="menu__icon icon window-icon-dunco-black"></span>
                     <span class="menu__caption">Окна</span>
                 </a>
                 <a href="javascript:void(0);" class="menu__item" v-on:click.prevent="changeSlideTo">
-                    <span class="menu__icon menu__icon2"></span>
+                    <span class="menu__icon icon door-icon-dunco-black"></span>
                     <span class="menu__caption">Двери</span>
                 </a>
                 <a href="javascript:void(0);" class="menu__item" v-on:click.prevent="changeSlideTo">
-                    <span class="menu__icon menu__icon3"></span>
+                    <span class="menu__icon icon roleta-window-icon-dunco-black"></span>
                     <span class="menu__caption">Жалюзи</span>
                 </a>
                 <a href="javascript:void(0);" class="menu__item" v-on:click.prevent="changeSlideTo">
-                    <span class="menu__icon menu__icon4"></span>
+                    <span class="menu__icon icon roleta-icon-dunco-black"></span>
                     <span class="menu__caption">Ролеты</span>
                 </a>
                 <a href="javascript:void(0);" class="menu__item" v-on:click.prevent="changeSlideTo">
-                    <span class="menu__icon menu__icon5"></span>
+                    <span class="menu__icon icon vorota-icon-dunco-black"></span>
                     <span class="menu__caption">Ворота</span>
                 </a>
-                <a href="javascript:void(0);" class="menu__item" v-on:click.prevent="changeSlideTo">
-                    <span class="menu__icon menu__icon6"></span>
+                <a href="javascript:void(0);" class="menu__item" v-on:click.prevent="changeSlideToContacts">
+                    <span class="menu__icon icon tel-icon-dunco-black"></span>
                     <span class="menu__caption">Вызов мастера</span>
                 </a>
                 <a href="javascript:void(0);" class="menu__item menu__item7">
-                    <span class="menu__icon menu__icon7"></span>
+                    <span class="menu__icon icon mail-icon-dunco-black"></span>
                     <span class="menu__caption menu__caption7">Подписать договор</span>
                 </a>
             </div>
@@ -54,10 +54,12 @@
             window.removeEventListener('resize', this.getWindowWidth);
         },
         methods: {
-            changeSlideTo: function (e){
-                if (e){
-                    sGlobal.slideTo(4, 1000);
-                }
+            changeSlideTo: function (){
+                sGlobal.slideTo(4, 1000);
+            },
+            changeSlideToContacts: function (){
+                sGlobal.slideTo(6, 1000);
+                this.showMenu = false
             },
             changeSlideFunc: function (){
                 if (sGlobal.activeIndex !== 0){

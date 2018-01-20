@@ -13,6 +13,9 @@
       transition: opacity .6s linear;
     }
   }
+  @media screen and(max-width: 768px){
+    display: none!important;
+  }
 }
 .top{
   top: 50px;
@@ -64,25 +67,25 @@
     transition: transform .2s ease-in-out;
 
     &1{
-      @include sprite($window-icon);
+      //@include sprite($window-icon);
     }
     &2{
-      @include sprite($doors-icon);
+      //@include sprite($doors-icon);
     }
     &3{
-      @include sprite($jalousie-icon);
+      //@include sprite($jalousie-icon);
     }
     &4{
-      @include sprite($roller-icon);
+      //@include sprite($roller-icon);
     }
     &5{
-      @include sprite($gate-icon);
+      //@include sprite($gate-icon);
     }
     &6{
-      @include sprite($call-icon);
+      //@include sprite($call-icon);
     }
     &7{
-      @include sprite($contract-icon);
+      //@include sprite($contract-icon);
     }
   }
 

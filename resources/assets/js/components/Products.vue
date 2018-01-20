@@ -144,7 +144,10 @@
             this.$nextTick(function() {
                 window.addEventListener('resize', this.getWindowWidth);
                 this.getWindowWidth();
-            })
+            });
+            if (this.windowWidth < 768) {
+                sGlobal.on('slideChange', this.showProductsAnim);
+            }
         },
         beforeDestroy() {
             window.removeEventListener('resize', this.getWindowWidth);
@@ -156,7 +159,6 @@
                     this.show = false;
                     this.showMobile = true;
                 } else {
-                    sGlobal.on('slideChange', this.showProductsAnim);
                     this.show = true;
                     this.showMobile = false;
                 }

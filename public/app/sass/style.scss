@@ -5,7 +5,8 @@
 
 //Import style for Sprites
 @import "../sprites/sprite";
-@import "../sprites/sprite-menu";
+//@import "../sprites/sprite-menu";
+@import "../sprites/sprite-svg";
 
 //Import modules for project
 @import "modules/header";
@@ -14,6 +15,7 @@
 @import "modules/mouse-scroll";
 @import "modules/slides";
 @import "modules/menu";
+@import "modules/menu-mob";
 @import "modules/modal-form";
 @import "modules/video";
 @import "modules/trust";

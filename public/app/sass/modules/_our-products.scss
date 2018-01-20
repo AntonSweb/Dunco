@@ -153,12 +153,17 @@
 
 .slide__subtext{
   top: 55%;
+  padding-right: 40px;
   font-family: $SFUIDispaly-Regular;
   font-size: 20px;
   line-height: 1.5;
   opacity: 0;
   @media screen and (max-height: 768px) {
     top: 60%;
+  }
+  @media screen and (max-width: 1200px) {
+    top: 58%;
+    font-size: 16px;
   }
   @media screen and (max-width: 992px) {
     top: 55%;
