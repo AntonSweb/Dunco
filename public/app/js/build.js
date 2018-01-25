@@ -8443,7 +8443,7 @@ new Vue({
 
 
 },{"./components/Footer.vue":6,"./components/Gallery.vue":7,"./components/Header.vue":8,"./components/Menu.vue":9,"./components/Order.vue":10,"./components/People.vue":11,"./components/Products.vue":12,"./components/Swiper.vue":13,"./components/Trust.vue":14,"./components/Video.vue":15,"vue":2}],6:[function(require,module,exports){
-var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("/* line 46, stdin */\n.fade-enter-active[data-v-48fd00b6], .fade-leave-active[data-v-48fd00b6] {\n  -webkit-transition: opacity .6s;\n  -moz-transition: opacity .6s;\n  -ms-transition: opacity .6s;\n  -o-transition: opacity .6s;\n  transition: opacity .6s; }\n\n/* line 53, stdin */\n.fade-enter[data-v-48fd00b6], .fade-leave-to[data-v-48fd00b6] {\n  opacity: 0; }")
+var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("/* line 46, stdin */\n.fade-enter-active[data-v-48fd00b6], .fade-leave-active[data-v-48fd00b6] {\n  -webkit-transition: opacity .6s;\n  -moz-transition: opacity .6s;\n  -o-transition: opacity .6s;\n  transition: opacity .6s; }\n\n/* line 52, stdin */\n.fade-enter[data-v-48fd00b6], .fade-leave-to[data-v-48fd00b6] {\n  opacity: 0; }")
 ;(function(){
 'use strict';
 
@@ -8690,7 +8690,6 @@ module.exports = {
                     slidesPerGroup: 2
                 }
             },
-
             loop: this.infinite,
             loopFillGroupWithBlank: true,
             autoplay: {
@@ -8701,7 +8700,6 @@ module.exports = {
                 prevEl: '.sbp-partners'
             }
         });
-
         sGlobal.on('slideChange', this.showOrderFunc);
     },
     methods: {
@@ -9012,7 +9010,7 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
   }
 })()}
 },{"vue":2,"vueify/node_modules/vue-hot-reload-api":4}],13:[function(require,module,exports){
-var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("/* line 77, stdin */\n.fade-enter-active[data-v-0ffb3d13], .fade-leave-active[data-v-0ffb3d13] {\n  transition: opacity .9s; }\n\n/* line 80, stdin */\n.fade-enter[data-v-0ffb3d13], .fade-leave-to[data-v-0ffb3d13] {\n  opacity: 0; }")
+var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("/* line 151, stdin */\n.fade-enter-active[data-v-0ffb3d13], .fade-leave-active[data-v-0ffb3d13] {\n  transition: opacity .9s; }\n\n/* line 154, stdin */\n.fade-enter[data-v-0ffb3d13], .fade-leave-to[data-v-0ffb3d13] {\n  opacity: 0; }")
 ;(function(){
 'use strict';
 
@@ -9025,15 +9023,20 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 module.exports = {
     data: function data() {
         return {
+            c: '',
+            ctx: '',
+            w: 0,
+            h: 0,
+            windowWidth: 0,
             infinite: true,
             sFront: {},
-            show: false
+            show: false,
+            showBr: true
         };
     },
     mounted: function mounted() {
+        var that = this;
         this.sFront = new Swiper('.s-front', {
-            loop: this.infinite,
-
             pagination: {
                 el: '.sp-front',
                 clickable: true
@@ -9041,13 +9044,93 @@ module.exports = {
             navigation: {
                 nextEl: '.sbn-front',
                 prevEl: '.sbp-front'
-            }
+            },
+            on: {
+                init: function init() {
+                    that.initCanvas();
+                    that.Snowy();
+                },
+                slideChange: function slideChange() {}
+            },
+            grabCursor: true
         });
-
-        this.sFront.on('slideChange', function () {});
+        this.$nextTick(function () {
+            window.addEventListener('resize', this.getWindowWidth);
+            this.getWindowWidth();
+        });
     },
+    beforeDestroy: function beforeDestroy() {
+        window.removeEventListener('resize', this.getWindowWidth);
+    },
+
     methods: {
-        slideChange: function slideChange() {}
+        getWindowWidth: function getWindowWidth() {
+            this.windowWidth = document.documentElement.clientWidth;
+            this.c.width = this.w = window.innerWidth;
+            this.c.height = this.h = window.innerHeight;
+            if (this.windowWidth < 768) {
+                return this.showBr = false;
+            } else {
+                this.showBr = true;
+            }
+        },
+        initCanvas: function initCanvas() {
+            this.c = document.getElementById("canv");
+            this.ctx = this.c.getContext("2d");
+            this.w = this.c.width = window.innerWidth;
+            this.h = this.c.height = window.innerHeight;
+        },
+        Snowy: function Snowy() {
+            var that = this;
+            var snow,
+                arr = [],
+                f = [];
+            var num = 600,
+                tsc = 1,
+                sp = 1;
+            var sc = 1.3,
+                t = 0,
+                mv = 20,
+                min = 1;
+            for (var i = 0; i < num; ++i) {
+                snow = new Flake();
+                snow.y = Math.random() * (that.h + 50);
+                snow.x = Math.random() * that.w;
+                snow.t = Math.random() * (Math.PI * 2);
+                snow.sz = 100 / (10 + Math.random() * 100) * sc;
+                snow.sp = Math.pow(snow.sz * .8, 2) * .15 * sp;
+                snow.sp = snow.sp < min ? min : snow.sp;
+                arr.push(snow);
+            }
+            go();
+            function go() {
+                window.requestAnimationFrame(go);
+                that.ctx.clearRect(0, 0, that.w, that.h);
+                for (var i = 0; i < arr.length; ++i) {
+                    f = arr[i];
+                    f.t += .05;
+                    f.t = f.t >= Math.PI * 2 ? 0 : f.t;
+                    f.y += f.sp;
+                    f.x += Math.sin(f.t * tsc) * (f.sz * .3);
+                    if (f.y > that.h + 50) f.y = -10 - Math.random() * mv;
+                    if (f.x > that.w + mv) f.x = -mv;
+                    if (f.x < -mv) f.x = that.w + mv;
+                    f.draw();
+                }
+            }
+            function Flake() {
+                this.draw = function () {
+                    this.g = that.ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.sz);
+                    this.g.addColorStop(0, 'hsla(255,255%,255%,1)');
+                    this.g.addColorStop(1, 'hsla(255,255%,255%,0)');
+                    that.ctx.moveTo(this.x, this.y);
+                    that.ctx.fillStyle = this.g;
+                    that.ctx.beginPath();
+                    that.ctx.arc(this.x, this.y, this.sz, 0, Math.PI * 2, true);
+                    that.ctx.fill();
+                };
+            }
+        }
     },
     components: {
         Swiperslide: _SwiperSlide2.default
@@ -9057,7 +9140,7 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"swiper-container s-front"},[_c('div',{staticClass:"swiper-wrapper"},[_c('swiperslide',{staticClass:"front-slide1"},[_c('canvas',{attrs:{"slot":"canvas","id":"canv"},slot:"canvas"}),_vm._v(" "),_c('h1',{staticClass:"front-slide__title",attrs:{"slot":"title"},slot:"title"},[_vm._v("Шум и холод вам мешают? Окна \"Данко\" помагают!")])]),_vm._v(" "),_c('swiperslide',{staticClass:"front-slide2"},[_c('h2',{staticClass:"front-slide__title",attrs:{"slot":"title"},slot:"title"},[_vm._v("Покупайте двери с выгодой!")])]),_vm._v(" "),_c('swiperslide',{staticClass:"front-slide3"},[_c('h2',{staticClass:"front-slide__title",attrs:{"slot":"title"},slot:"title"},[_vm._v("Правильное решение - это ваш гарантированный комфорт!")])]),_vm._v(" "),_c('swiperslide',{staticClass:"front-slide4"},[_c('h2',{staticClass:"front-slide__title",attrs:{"slot":"title"},slot:"title"},[_vm._v("Широкий выбор материалов превратит ваши окна в шедевр!")])]),_vm._v(" "),_c('swiperslide',{staticClass:"front-slide5"},[_c('h2',{staticClass:"front-slide__title",attrs:{"slot":"title"},slot:"title"},[_vm._v("Доверь свои мечты профессионалам!"),_c('br'),_vm._v("Больше, чем просто ролеты!")])])],1),_vm._v(" "),_c('div',{staticClass:"swiper-pagination sp-g sp-front"}),_vm._v(" "),_c('div',{staticClass:"swiper-button-next sbn-front"}),_vm._v(" "),_c('div',{staticClass:"swiper-button-prev sbp-front"})])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"swiper-container s-front"},[_c('div',{staticClass:"swiper-wrapper"},[_c('swiperslide',{staticClass:"front-slide1"},[_c('canvas',{attrs:{"slot":"canvas","id":"canv"},slot:"canvas"}),_vm._v(" "),_c('h1',{staticClass:"front-slide__title",attrs:{"slot":"title"},slot:"title"},[_vm._v("Шум и холод вам мешают? Окна \"Данко\" помагают!")])]),_vm._v(" "),_c('swiperslide',{staticClass:"front-slide2"},[_c('h2',{staticClass:"front-slide__title",attrs:{"slot":"title"},slot:"title"},[_vm._v("Покупайте двери с выгодой!")])]),_vm._v(" "),_c('swiperslide',{staticClass:"front-slide3"},[_c('h2',{staticClass:"front-slide__title",attrs:{"slot":"title"},slot:"title"},[_vm._v("Правильное решение - это ваш гарантированный комфорт!")])]),_vm._v(" "),_c('swiperslide',{staticClass:"front-slide4"},[_c('h2',{staticClass:"front-slide__title",attrs:{"slot":"title"},slot:"title"},[_vm._v("Широкий выбор материалов превратит ваши окна в шедевр!")])]),_vm._v(" "),_c('swiperslide',{staticClass:"front-slide5"},[_c('h2',{staticClass:"front-slide__title",attrs:{"slot":"title"},slot:"title"},[_vm._v("Доверь свои мечты профессионалам!"),(_vm.showBr)?_c('br'):_vm._e(),_vm._v(" Больше, чем просто ролеты!")])])],1),_vm._v(" "),_c('div',{staticClass:"swiper-pagination sp-g sp-front"}),_vm._v(" "),_c('div',{staticClass:"swiper-button-next sbn-front"}),_vm._v(" "),_c('div',{staticClass:"swiper-button-prev sbp-front"})])}
 __vue__options__.staticRenderFns = []
 __vue__options__._scopeId = "data-v-0ffb3d13"
 if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-hot-reload-api")
@@ -9127,7 +9210,7 @@ if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
 __vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.show)?_c('section',{staticClass:"section__trust"},[_c('div',{staticClass:"container flex trust__flex_outer"},[_c('div',{staticClass:"trust__wrap"},[_c('h3',{staticClass:"section__title title__numbers hidden",class:{visible : _vm.isVisible[0]}},[_vm._v("Почему нам стоит доверять?")]),_vm._v(" "),_c('div',{staticClass:"flex trust__flex trust__numbers"},[_c('div',{staticClass:"trust__number hidden",class:{visible : _vm.isVisible[1]}},[_vm._m(0)]),_vm._v(" "),_c('div',{staticClass:"trust__number hidden",class:{visible : _vm.isVisible[2]}},[_vm._m(1)]),_vm._v(" "),_c('div',{staticClass:"trust__number hidden",class:{visible : _vm.isVisible[3]}},[_vm._m(2)]),_vm._v(" "),_c('div',{staticClass:"trust__number hidden",class:{visible : _vm.isVisible[4]}},[_vm._m(3)]),_vm._v(" "),_c('div',{staticClass:"trust__number hidden",class:{visible : _vm.isVisible[5]}},[_vm._m(4)]),_vm._v(" "),_c('div',{staticClass:"trust__number hidden",class:{visible : _vm.isVisible[6]}},[_vm._m(5)])]),_vm._v(" "),_c('h3',{staticClass:"section__title title__stage hidden",class:{visible : _vm.isVisible[7]}},[_vm._v("Как мы работаем")]),_vm._v(" "),_c('div',{staticClass:"flex stage__flex trust__stage hidden",class:{visible : _vm.isVisible[8]}},[_c('img',{staticClass:"stage__img",attrs:{"src":"app/img/stage.png","alt":"Этапи роботы компании Данко"}}),_vm._v(" "),_c('div',{staticClass:"g-btn trust__btn",on:{"click":_vm.modalOpen}},[_c('span',{staticClass:"g-btn__bg trust__btn_bg"}),_vm._v(" "),_c('span',{staticClass:"g-btn__text trust__btn-text"},[_vm._v("Оставить заявку на выезд мастера")])])])])])]):_vm._e()}
-__vue__options__.staticRenderFns = [function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex number__flex"},[_c('img',{attrs:{"src":"app/img/one.jpg","alt":"Почему нам стоит доверять пункт первый"}}),_vm._v(" "),_c('span',{staticClass:"number__caption number__caption1"},[_vm._v("Мы​ ​на​ ​связи​ 24/7")])])},function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex number__flex"},[_c('img',{attrs:{"src":"app/img/two.jpg","alt":"Почему нам стоит доверять пункт второй"}}),_vm._v(" "),_c('span',{staticClass:"number__caption"},[_vm._v("\n                            Вы​ получите​ идеи/стиль"),_c('br'),_vm._v("и​ ​правильное решение​ в​ ​подборе​​ комплектующих\n                        ")])])},function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex number__flex"},[_c('img',{attrs:{"src":"app/img/three.jpg","alt":"Почему нам стоит доверять пункт третий"}}),_vm._v(" "),_c('span',{staticClass:"number__caption"},[_vm._v("\n                            полный​​ пакет​​ документов​ +​ гарантийное​ ​и​ постгарантийное обслуживание\n                        ")])])},function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex number__flex"},[_c('img',{attrs:{"src":"app/img/four.jpg","alt":"Почему нам стоит доверять пункт четвертый"}}),_vm._v(" "),_c('span',{staticClass:"number__caption"},[_vm._v("\n                            Бесплатный​ замер "),_c('br'),_vm._v("​​(при​ заключённом договоре),\n                        ")])])},function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex number__flex"},[_c('img',{attrs:{"src":"app/img/five.jpg","alt":"Почему нам стоит доверять пункт пятый"}}),_vm._v(" "),_c('span',{staticClass:"number__caption"},[_vm._v("\n                            Качество​​ производства​"),_c('br'),_vm._v("​и​ ​монтажа согласно​ ​инновационных технологий\n                        ")])])},function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex number__flex"},[_c('img',{attrs:{"src":"app/img/six.jpg","alt":"Почему нам стоит доверять пункт шестой"}}),_vm._v(" "),_c('span',{staticClass:"number__caption"},[_vm._v("\n                            Квалифицированная​ консультация специалиста\n                        ")])])}]
+__vue__options__.staticRenderFns = [function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex number__flex"},[_c('img',{staticClass:"number__img number__img1",attrs:{"src":"app/img/one.jpg","alt":"Почему нам стоит доверять пункт первый"}}),_vm._v(" "),_c('span',{staticClass:"number__caption number__caption1"},[_vm._v("Мы​ ​на​ ​связи​ 24/7")])])},function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex number__flex"},[_c('img',{staticClass:"number__img",attrs:{"src":"app/img/two.jpg","alt":"Почему нам стоит доверять пункт второй"}}),_vm._v(" "),_c('span',{staticClass:"number__caption"},[_vm._v("\n                            Вы​ получите​ идеи/стиль"),_c('br'),_vm._v("и​ ​правильное решение​ в​ ​подборе​​ комплектующих\n                        ")])])},function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex number__flex"},[_c('img',{staticClass:"number__img",attrs:{"src":"app/img/three.jpg","alt":"Почему нам стоит доверять пункт третий"}}),_vm._v(" "),_c('span',{staticClass:"number__caption"},[_vm._v("\n                            полный​​ пакет​​ документов​ +​ гарантийное​ ​и​ постгарантийное обслуживание\n                        ")])])},function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex number__flex"},[_c('img',{staticClass:"number__img",attrs:{"src":"app/img/four.jpg","alt":"Почему нам стоит доверять пункт четвертый"}}),_vm._v(" "),_c('span',{staticClass:"number__caption"},[_vm._v("\n                            Бесплатный​ замер "),_c('br'),_vm._v("​​(при​ заключённом договоре),\n                        ")])])},function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex number__flex"},[_c('img',{staticClass:"number__img",attrs:{"src":"app/img/five.jpg","alt":"Почему нам стоит доверять пункт пятый"}}),_vm._v(" "),_c('span',{staticClass:"number__caption"},[_vm._v("\n                            Качество​​ производства​"),_c('br'),_vm._v("​и​ ​монтажа согласно​ ​инновационных технологий\n                        ")])])},function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex number__flex"},[_c('img',{staticClass:"number__img",attrs:{"src":"app/img/six.jpg","alt":"Почему нам стоит доверять пункт шестой"}}),_vm._v(" "),_c('span',{staticClass:"number__caption"},[_vm._v("\n                            Квалифицированная​ консультация специалиста\n                        ")])])}]
 if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
@@ -9139,7 +9222,7 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
   }
 })()}
 },{"vue":2,"vueify/node_modules/vue-hot-reload-api":4}],15:[function(require,module,exports){
-var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("/* line 114, stdin */\n.fade-enter-active[data-v-9bca31a0], .fade-leave-active[data-v-9bca31a0] {\n  -webkit-transition: opacity 3s;\n  -moz-transition: opacity 3s;\n  -ms-transition: opacity 3s;\n  -o-transition: opacity 3s;\n  transition: opacity 3s; }\n\n/* line 121, stdin */\n.fade-enter[data-v-9bca31a0], .fade-leave-to[data-v-9bca31a0] {\n  opacity: 0; }")
+var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("/* line 114, stdin */\n.fade-enter-active[data-v-9bca31a0], .fade-leave-active[data-v-9bca31a0] {\n  -webkit-transition: opacity 3s;\n  -moz-transition: opacity 3s;\n  -o-transition: opacity 3s;\n  transition: opacity 3s; }\n\n/* line 120, stdin */\n.fade-enter[data-v-9bca31a0], .fade-leave-to[data-v-9bca31a0] {\n  opacity: 0; }")
 ;(function(){
 'use strict';
 
@@ -9236,11 +9319,14 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
   }
 })()}
 },{"vue":2,"vueify/lib/insert-css":3,"vueify/node_modules/vue-hot-reload-api":4}],16:[function(require,module,exports){
-var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("/* line 65, stdin */\n.fade-enter-active[data-v-42734daa], .fade-leave-active[data-v-42734daa] {\n  transition: opacity .9s; }\n\n/* line 68, stdin */\n.fade-enter[data-v-42734daa], .fade-leave-to[data-v-42734daa] {\n  opacity: 0; }")
+var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("/* line 68, stdin */\n.fade-enter-active[data-v-42734daa], .fade-leave-active[data-v-42734daa] {\n  transition: opacity .9s; }\n\n/* line 71, stdin */\n.fade-enter[data-v-42734daa], .fade-leave-to[data-v-42734daa] {\n  opacity: 0; }")
 ;(function(){
 'use strict';
 
-module.exports = {
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
     data: function data() {
         return {};
     },
@@ -9255,7 +9341,7 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"swiper-slide"},[_vm._t("canvas"),_vm._v(" "),_c('div',{staticClass:"front-slide front-slide__bg"},[_c('div',{staticClass:"container flex front-slide__flex"},[_c('transition',{attrs:{"name":"fade"}},[_c('div',{staticClass:"front-slide__content"},[_vm._t("title"),_vm._v(" "),_c('p',{staticClass:"front-slide__subtitle"},[_vm._v("Успейте заказать товари в данко и гарантированно получите скидку")]),_vm._v(" "),_c('div',{staticClass:"flex sale-counter"},[_c('div',{staticClass:"sale-counter__item sale-counter__days"},[_c('span',{staticClass:"sale-counter__numbers"},[_vm._v("01")]),_vm._v(" "),_c('span',{staticClass:"sale-counter__text"},[_vm._v("Дней")])]),_vm._v(" "),_c('div',{staticClass:"sale-counter__item sale-counter__hours"},[_c('span',{staticClass:"sale-counter__numbers"},[_vm._v("23")]),_vm._v(" "),_c('span',{staticClass:"sale-counter__text"},[_vm._v("Часов")])]),_vm._v(" "),_c('div',{staticClass:"sale-counter__item sale-counter__minutes"},[_c('span',{staticClass:"sale-counter__numbers"},[_vm._v("59")]),_vm._v(" "),_c('span',{staticClass:"sale-counter__text"},[_vm._v("Минут")])]),_vm._v(" "),_c('div',{staticClass:"sale-counter__item sale-counter__seconds"},[_c('span',{staticClass:"sale-counter__numbers"},[_vm._v("38")]),_vm._v(" "),_c('span',{staticClass:"sale-counter__text"},[_vm._v("Секунд")])])]),_vm._v(" "),_c('div',{staticClass:"g-btn front-slide__btn",on:{"click":_vm.modalOpen}},[_c('span',{staticClass:"g-btn__bg front-slide__btn_bg"}),_vm._v(" "),_c('span',{staticClass:"g-btn__text front-slide__btn-text"},[_vm._v("Оставить заявку")])]),_vm._v(" "),_c('div',{staticClass:"scroll-down"},[_c('span',{staticClass:"scroll-arrow"}),_vm._v(" "),_c('span',{staticClass:"scroll-arrow scroll-arrow1"}),_vm._v(" "),_c('span',{staticClass:"scroll-arrow scroll-arrow2"})]),_vm._v(" "),_c('span',{staticClass:"scroll-down__text"},[_vm._v("Scroll down")])],2)])],1)])],2)}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"swiper-slide"},[_vm._t("canvas"),_vm._v(" "),_c('div',{staticClass:"front-slide front-slide__bg"},[_c('div',{staticClass:"container flex front-slide__flex"},[_c('transition',{attrs:{"name":"fade"}},[_c('div',{staticClass:"front-slide__content"},[_c('div',{staticClass:"content__top-wrap"},[_vm._t("title"),_vm._v(" "),_c('p',{staticClass:"front-slide__subtitle"},[_vm._v("Успейте заказать товари в данко и гарантированно получите скидку")])],2),_vm._v(" "),_c('div',{staticClass:"content__bottom-wrap"},[_c('div',{staticClass:"flex sale-counter"},[_c('div',{staticClass:"sale-counter__item sale-counter__days"},[_c('span',{staticClass:"sale-counter__numbers"},[_vm._v("01")]),_vm._v(" "),_c('span',{staticClass:"sale-counter__text"},[_vm._v("Дней")])]),_vm._v(" "),_c('div',{staticClass:"sale-counter__item sale-counter__hours"},[_c('span',{staticClass:"sale-counter__numbers"},[_vm._v("23")]),_vm._v(" "),_c('span',{staticClass:"sale-counter__text"},[_vm._v("Часов")])]),_vm._v(" "),_c('div',{staticClass:"sale-counter__item sale-counter__minutes"},[_c('span',{staticClass:"sale-counter__numbers"},[_vm._v("59")]),_vm._v(" "),_c('span',{staticClass:"sale-counter__text"},[_vm._v("Минут")])]),_vm._v(" "),_c('div',{staticClass:"sale-counter__item sale-counter__seconds"},[_c('span',{staticClass:"sale-counter__numbers"},[_vm._v("38")]),_vm._v(" "),_c('span',{staticClass:"sale-counter__text"},[_vm._v("Секунд")])])]),_vm._v(" "),_c('div',{staticClass:"g-btn front-slide__btn",on:{"click":_vm.modalOpen}},[_c('span',{staticClass:"g-btn__bg front-slide__btn_bg"}),_vm._v(" "),_c('span',{staticClass:"g-btn__text front-slide__btn-text"},[_vm._v("Оставить заявку")])]),_vm._v(" "),_c('div',{staticClass:"scroll-down"},[_c('span',{staticClass:"scroll-arrow"}),_vm._v(" "),_c('span',{staticClass:"scroll-arrow scroll-arrow1"}),_vm._v(" "),_c('span',{staticClass:"scroll-arrow scroll-arrow2"})]),_vm._v(" "),_c('span',{staticClass:"scroll-down__text"},[_vm._v("Scroll down")])])])])],1)])],2)}
 __vue__options__.staticRenderFns = []
 __vue__options__._scopeId = "data-v-42734daa"
 if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-hot-reload-api")

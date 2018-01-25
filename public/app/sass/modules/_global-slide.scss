@@ -23,7 +23,12 @@
   }
 }
 
-.swiper-container-vertical>.swiper-pagination-bullets .swiper-pagination-bullet{
-  margin: 12px auto;
-  height: 10px;
+.swiper-container-vertical>.swiper-pagination-bullets{
+  @media screen and (max-width: 768px){
+    right: 3px;
+  }
+  .swiper-pagination-bullet{
+    margin: 12px auto;
+    height: 10px;
+  }
 }

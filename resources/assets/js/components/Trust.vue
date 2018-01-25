@@ -6,13 +6,13 @@
                 <div class="flex trust__flex trust__numbers">
                     <div class="trust__number hidden" v-bind:class="{visible : isVisible[1]}">
                         <div class="flex number__flex">
-                            <img src="app/img/one.jpg" alt="Почему нам стоит доверять пункт первый">
+                            <img class="number__img number__img1" src="app/img/one.jpg" alt="Почему нам стоит доверять пункт первый">
                             <span class="number__caption number__caption1">Мы​ ​на​ ​связи​ 24/7</span>
                         </div>
                     </div>
                     <div class="trust__number hidden" v-bind:class="{visible : isVisible[2]}">
                         <div class="flex number__flex">
-                            <img src="app/img/two.jpg" alt="Почему нам стоит доверять пункт второй">
+                            <img class="number__img" src="app/img/two.jpg" alt="Почему нам стоит доверять пункт второй">
                             <span class="number__caption">
                                 Вы​ получите​ идеи/стиль<br/>и​ ​правильное решение​ в​ ​подборе​​ комплектующих
                             </span>
@@ -20,7 +20,7 @@
                     </div>
                     <div class="trust__number hidden" v-bind:class="{visible : isVisible[3]}">
                         <div class="flex number__flex">
-                            <img src="app/img/three.jpg" alt="Почему нам стоит доверять пункт третий">
+                            <img class="number__img" src="app/img/three.jpg" alt="Почему нам стоит доверять пункт третий">
                             <span class="number__caption">
                                 полный​​ пакет​​ документов​ +​ гарантийное​ ​и​ постгарантийное обслуживание
                             </span>
@@ -28,7 +28,7 @@
                     </div>
                     <div class="trust__number hidden" v-bind:class="{visible : isVisible[4]}">
                         <div class="flex number__flex">
-                            <img src="app/img/four.jpg" alt="Почему нам стоит доверять пункт четвертый">
+                            <img class="number__img" src="app/img/four.jpg" alt="Почему нам стоит доверять пункт четвертый">
                             <span class="number__caption">
                                 Бесплатный​ замер <br/>​​(при​ заключённом договоре),
                             </span>
@@ -36,7 +36,7 @@
                     </div>
                     <div class="trust__number hidden" v-bind:class="{visible : isVisible[5]}">
                         <div class="flex number__flex">
-                            <img src="app/img/five.jpg" alt="Почему нам стоит доверять пункт пятый">
+                            <img class="number__img" src="app/img/five.jpg" alt="Почему нам стоит доверять пункт пятый">
                             <span class="number__caption">
                                 Качество​​ производства​<br/>​и​ ​монтажа согласно​ ​инновационных технологий
                             </span>
@@ -44,7 +44,7 @@
                     </div>
                     <div class="trust__number hidden" v-bind:class="{visible : isVisible[6]}">
                         <div class="flex number__flex">
-                            <img src="app/img/six.jpg" alt="Почему нам стоит доверять пункт шестой">
+                            <img class="number__img" src="app/img/six.jpg" alt="Почему нам стоит доверять пункт шестой">
                             <span class="number__caption">
                                 Квалифицированная​ консультация специалиста
                             </span>

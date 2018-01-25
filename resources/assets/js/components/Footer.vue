@@ -24,8 +24,8 @@
     module.exports = {
         data: function() {
             return {
-                show: false,
-            };
+                show: false
+            }
         },
         methods: {
             changeSlideFunc: function (){
@@ -34,23 +34,22 @@
                 } else {
                     this.show = false
                 }
-            },
+            }
         },
         created () {
             sGlobal.on('slideChange', this.changeSlideFunc);
-        },
+        }
     }
 </script>
 
 <style lang="scss" scoped>
-    .fade-enter-active, .fade-leave-active {
+    .fade-enter-active, .fade-leave-active{
         -webkit-transition: opacity .6s;
         -moz-transition: opacity .6s;
-        -ms-transition: opacity .6s;
         -o-transition: opacity .6s;
         transition: opacity .6s;
     }
-    .fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
+    .fade-enter, .fade-leave-to{
         opacity: 0
     }
 </style>

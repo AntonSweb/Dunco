@@ -1,14 +1,14 @@
 .section__trust{
   height: 100vh;
+  @media screen and(max-height: 768px) and(min-width: 769px){
+    padding-top: 55px;
+    height: auto;
+  }
   @media screen and(max-width: 992px){
     padding-top: 150px;
   }
   @media screen and(max-width: 768px){
-    padding-top: 55px;
-  }
-  @media screen and(max-height: 768px) and(min-width: 768px){
-    padding-top: 55px;
-    height: auto;
+    padding-top: 50px;
   }
 }
 .title__numbers{
@@ -16,6 +16,10 @@
   @media screen and(max-width: 640px){
     font-size: 30px;
     margin-bottom: 0!important;
+  }
+  @media screen and(max-width: 375px){
+    font-size: 26px;
+    line-height: 1;
   }
 }
 .title__stage{
@@ -45,6 +49,9 @@
 
     &_outer{
       align-items: center;
+      @media screen and(max-width: 768px){
+        height: 100vh;
+      }
     }
   }
 
@@ -54,37 +61,49 @@
 
   &__number{
     flex-basis: 33.333333%;
-    @media screen and (max-width:992px){
+    @media screen and (max-width: 992px){
       margin: 20px 0;
       padding-right: 20px;
       flex-basis: 50%;
     }
-    @media screen and (max-width:640px){
+    @media screen and (max-width: 640px){
       margin: 10px 0;
       flex-basis: 100%;
+    }
+    @media screen and (max-width: 375px){
+      margin: 7px 0;
     }
   }
 
   &__btn{
-    // margin-bottom: 25px;
     margin-bottom: 70px;
     margin-top: 30px;
     width: 330px;
     height: 50px;
-    @media screen and (max-width:640px){
+    @media screen and (max-width: 640px){
       margin-top: 15px;
+    }
+    @media screen and (max-width: 375px){
+      width: 280px;
     }
   }
 
   &__btn_bg{
     width: 330px;
     transform: translateX(-330px);
+    @media screen and (max-width: 375px){
+      width: 280px;
+      transform: translateX(-280px);
+    }
   }
 
   &__btn-text{
     font-family: $Roboto;
     font-size: 14px;
     font-weight: 500;
+    @media screen and (max-width: 375px){
+      font-size: 13px;
+    }
   }
 }
 
@@ -92,6 +111,16 @@
 
   &__flex{
     align-items: center;
+  }
+
+  &__img{
+    @media screen and(max-width: 375px){
+      max-width: 45px;
+
+      &1{
+        max-width: 40px;
+      }
+    }
   }
 
   &__caption{
@@ -104,9 +133,16 @@
     @media screen and (max-width: 1200px){
       flex-basis: auto
     }
+    @media screen and(max-width: 375px){
+      padding-left: 10px;
+      font-size: 14px;
+    }
 
     &1{
       padding-left: 40px;
+      @media screen and(max-width: 375px){
+        padding-left: 13px;
+      }
     }
   }
 }

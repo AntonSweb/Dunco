@@ -4,6 +4,9 @@
   height: 40px;
   border: 2px solid white;
   border-radius: 20px;
+  @media screen and(max-width: 768px){
+    margin-top: 20px;
+  }
 
   &__text{
     display: inline-block;
@@ -26,17 +29,6 @@
   border-right: 2px solid white;
   transform: rotate(45deg);
 }
-
-// .scroll-line{
-//   position: relative;
-//   display: block;
-//   margin: auto;
-//   width: 2px;
-//   height: 5px;
-//   background: white;
-//   transform: translateX(.5px);
-//   animation: mymove 4s infinite;
-// }
 
 @keyframes mymove {
   0%   {top: 2px;}

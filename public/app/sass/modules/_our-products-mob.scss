@@ -11,7 +11,7 @@
   background-size: cover;
 
   &:hover{
-    animation: animatedBackground .8s ease-out 1;
+    animation: animatedBackground .3s ease-out 1;
     animation-fill-mode: forwards;
   }
 }
@@ -60,7 +60,7 @@
 }
 
 .slide__subtext_mob{
-  font-size: 18px;
+  font-size: 17px;
   color: white;
 }
 

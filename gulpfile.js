@@ -70,13 +70,13 @@ gulp.task('img', function(){
         .pipe(gulp.dest('public/img'))
 });
 //SPRITES
-// gulp.task('sprite', function () {
-//     var spriteData = gulp.src('public/app/img/icon/*.png').pipe(spritesmith({
-//         imgName: 'sprite-menu.png',
-//         cssName: 'sprite-menu.scss'
-//     }));
-//     return spriteData.pipe(gulp.dest('public/app/sprites/'));
-// });
+gulp.task('sprite', function () {
+    var spriteData = gulp.src('public/app/img/icon/*.png').pipe(spritesmith({
+        imgName: 'sprite-menu.png',
+        cssName: 'sprite-menu.scss'
+    }));
+    return spriteData.pipe(gulp.dest('public/app/sprites/'));
+});
 
 gulp.task('sprites-svg', function () {
     return gulp.src('public/app/img/icons-menu-svg/*.svg')

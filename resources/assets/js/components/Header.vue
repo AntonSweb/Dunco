@@ -93,13 +93,13 @@
 </script>
 
 <style lang="scss" scoped>
-    .fade-enter-active, .fade-leave-active {
+    .fade-enter-active, .fade-leave-active{
         -webkit-transition: opacity .3s;
         -moz-transition: opacity .3s;
         -o-transition: opacity .3s;
         transition: opacity .3s;
     }
-    .fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
+    .fade-enter, .fade-leave-to{
         opacity: 0
     }
 </style>

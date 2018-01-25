@@ -113,7 +113,6 @@
                          slidesPerGroup: 2
                      }
                 },
-                // centeredSlides: true,
                 loop: this.infinite,
                 loopFillGroupWithBlank: true,
                 autoplay: {
@@ -124,7 +123,6 @@
                     prevEl: '.sbp-partners',
                 },
             });
-
             sGlobal.on('slideChange', this.showOrderFunc);
         },
         methods: {
