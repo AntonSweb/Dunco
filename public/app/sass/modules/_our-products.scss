@@ -1,5 +1,4 @@
 .section__our-products{
-  //padding-top: 195px;
   height: 100vh;
 
   .container{
@@ -8,8 +7,6 @@
 }
 
 .our-products__inner{
-  //background: url("../img/our-products.jpg");
-  //background-size: contain;
   height: 100%;
 }
 
@@ -152,21 +149,22 @@
 }
 
 .slide__subtext{
-  top: 55%;
+  top: 50%;
   padding-right: 40px;
   font-family: $SFUIDispaly-Regular;
   font-size: 20px;
-  line-height: 1.5;
+  max-width: 300px;
+  line-height: 1;
   opacity: 0;
   @media screen and (max-height: 768px) {
-    top: 60%;
+    //top: 60%;
   }
   @media screen and (max-width: 1200px) {
-    top: 58%;
+    //top: 58%;
     font-size: 16px;
   }
   @media screen and (max-width: 992px) {
-    top: 55%;
+    //top: 55%;
     font-size: 16px;
   }
 }

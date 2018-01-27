@@ -4,7 +4,7 @@
     padding-top: 55px;
     height: auto;
   }
-  @media screen and(max-width: 992px){
+  @media screen and(max-width: 992px) and(min-height: 769px){
     padding-top: 150px;
   }
   @media screen and(max-width: 768px){
@@ -161,5 +161,10 @@
   @media screen and(max-width: 768px){
     display: none;
   }
-  
+
+  &_mob{
+    margin: 0 30px;
+    width: 100%;
+    max-width: 751px;
+  }
 }

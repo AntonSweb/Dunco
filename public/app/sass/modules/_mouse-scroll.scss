@@ -6,6 +6,13 @@
   border-radius: 20px;
   @media screen and(max-width: 768px){
     margin-top: 20px;
+
+    &__wrap{
+      position: absolute;
+      left: 50%;
+      bottom: 10px;
+      transform: translateX(-50%);
+    }
   }
 
   &__text{

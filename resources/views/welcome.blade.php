@@ -4,9 +4,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
         <title>Laravel</title>
-
         {{--Style--}}
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.6/css/swiper.min.css">
         <link rel="stylesheet" href="app/css/style.css">
@@ -15,6 +13,7 @@
     <div class="mask mask__thanks" role="dialog"></div>
     <div class="flex modal modal__flex modal__thanks" role="alert">
         <button class="modal__close modal__thanks-close">X</button>
+        <p class="modal__thanks-content">Спасибо за обращение в компанию «Данко»! В ближайшее время с Вами свяжется менеджер для уточнения информации.</p>
     </div>
     <div class="mask mask__order" role="dialog"></div>
     <div class="flex modal modal__flex modal__order-wrap" role="alert">

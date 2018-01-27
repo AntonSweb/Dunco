@@ -60,6 +60,8 @@
 }
 
 .slide__subtext_mob{
+  display: flex;
+  justify-content: center;
   font-size: 17px;
   color: white;
 }
@@ -73,4 +75,28 @@
   width: 100%;
   height: 100%;
   cursor: pointer;
+}
+
+.our-products__btn{
+  margin: auto;
+  width: 150px;
+  height: 40px;
+  text-decoration: none;
+
+  &:hover, &:focus{
+    text-decoration: none;
+  }
+
+  &::before, &::after{
+    width: 150px;
+  }
+
+  &_bg{
+    width: 150px;
+    transform: translateX(-150px);
+  }
+
+  &-text{
+    font-size: 14px;
+  }
 }

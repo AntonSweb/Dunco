@@ -32,12 +32,14 @@
                             <span class="g-btn__bg front-slide__btn_bg"></span>
                             <span class="g-btn__text front-slide__btn-text">Оставить заявку</span>
                         </div>
-                        <div class="scroll-down">
-                            <span class="scroll-arrow"></span>
-                            <span class="scroll-arrow scroll-arrow1"></span>
-                            <span class="scroll-arrow scroll-arrow2"></span>
+                        <div class="scroll-down__wrap">
+                            <div class="scroll-down">
+                                <span class="scroll-arrow"></span>
+                                <span class="scroll-arrow scroll-arrow1"></span>
+                                <span class="scroll-arrow scroll-arrow2"></span>
+                            </div>
+                            <span class="scroll-down__text">Scroll down</span>
                         </div>
-                        <span class="scroll-down__text">Scroll down</span>
                     </div>
                 </div>
                 </transition>
@@ -48,18 +50,10 @@
 
 <script>
     export default {
-        data: function() {
-            return {
-                // show: false,
-            };
-        },
         methods: {
             modalOpen: function (){
                 $('.mask__order').addClass('active');
             }
-        },
-        props: {
-
         }
     }
 </script>

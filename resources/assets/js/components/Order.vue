@@ -67,10 +67,10 @@
                 <div class="order__ask">
                     <h3 class="section__title order__title">У Вас остались вопросы?</h3>
                     <p class="order__subtitle order__subtitle-ask">Задайте их нам!</p>
-                    <div class="container"><p class="order__subtitle order__subtitle-ask">Далеко-далеко за словесными горами в стране гласных и согласных живут рыбные тексты. Запятой грустный пояс точках великий. Страну снова строчка запятой о.</p></div>
+                    <!--<div class="container"><p class="order__subtitle order__subtitle-ask">Далеко-далеко за словесными горами в стране гласных и согласных живут рыбные тексты. Запятой грустный пояс точках великий. Страну снова строчка запятой о.</p></div>-->
                     <div class="g-btn order__btn order__btn-ask" v-on:click="modalOpen">
                         <span class="g-btn__bg order__btn_bg"></span>
-                        <span class="g-btn__text order__btn-text">Задать вопрос бесплатно</span>
+                        <span class="g-btn__text order__btn-text">Задать вопрос</span>
                     </div>
                 </div>
                 <div class="order__contacts flex">
@@ -103,7 +103,10 @@
             const sPartners = new Swiper('.s-partners', {
                 slidesPerView: 3,
                 slidesPerGroup: 3,
-                 breakpoints: {
+                autoplay: {
+                    delay: 2000
+                },
+                breakpoints: {
                     768: {
                         slidesPerView: 1,
                         slidesPerGroup: 1
@@ -115,9 +118,6 @@
                 },
                 loop: this.infinite,
                 loopFillGroupWithBlank: true,
-                autoplay: {
-                    delay: 2000
-                },
                 navigation: {
                     nextEl: '.sbn-partners',
                     prevEl: '.sbp-partners',

@@ -6,7 +6,9 @@
                     <div data-target='1' class="slide slide--1">
                         <div class="slide-inner">
                             <div class="slide__text slide__text--1"><span>Окна</span></div>
-                            <div class="slide__text slide__text--1 slide__subtext slide__subtext--1"><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto cumque distinctio facilis fugit in nisi quisquam recusandae sequi soluta ullam?</p></div>
+                            <div class="slide__text slide__text--1 slide__subtext slide__subtext--1">
+                                <p>Благодаря широкому  ассортименту продукции и материалов, Вы всегда сможете найти то, что Вам нужно. Окна от Данко – это индивидуально продуманные конструкции, которые всегда соответствуют наивысшему качеству! Выбирать товар следует таким образом, чтобы он прослужил не один десяток лет. Немаловажную роль  играет соблюдение технологии и правил производственных процессов, а также технологии монтажа. Любое нарушение может привести к ухудшению качества.</p>
+                            </div>
                             <div class="slide__bg"></div>
                             <div class="slide__img">
                                 <div class="slide__img-wrapper"> </div>
@@ -17,7 +19,9 @@
                     <div data-target='2' class="slide slide--2">
                         <div class="slide-inner">
                             <div class="slide__text"><span>Двери</span></div>
-                            <div class="slide__text slide__text--2 slide__subtext slide__subtext--2"><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto cumque distinctio facilis fugit in nisi quisquam recusandae sequi soluta ullam?</p></div>
+                            <div class="slide__text slide__text--2 slide__subtext slide__subtext--2">
+                                <p>Двери так же важны, как и окна, когда речь идет не только о внешнем виде Вашего дома, но также о безопасности и эффективности. Мы предлагаем специализированные варианты, такие как: двустворчатые двери,  входные двери,  патио и французские двери.  Ваш выбор будет зависеть  от того,  что Вы хотите  -  принести больше света в комнату или увеличить доступное пространство.  Двери от Данко,  всегда будут  соответствовать  Вашим точным требованиям!</p>
+                            </div>
                             <div class="slide__bg"></div>
                             <div class="slide__img">
                                 <div class="slide__img-wrapper"> </div>
@@ -28,7 +32,9 @@
                     <div data-target='3' class="slide slide--3">
                         <div class="slide-inner">
                             <div class="slide__text"><span>Жалюзи</span></div>
-                            <div class="slide__text slide__text--3 slide__subtext slide__subtext--3"><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto cumque distinctio facilis fugit in nisi quisquam recusandae sequi soluta ullam?</p></div>
+                            <div class="slide__text slide__text--3 slide__subtext slide__subtext--3">
+                                <p>Для того чтобы придать интерьеру изюминку и завершенность, нет ничего лучше, чем использовать жалюзи на окнах квартиры, дома,  ресторана  или офиса. С их помощью можно подчеркнуть индивидуальный вкус, а также стилевое оформление помещения. Помимо декоративных функций, жалюзи выполняют и практические задачи: они защищают от излишнего солнечного света, не дают помещению нагреваться, а также создают уют в темное и светлое время суток.</p>
+                            </div>
                             <div class="slide__bg"></div>
                             <div class="slide__img">
                                 <div class="slide__img-wrapper"> </div>
@@ -39,7 +45,9 @@
                     <div data-target='4' class="slide slide--4">
                         <div class="slide-inner">
                             <div class="slide__text"><span>Ролеты</span></div>
-                            <div class="slide__text slide__text--4 slide__subtext slide__subtext--4"><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto cumque distinctio facilis fugit in nisi quisquam recusandae sequi soluta ullam?</p></div>
+                            <div class="slide__text slide__text--4 slide__subtext slide__subtext--4">
+                                <p>Ролеты  устанавливаются в оконные,  дверные и гаражные проемы и предназначены для защиты помещения от взлома, неблагоприятных погодных условий, шума, пыли, света и посторонних глаз. Главной характеристикой ролет  является упор на защитную функцию для проёмов. Обычно практика установки предполагает установку роллет снаружи для защиты стёкол от разбиения и непосредственно от проникновения злоумышленников.</p>
+                            </div>
                             <div class="slide__bg"></div>
                             <div class="slide__img">
                                 <div class="slide__img-wrapper"> </div>
@@ -50,7 +58,9 @@
                     <div data-target='5' class="slide slide--5">
                         <div class="slide-inner">
                             <div class="slide__text"><span>Ворота</span></div>
-                            <div class="slide__text slide__text--5 slide__subtext slide__subtext--5"><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto cumque distinctio facilis fugit in nisi quisquam recusandae sequi soluta ullam?</p></div>
+                            <div class="slide__text slide__text--5 slide__subtext slide__subtext--5">
+                                <p>Гаражные ворота от Данко, способны намного больше, чем просто выглядеть великолепно! Благодаря широкому  выбору  автоматизации и отделочных материалов, ворота можно выбрать в любой комплектации  и стиле, начиная  от  традиционного и до современного. Клиенты могут использовать дистанционное удаленное управление, дискретные настенные консоли или даже дизайнерские брелки для автоматизации открытия и закрытия их гаражных ворот.</p>
+                            </div>
                             <div class="slide__bg"></div>
                             <div class="slide__img">
                                 <div class="slide__img-wrapper"> </div>
@@ -68,7 +78,11 @@
                         <span id="0" class="slide__content_mob" v-on:click="changeText">Окна</span>
                     </div>
                     <div class="slide__text_mob slide__subtext_mob" v-show="showTextMob[0]">
-                        <p class="slide__content_mob">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto cumque distinctio facilis fugit in nisi quisquam recusandae sequi soluta ullam?</p>
+                        <!--<p class="slide__content_mob"></p>-->
+                        <a href="tel:+380688332020" class="g-btn our-products__btn">
+                            <span class="g-btn__bg our-products__btn_bg"></span>
+                            <span class="g-btn__text our-products__btn-text">Позвонить</span>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -78,7 +92,10 @@
                         <span id="1" class="slide__content_mob" v-on:click="changeText">Двери</span>
                     </div>
                     <div class="slide__text_mob slide__subtext_mob" v-show="showTextMob[1]">
-                        <p class="slide__content_mob">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto cumque distinctio facilis fugit in nisi quisquam recusandae sequi soluta ullam?</p>
+                        <a href="tel:+380688332020" class="g-btn our-products__btn">
+                            <span class="g-btn__bg our-products__btn_bg"></span>
+                            <span class="g-btn__text our-products__btn-text">Позвонить</span>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -88,7 +105,10 @@
                         <span id="2" class="slide__content_mob" v-on:click="changeText">Жалюзи</span>
                     </div>
                     <div class="slide__text_mob slide__subtext_mob" v-show="showTextMob[2]">
-                        <p class="slide__content_mob">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto cumque distinctio facilis fugit in nisi quisquam recusandae sequi soluta ullam?</p>
+                        <a href="tel:+380688332020" class="g-btn our-products__btn">
+                            <span class="g-btn__bg our-products__btn_bg"></span>
+                            <span class="g-btn__text our-products__btn-text">Позвонить</span>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -98,7 +118,10 @@
                         <span id="3" class="slide__content_mob" v-on:click="changeText">Ролеты</span>
                     </div>
                     <div class="slide__text_mob slide__subtext_mob" v-show="showTextMob[3]">
-                        <p class="slide__content_mob">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto cumque distinctio facilis fugit in nisi quisquam recusandae sequi soluta ullam?</p>
+                        <a href="tel:+380688332020" class="g-btn our-products__btn">
+                            <span class="g-btn__bg our-products__btn_bg"></span>
+                            <span class="g-btn__text our-products__btn-text">Позвонить</span>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -108,7 +131,10 @@
                         <span id="4" class="slide__content_mob" v-on:click="changeText">Ворота</span>
                     </div>
                     <div class="slide__text_mob slide__subtext_mob" v-show="showTextMob[4]">
-                        <p class="slide__content_mob">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto cumque distinctio facilis fugit in nisi quisquam recusandae sequi soluta ullam?</p>
+                        <a href="tel:+380688332020" class="g-btn our-products__btn">
+                            <span class="g-btn__bg our-products__btn_bg"></span>
+                            <span class="g-btn__text our-products__btn-text">Позвонить</span>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -187,6 +213,7 @@
                 //Animation
                 const $slide = $('.slide');
                 const $text = $('.slide__text');
+                const $title = $('.slide__text:first-of-type');
                 const $subtext = $('.slide__subtext');
                 const numSlides = 5;
                 const initialAnimDur = 5705;
@@ -213,6 +240,9 @@
 
                     _this.find('.slide__subtext').css({
                         'opacity': '1',
+                    });
+                    _this.find('.slide__text:first-of-type').css({
+                        'opacity': '0',
                     });
 
                     for(let i = target, length = $slide.length; i < length; i++) {
@@ -273,6 +303,9 @@
 
                     $subtext.css({
                         'opacity': '0',
+                    });
+                    $title.css({
+                        'opacity': '1',
                     });
                 });
 

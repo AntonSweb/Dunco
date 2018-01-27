@@ -26,7 +26,7 @@
                     <span class="menu__icon icon tel-icon-dunco-black"></span>
                     <span class="menu__caption">Вызов мастера</span>
                 </a>
-                <a href="javascript:void(0);" class="menu__item menu__item7">
+                <a href="javascript:void(0);" class="menu__item">
                     <span class="menu__icon icon mail-icon-dunco-black"></span>
                     <span class="menu__caption menu__caption7">Подписать договор</span>
                 </a>
@@ -73,6 +73,7 @@
                 if (this.windowWidth < 768){
                    return this.show = false;
                 } else {
+                    this.changeSlideFunc();
                     sGlobal.on('slideChange', this.changeSlideFunc);
                     this.show = true;
                 }
