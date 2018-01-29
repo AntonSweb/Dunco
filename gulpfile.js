@@ -20,10 +20,10 @@ var gulp         = require('gulp'),
 gulp.task('vueify', function () {
     browserify('resources/assets/js/app.js')
         .transform(vueify)
-        // .transform(
-        //     { global: true },
-        //     envify({ NODE_ENV: 'production' })
-        // )
+        .transform(
+            { global: true },
+            envify({ NODE_ENV: 'production' })
+        )
         .bundle()
         .pipe(source('build.js'))
         .pipe(gulp.dest("public/app/js/"))
@@ -31,14 +31,14 @@ gulp.task('vueify', function () {
 
 //COMPILE SASS
 gulp.task('sass', function(){
-    return gulp.src('public/app/sass/style.scss')
+    return gulp.src('public/app/sass/*.scss')
         .pipe(sass())
         .pipe(autoprefixer(['last 15 versions', '> 1%', 'ie 8', 'ie 7'], { cascade: true }))
         .pipe(gulp.dest('public/app/css'))
 });
 //MIN CSS
 gulp.task('css-min', ['sass'], function() {
-    return gulp.src('public/app/css/libs.css')
+    return gulp.src('public/app/css/*.css')
         .pipe(cssnano())
         .pipe(rename({suffix: '.min'}))
         .pipe(gulp.dest('public/dist/css'));
@@ -46,15 +46,15 @@ gulp.task('css-min', ['sass'], function() {
 //MIN SCRIPTS
 gulp.task('scripts', function(){
     return gulp.src([
-        'public/js/info.js'
+        'public/app/js/build.js'
     ])
-        .pipe(concat('info.min.js'))
+        .pipe(concat('build.min.js'))
         .pipe(uglifyjs())
-        .pipe(gulp.dest('public/js/minified'));
+        .pipe(gulp.dest('public/dist/js'));
 });
 //OPTIMIZATION IMAGES
 gulp.task('img', function(){
-    return gulp.src('public/img/**/*')
+    return gulp.src('public/app/svg/**/*')
         .pipe(imagemin({
             interlaced: true,
             progressive: true,
@@ -67,7 +67,7 @@ gulp.task('img', function(){
             ],
             une: [pngquant()]
         }))
-        .pipe(gulp.dest('public/img'))
+        .pipe(gulp.dest('public/dist/svg'))
 });
 //SPRITES
 gulp.task('sprite', function () {

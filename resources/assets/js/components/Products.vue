@@ -11,7 +11,7 @@
                             </div>
                             <div class="slide__bg"></div>
                             <div class="slide__img">
-                                <div class="slide__img-wrapper"> </div>
+                                <div class="slide__img-wrapper"></div>
                             </div>
                             <div class="slide__bg-dark"></div>
                         </div>
@@ -24,7 +24,7 @@
                             </div>
                             <div class="slide__bg"></div>
                             <div class="slide__img">
-                                <div class="slide__img-wrapper"> </div>
+                                <div class="slide__img-wrapper"></div>
                             </div>
                             <div class="slide__bg-dark"></div>
                         </div>
@@ -37,7 +37,7 @@
                             </div>
                             <div class="slide__bg"></div>
                             <div class="slide__img">
-                                <div class="slide__img-wrapper"> </div>
+                                <div class="slide__img-wrapper"></div>
                             </div>
                             <div class="slide__bg-dark"></div>
                         </div>
@@ -50,7 +50,7 @@
                             </div>
                             <div class="slide__bg"></div>
                             <div class="slide__img">
-                                <div class="slide__img-wrapper"> </div>
+                                <div class="slide__img-wrapper"></div>
                             </div>
                             <div class="slide__bg-dark"></div>
                         </div>
@@ -78,7 +78,6 @@
                         <span id="0" class="slide__content_mob" v-on:click="changeText">Окна</span>
                     </div>
                     <div class="slide__text_mob slide__subtext_mob" v-show="showTextMob[0]">
-                        <!--<p class="slide__content_mob"></p>-->
                         <a href="tel:+380688332020" class="g-btn our-products__btn">
                             <span class="g-btn__bg our-products__btn_bg"></span>
                             <span class="g-btn__text our-products__btn-text">Позвонить</span>

@@ -1,10 +1,9 @@
 <template>
     <!-- Swiper -->
     <div class="swiper-container s-front">
-        <!--<canvas id='canv' v-if="showCanv"></canvas>-->
         <div class="swiper-wrapper">
             <swiperslide class="front-slide1">
-                <canvas slot="canvas" id='canv'></canvas>
+                <!--<canvas slot="canvas" id='canv'></canvas>-->
                 <h1 slot="title" class="front-slide__title">Шум и холод вам мешают? Окна "Данко" помагают!</h1>
             </swiperslide>
             <swiperslide class="front-slide2">
@@ -20,7 +19,6 @@
                 <h2 slot="title" class="front-slide__title">Доверь свои мечты профессионалам!<br v-if="showBr" /> Больше, чем просто ролеты!</h2>
             </swiperslide>
         </div>
-
         <!-- Add Pagination -->
         <div class="swiper-pagination sp-g sp-front"></div>
         <!-- Add Arrows -->
@@ -35,10 +33,10 @@
     module.exports = {
         data: function() {
             return {
-                c: '',
-                ctx: '',
-                w: 0,
-                h: 0,
+                // c: '',
+                // ctx: '',
+                // w: 0,
+                // h: 0,
                 windowWidth: 0,
                 infinite: true,
                 sFront: {},
@@ -49,10 +47,10 @@
         mounted: function () {
             let that = this;
             this.sFront = new Swiper ('.s-front', {
-                // loop: this.infinite,
-                // autoplay: {
-                    // delay: 6000
-                // },
+                loop: this.infinite,
+                autoplay: {
+                    delay: 6000
+                },
                 pagination: {
                     el: '.sp-front',
                     clickable: true
@@ -61,15 +59,15 @@
                     nextEl: '.sbn-front',
                     prevEl: '.sbp-front'
                 },
-                on: {
-                    init: function () {
-                        that.initCanvas();
-                        that.Snowy();
-                    },
-                    slideChange: function () {
-
-                    }
-                },
+                // on: {
+                //     init: function () {
+                //         that.initCanvas();
+                //         that.Snowy();
+                //     },
+                //     slideChange: function () {
+                //
+                //     }
+                // },
                 grabCursor: true
             });
             this.$nextTick(function() {
@@ -82,9 +80,9 @@
         },
         methods: {
             getWindowWidth() {
-                this.windowWidth = document.documentElement.clientWidth;
-                this.c.width = this.w = window.innerWidth;
-                this.c.height = this.h = window.innerHeight;
+                // this.windowWidth = document.documentElement.clientWidth;
+                // this.c.width = this.w = window.innerWidth;
+                // this.c.height = this.h = window.innerHeight;
                 if (this.windowWidth < 768){
                     return this.showBr = false;
                 } else {

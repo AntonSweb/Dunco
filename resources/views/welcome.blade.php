@@ -1,13 +1,20 @@
 <!doctype html>
-<html lang="{{ app()->getLocale() }}" xmlns="http://www.w3.org/1999/xhtml">
+<html lang="ua" xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Laravel</title>
-        {{--Style--}}
+        <title>Dunco</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.6/css/swiper.min.css">
-        <link rel="stylesheet" href="app/css/style.css">
+        <link rel="stylesheet" href="dist/css/main.min.css">
+        <script>
+        /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+        (function(a){"use strict";var b=function(c,d,e){function f(o){return h.body?o():void setTimeout(function(){f(o)})}function g(){j.addEventListener&&j.removeEventListener("load",g),j.media=e||"all"}var k,h=a.document,j=h.createElement("link");if(d)k=d;else{var l=(h.body||h.getElementsByTagName("head")[0]).childNodes;k=l[l.length-1]}var m=h.styleSheets;j.rel="stylesheet",j.href=c,j.media="only x",f(function(){k.parentNode.insertBefore(j,d?k:k.nextSibling)});var n=function(o){for(var p=j.href,q=m.length;q--;)if(m[q].href===p)return o();setTimeout(function(){n(o)})};return j.addEventListener&&j.addEventListener("load",g),j.onloadcssdefined=n,n(g),j};"undefined"==typeof exports?a.loadCSS=b:exports.loadCSS=b})("undefined"==typeof global?this:global);
+        </script>
+        <script>loadCSS("dist/css/style.min.css", false, "all")</script>
+        <noscript>
+            <link rel="stylesheet" href="dist/css/style.min.css">
+        </noscript>
     </head>
     <body>
     <div class="mask mask__thanks" role="dialog"></div>
@@ -45,111 +52,43 @@
         </div>
     </div>
     <header class="header" is="vue-header"></header>
-    <section class="section__menu">{{--<vue-menu></vue-menu>--}}</section>
+    <section class="section__menu"></section>
         <div class="swiper-container s-global">
         <div class="swiper-wrapper">
             <div class="swiper-slide">
-                <section class="section__front-slider">{{--<vue-swiper></vue-swiper>--}}</section>
+                <section class="section__front-slider"></section>
             </div>
             <div class="swiper-slide">
-                <section class="section__video">{{--<vue-video></vue-video>--}}</section>
+                <section class="section__video"></section>
             </div>
             <div class="swiper-slide swiper-slide__trust">
-                <section class="section__trust">{{--<vue-trust></vue-trust>--}}</section>
+                <section class="section__trust"></section>
             </div>
             <div class="swiper-slide">
-                <section class="section__people">{{--<vue-people></vue-people>--}}</section>
+                <section class="section__people"></section>
             </div>
             <div class="swiper-slide">
-                <section class="section__our-products">{{--<vue-products></vue-products>--}}</section>
+                <section class="section__our-products"></section>
             </div>
             <div class="swiper-slide">
-                <section class="section__gallery">{{--<vue-gallery></vue-gallery>--}}</section>
+                <section class="section__gallery"></section>
             </div>
             <div class="swiper-slide">
-                <section class="section__order">{{--<vue-order></vue-order>--}}</section>
+                <section class="section__order"></section>
             </div>
         </div>
         <!-- Add Pagination -->
         <div class="swiper-pagination sp-g sp-global"></div>
     </div>
     <footer class="footer" is="vue-footer"></footer>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.6/js/swiper.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>
     <script src="//www.youtube.com/player_api"></script>
-
     <script>
-        // Initialize Swiper
-        var sGlobal = new Swiper('.s-global', {
-            direction: 'vertical',
-            slidesPerView: 1,
-            mousewheel: true,
-            pagination: {
-                el: '.sp-global',
-                clickable: true
-            },
-            parallax: true,
-            simulateTouch: false,
-            breakpoints: {
-                768: {
-                    simulateTouch: true
-                }
-            },
-            
-        });
-
-        $(function(){
-
-            //E-mail Ajax Send
-            $("#order-form").submit(function(e) {
-                e.preventDefault();
-                var order = $(this);
-                $.ajax({
-                    type: "post",
-                    url: "/order",
-                    data: order.serialize()
-                }).done(function() {
-                    order.trigger("reset");
-                    setTimeout(function() {
-                        closeModal($('.mask__order'));
-                        $('.mask__thanks').addClass('active');
-                    }, 1000);
-                });
-            });
-
-            //Global pagination
-            sGlobal.on('slideChange', function() {
-                if (sGlobal.activeIndex !== 0){
-                    $('.sp-global').show();
-                } else {
-                    $('.sp-global').hide();
-                }
-            });
-
-            //Modal form
-            function closeModal(el){
-                el.removeClass("active");
-            }
-
-            $(".modal__order-close, .mask__order").on("click", function(){
-                closeModal($('.mask__order'));
-            });
-            $(".modal__thanks-close, .mask__thanks").on("click", function(){
-                closeModal($('.mask__thanks'));
-            });
-
-            $(document).keyup(function(e) {
-                if (e.keyCode === 27 && sGlobal.activeIndex !== 1) {
-                    closeModal();
-                }
-            });
-
-            $(".form__tel").mask("+380(99) 999-99-99");
-
-        });
+        var sGlobal=new Swiper('.s-global',{direction:'vertical',slidesPerView:1,mousewheel:!0,pagination:{el:'.sp-global',clickable:!0},parallax:!0,simulateTouch:!1,breakpoints:{768:{simulateTouch:!0}},});$(function(){$("#order-form").submit(function(e){e.preventDefault();var order=$(this);$.ajax({type:"post",url:"/order",data:order.serialize()}).done(function(){order.trigger("reset");setTimeout(function(){closeModal($('.mask__order'));$('.mask__thanks').addClass('active')},1000)})});sGlobal.on('slideChange',function(){if(sGlobal.activeIndex!==0){$('.sp-global').show()}else{$('.sp-global').hide()}});function closeModal(el){el.removeClass("active")}
+            $(".modal__order-close, .mask__order").on("click",function(){closeModal($('.mask__order'))});$(".modal__thanks-close, .mask__thanks").on("click",function(){closeModal($('.mask__thanks'))});$(document).keyup(function(e){if(e.keyCode===27&&sGlobal.activeIndex!==1){closeModal()}});$(".form__tel").mask("+380(99) 999-99-99")})
     </script>
-    <script src="app/js/build.js"></script>
+    <script src="dist/js/build.min.js"></script>
     </body>
 </html>

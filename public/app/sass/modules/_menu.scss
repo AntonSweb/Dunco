@@ -36,16 +36,18 @@
 
   &__item{
     display: block;
-    flex-basis: 14.285%;
+    width: 14.285%;
     text-align: center;
     text-decoration: none;
 
     &:hover{
-      //text-decoration: none;
 
       .menu__caption{
         text-decoration: underline;
       }
+    }
+    &:focus{
+      outline: none;
     }
 
     &:hover{

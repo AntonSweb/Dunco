@@ -2,7 +2,7 @@
     <header class="header">
         <div class="container header__container">
             <div class="flex header__flex">
-                <a href="/" class="header__logo"><img src="app/img/dunco-logo.png" alt="Логотип компании Данко"></a>
+                <a href="/" class="header__logo"><img src="dist/img/dunco-logo.png" alt="Логотип компании Данко"></a>
                 <nav class="nav">
                     <a href="/" class="nav__link nav__link-home">Главная</a>
                     <a id="1" class="nav__link nav__link-company" v-on:click.prevent="changeSlideTo">О компании</a>
@@ -20,7 +20,7 @@
         <transition name="fade">
             <div class="menu-mob flex menu-mob-g__flex" v-show="showMenu">
                 <div class="menu-mob__top">
-                    <img src="app/img/dunco-logo_big.png" alt="Логотип компании Дунко" class="menu-mob__logo">
+                    <img src="dist/img/dunco-logo_big.png" alt="Логотип компании Дунко" class="menu-mob__logo">
                     <span class="menu-mob__caption">компетенции, инновации, безопасность</span>
                 </div>
                 <div class="flex menu-mob__flex">

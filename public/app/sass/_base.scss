@@ -106,7 +106,9 @@ body{
     transition: color .3s ease-in-out;
   }
 }
-
+section{
+  box-sizing: border-box;
+}
 .section__title{
   font-family: $Roboto;
   font-weight: 300;
@@ -114,9 +116,3 @@ body{
   width: 100%;
   text-align: center;
 }
-
-
-//.animated{
-//  animation-duration: 1s;
-//  animation-fill-mode: both;
-//}

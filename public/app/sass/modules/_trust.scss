@@ -33,11 +33,11 @@
   @media screen and(max-height: 768px){
     margin: 30px 0;
   }
-  @media screen and(max-width: 768px){
-    margin: 10px 0;
-  }
   @media screen and(max-height: 768px) and(max-width: 992px){
     margin: 10px 0;
+  }
+  @media screen and(max-width: 768px){
+    margin-top: 5px;
   }
 }
 .trust{

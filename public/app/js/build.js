@@ -1,191 +1,5 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-// shim for using process in browser
-var process = module.exports = {};
-
-// cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
-
-var cachedSetTimeout;
-var cachedClearTimeout;
-
-function defaultSetTimout() {
-    throw new Error('setTimeout has not been defined');
-}
-function defaultClearTimeout () {
-    throw new Error('clearTimeout has not been defined');
-}
-(function () {
-    try {
-        if (typeof setTimeout === 'function') {
-            cachedSetTimeout = setTimeout;
-        } else {
-            cachedSetTimeout = defaultSetTimout;
-        }
-    } catch (e) {
-        cachedSetTimeout = defaultSetTimout;
-    }
-    try {
-        if (typeof clearTimeout === 'function') {
-            cachedClearTimeout = clearTimeout;
-        } else {
-            cachedClearTimeout = defaultClearTimeout;
-        }
-    } catch (e) {
-        cachedClearTimeout = defaultClearTimeout;
-    }
-} ())
-function runTimeout(fun) {
-    if (cachedSetTimeout === setTimeout) {
-        //normal enviroments in sane situations
-        return setTimeout(fun, 0);
-    }
-    // if setTimeout wasn't available but was latter defined
-    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-        cachedSetTimeout = setTimeout;
-        return setTimeout(fun, 0);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedSetTimeout(fun, 0);
-    } catch(e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-            return cachedSetTimeout.call(null, fun, 0);
-        } catch(e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-            return cachedSetTimeout.call(this, fun, 0);
-        }
-    }
-
-
-}
-function runClearTimeout(marker) {
-    if (cachedClearTimeout === clearTimeout) {
-        //normal enviroments in sane situations
-        return clearTimeout(marker);
-    }
-    // if clearTimeout wasn't available but was latter defined
-    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-        cachedClearTimeout = clearTimeout;
-        return clearTimeout(marker);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedClearTimeout(marker);
-    } catch (e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-            return cachedClearTimeout.call(null, marker);
-        } catch (e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-            return cachedClearTimeout.call(this, marker);
-        }
-    }
-
-
-
-}
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-    if (!draining || !currentQueue) {
-        return;
-    }
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-    } else {
-        queueIndex = -1;
-    }
-    if (queue.length) {
-        drainQueue();
-    }
-}
-
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    var timeout = runTimeout(cleanUpNextTick);
-    draining = true;
-
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
-            }
-        }
-        queueIndex = -1;
-        len = queue.length;
-    }
-    currentQueue = null;
-    draining = false;
-    runClearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-        }
-    }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
-        runTimeout(drainQueue);
-    }
-};
-
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-process.prependListener = noop;
-process.prependOnceListener = noop;
-
-process.listeners = function (name) { return [] }
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
-
-},{}],2:[function(require,module,exports){
-(function (process,global){
+(function (global){
 /*!
  * Vue.js v2.5.13
  * (c) 2014-2017 Evan You
@@ -539,12 +353,12 @@ var config = ({
   /**
    * Show production mode tip message on boot?
    */
-  productionTip: process.env.NODE_ENV !== 'production',
+  productionTip: "production" !== 'production',
 
   /**
    * Whether to enable devtools
    */
-  devtools: process.env.NODE_ENV !== 'production',
+  devtools: "production" !== 'production',
 
   /**
    * Whether to record perf
@@ -748,7 +562,7 @@ var tip = noop;
 var generateComponentTrace = (noop); // work around flow check
 var formatComponentName = (noop);
 
-if (process.env.NODE_ENV !== 'production') {
+if ("production" !== 'production') {
   var hasConsole = typeof console !== 'undefined';
   var classifyRE = /(?:^|[-_])(\w)/g;
   var classify = function (str) { return str
@@ -1183,7 +997,7 @@ function defineReactive (
         return
       }
       /* eslint-enable no-self-compare */
-      if (process.env.NODE_ENV !== 'production' && customSetter) {
+      if ("production" !== 'production' && customSetter) {
         customSetter();
       }
       if (setter) {
@@ -1214,7 +1028,7 @@ function set (target, key, val) {
   }
   var ob = (target).__ob__;
   if (target._isVue || (ob && ob.vmCount)) {
-    process.env.NODE_ENV !== 'production' && warn(
+    "production" !== 'production' && warn(
       'Avoid adding reactive properties to a Vue instance or its root $data ' +
       'at runtime - declare it upfront in the data option.'
     );
@@ -1239,7 +1053,7 @@ function del (target, key) {
   }
   var ob = (target).__ob__;
   if (target._isVue || (ob && ob.vmCount)) {
-    process.env.NODE_ENV !== 'production' && warn(
+    "production" !== 'production' && warn(
       'Avoid deleting properties on a Vue instance or its root $data ' +
       '- just set it to null.'
     );
@@ -1281,7 +1095,7 @@ var strats = config.optionMergeStrategies;
 /**
  * Options with restrictions
  */
-if (process.env.NODE_ENV !== 'production') {
+if ("production" !== 'production') {
   strats.el = strats.propsData = function (parent, child, vm, key) {
     if (!vm) {
       warn(
@@ -1365,7 +1179,7 @@ strats.data = function (
 ) {
   if (!vm) {
     if (childVal && typeof childVal !== 'function') {
-      process.env.NODE_ENV !== 'production' && warn(
+      "production" !== 'production' && warn(
         'The "data" option should be a function ' +
         'that returns a per-instance value in component ' +
         'definitions.',
@@ -1415,7 +1229,7 @@ function mergeAssets (
 ) {
   var res = Object.create(parentVal || null);
   if (childVal) {
-    process.env.NODE_ENV !== 'production' && assertObjectType(key, childVal, vm);
+    "production" !== 'production' && assertObjectType(key, childVal, vm);
     return extend(res, childVal)
   } else {
     return res
@@ -1443,7 +1257,7 @@ strats.watch = function (
   if (childVal === nativeWatch) { childVal = undefined; }
   /* istanbul ignore if */
   if (!childVal) { return Object.create(parentVal || null) }
-  if (process.env.NODE_ENV !== 'production') {
+  if ("production" !== 'production') {
     assertObjectType(key, childVal, vm);
   }
   if (!parentVal) { return childVal }
@@ -1474,7 +1288,7 @@ strats.computed = function (
   vm,
   key
 ) {
-  if (childVal && process.env.NODE_ENV !== 'production') {
+  if (childVal && "production" !== 'production') {
     assertObjectType(key, childVal, vm);
   }
   if (!parentVal) { return childVal }
@@ -1535,7 +1349,7 @@ function normalizeProps (options, vm) {
       if (typeof val === 'string') {
         name = camelize(val);
         res[name] = { type: null };
-      } else if (process.env.NODE_ENV !== 'production') {
+      } else if ("production" !== 'production') {
         warn('props must be strings when using array syntax.');
       }
     }
@@ -1547,7 +1361,7 @@ function normalizeProps (options, vm) {
         ? val
         : { type: val };
     }
-  } else if (process.env.NODE_ENV !== 'production') {
+  } else if ("production" !== 'production') {
     warn(
       "Invalid value for option \"props\": expected an Array or an Object, " +
       "but got " + (toRawType(props)) + ".",
@@ -1575,7 +1389,7 @@ function normalizeInject (options, vm) {
         ? extend({ from: key }, val)
         : { from: val };
     }
-  } else if (process.env.NODE_ENV !== 'production') {
+  } else if ("production" !== 'production') {
     warn(
       "Invalid value for option \"inject\": expected an Array or an Object, " +
       "but got " + (toRawType(inject)) + ".",
@@ -1618,7 +1432,7 @@ function mergeOptions (
   child,
   vm
 ) {
-  if (process.env.NODE_ENV !== 'production') {
+  if ("production" !== 'production') {
     checkComponents(child);
   }
 
@@ -1679,7 +1493,7 @@ function resolveAsset (
   if (hasOwn(assets, PascalCaseId)) { return assets[PascalCaseId] }
   // fallback to prototype chain
   var res = assets[id] || assets[camelizedId] || assets[PascalCaseId];
-  if (process.env.NODE_ENV !== 'production' && warnMissing && !res) {
+  if ("production" !== 'production' && warnMissing && !res) {
     warn(
       'Failed to resolve ' + type.slice(0, -1) + ': ' + id,
       options
@@ -1718,7 +1532,7 @@ function validateProp (
     observerState.shouldConvert = prevShouldConvert;
   }
   if (
-    process.env.NODE_ENV !== 'production' &&
+    "production" !== 'production' &&
     // skip validation for weex recycle-list child component props
     !(false && isObject(value) && ('@binding' in value))
   ) {
@@ -1737,7 +1551,7 @@ function getPropDefaultValue (vm, prop, key) {
   }
   var def = prop.default;
   // warn against non-factory defaults for Object & Array
-  if (process.env.NODE_ENV !== 'production' && isObject(def)) {
+  if ("production" !== 'production' && isObject(def)) {
     warn(
       'Invalid default value for prop "' + key + '": ' +
       'Props with type Object/Array must use a factory function ' +
@@ -1895,7 +1709,7 @@ function globalHandleError (err, vm, info) {
 }
 
 function logError (err, vm, info) {
-  if (process.env.NODE_ENV !== 'production') {
+  if ("production" !== 'production') {
     warn(("Error in " + info + ": \"" + (err.toString()) + "\""), vm);
   }
   /* istanbul ignore else */
@@ -2026,7 +1840,7 @@ function nextTick (cb, ctx) {
 
 var initProxy;
 
-if (process.env.NODE_ENV !== 'production') {
+if ("production" !== 'production') {
   var allowedGlobals = makeMap(
     'Infinity,undefined,NaN,isFinite,isNaN,' +
     'parseFloat,parseInt,decodeURI,decodeURIComponent,encodeURI,encodeURIComponent,' +
@@ -2138,7 +1952,7 @@ function _traverse (val, seen) {
 var mark;
 var measure;
 
-if (process.env.NODE_ENV !== 'production') {
+if ("production" !== 'production') {
   var perf = inBrowser && window.performance;
   /* istanbul ignore if */
   if (
@@ -2208,7 +2022,7 @@ function updateListeners (
     event = normalizeEvent(name);
     /* istanbul ignore if */
     if (isUndef(cur)) {
-      process.env.NODE_ENV !== 'production' && warn(
+      "production" !== 'production' && warn(
         "Invalid handler for event \"" + (event.name) + "\": got " + String(cur),
         vm
       );
@@ -2285,7 +2099,7 @@ function extractPropsFromVNodeData (
   if (isDef(attrs) || isDef(props)) {
     for (var key in propOptions) {
       var altKey = hyphenate(key);
-      if (process.env.NODE_ENV !== 'production') {
+      if ("production" !== 'production') {
         var keyInLowerCase = key.toLowerCase();
         if (
           key !== keyInLowerCase &&
@@ -2488,7 +2302,7 @@ function resolveAsyncComponent (
     });
 
     var reject = once(function (reason) {
-      process.env.NODE_ENV !== 'production' && warn(
+      "production" !== 'production' && warn(
         "Failed to resolve async component: " + (String(factory)) +
         (reason ? ("\nReason: " + reason) : '')
       );
@@ -2531,7 +2345,7 @@ function resolveAsyncComponent (
           setTimeout(function () {
             if (isUndef(factory.resolved)) {
               reject(
-                process.env.NODE_ENV !== 'production'
+                "production" !== 'production'
                   ? ("timeout (" + (res.timeout) + "ms)")
                   : null
               );
@@ -2680,7 +2494,7 @@ function eventsMixin (Vue) {
 
   Vue.prototype.$emit = function (event) {
     var vm = this;
-    if (process.env.NODE_ENV !== 'production') {
+    if ("production" !== 'production') {
       var lowerCaseEvent = event.toLowerCase();
       if (lowerCaseEvent !== event && vm._events[lowerCaseEvent]) {
         tip(
@@ -2907,7 +2721,7 @@ function mountComponent (
   vm.$el = el;
   if (!vm.$options.render) {
     vm.$options.render = createEmptyVNode;
-    if (process.env.NODE_ENV !== 'production') {
+    if ("production" !== 'production') {
       /* istanbul ignore if */
       if ((vm.$options.template && vm.$options.template.charAt(0) !== '#') ||
         vm.$options.el || el) {
@@ -2929,7 +2743,7 @@ function mountComponent (
 
   var updateComponent;
   /* istanbul ignore if */
-  if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
+  if ("production" !== 'production' && config.performance && mark) {
     updateComponent = function () {
       var name = vm._name;
       var id = vm._uid;
@@ -2974,7 +2788,7 @@ function updateChildComponent (
   parentVnode,
   renderChildren
 ) {
-  if (process.env.NODE_ENV !== 'production') {
+  if ("production" !== 'production') {
     isUpdatingChildComponent = true;
   }
 
@@ -3027,7 +2841,7 @@ function updateChildComponent (
     vm.$forceUpdate();
   }
 
-  if (process.env.NODE_ENV !== 'production') {
+  if ("production" !== 'production') {
     isUpdatingChildComponent = false;
   }
 }
@@ -3108,7 +2922,7 @@ var index = 0;
 function resetSchedulerState () {
   index = queue.length = activatedChildren.length = 0;
   has = {};
-  if (process.env.NODE_ENV !== 'production') {
+  if ("production" !== 'production') {
     circular = {};
   }
   waiting = flushing = false;
@@ -3139,7 +2953,7 @@ function flushSchedulerQueue () {
     has[id] = null;
     watcher.run();
     // in dev build, check and stop circular updates.
-    if (process.env.NODE_ENV !== 'production' && has[id] != null) {
+    if ("production" !== 'production' && has[id] != null) {
       circular[id] = (circular[id] || 0) + 1;
       if (circular[id] > MAX_UPDATE_COUNT) {
         warn(
@@ -3267,7 +3081,7 @@ var Watcher = function Watcher (
   this.newDeps = [];
   this.depIds = new _Set();
   this.newDepIds = new _Set();
-  this.expression = process.env.NODE_ENV !== 'production'
+  this.expression = "production" !== 'production'
     ? expOrFn.toString()
     : '';
   // parse expression for getter
@@ -3277,7 +3091,7 @@ var Watcher = function Watcher (
     this.getter = parsePath(expOrFn);
     if (!this.getter) {
       this.getter = function () {};
-      process.env.NODE_ENV !== 'production' && warn(
+      "production" !== 'production' && warn(
         "Failed watching path: \"" + expOrFn + "\" " +
         'Watcher only accepts simple dot-delimited paths. ' +
         'For full control, use a function instead.',
@@ -3490,7 +3304,7 @@ function initProps (vm, propsOptions) {
     keys.push(key);
     var value = validateProp(key, propsOptions, propsData, vm);
     /* istanbul ignore else */
-    if (process.env.NODE_ENV !== 'production') {
+    if ("production" !== 'production') {
       var hyphenatedKey = hyphenate(key);
       if (isReservedAttribute(hyphenatedKey) ||
           config.isReservedAttr(hyphenatedKey)) {
@@ -3532,7 +3346,7 @@ function initData (vm) {
     : data || {};
   if (!isPlainObject(data)) {
     data = {};
-    process.env.NODE_ENV !== 'production' && warn(
+    "production" !== 'production' && warn(
       'data functions should return an object:\n' +
       'https://vuejs.org/v2/guide/components.html#data-Must-Be-a-Function',
       vm
@@ -3545,7 +3359,7 @@ function initData (vm) {
   var i = keys.length;
   while (i--) {
     var key = keys[i];
-    if (process.env.NODE_ENV !== 'production') {
+    if ("production" !== 'production') {
       if (methods && hasOwn(methods, key)) {
         warn(
           ("Method \"" + key + "\" has already been defined as a data property."),
@@ -3554,7 +3368,7 @@ function initData (vm) {
       }
     }
     if (props && hasOwn(props, key)) {
-      process.env.NODE_ENV !== 'production' && warn(
+      "production" !== 'production' && warn(
         "The data property \"" + key + "\" is already declared as a prop. " +
         "Use prop default value instead.",
         vm
@@ -3587,7 +3401,7 @@ function initComputed (vm, computed) {
   for (var key in computed) {
     var userDef = computed[key];
     var getter = typeof userDef === 'function' ? userDef : userDef.get;
-    if (process.env.NODE_ENV !== 'production' && getter == null) {
+    if ("production" !== 'production' && getter == null) {
       warn(
         ("Getter is missing for computed property \"" + key + "\"."),
         vm
@@ -3609,7 +3423,7 @@ function initComputed (vm, computed) {
     // at instantiation here.
     if (!(key in vm)) {
       defineComputed(vm, key, userDef);
-    } else if (process.env.NODE_ENV !== 'production') {
+    } else if ("production" !== 'production') {
       if (key in vm.$data) {
         warn(("The computed property \"" + key + "\" is already defined in data."), vm);
       } else if (vm.$options.props && key in vm.$options.props) {
@@ -3640,7 +3454,7 @@ function defineComputed (
       ? userDef.set
       : noop;
   }
-  if (process.env.NODE_ENV !== 'production' &&
+  if ("production" !== 'production' &&
       sharedPropertyDefinition.set === noop) {
     sharedPropertyDefinition.set = function () {
       warn(
@@ -3670,7 +3484,7 @@ function createComputedGetter (key) {
 function initMethods (vm, methods) {
   var props = vm.$options.props;
   for (var key in methods) {
-    if (process.env.NODE_ENV !== 'production') {
+    if ("production" !== 'production') {
       if (methods[key] == null) {
         warn(
           "Method \"" + key + "\" has an undefined value in the component definition. " +
@@ -3732,7 +3546,7 @@ function stateMixin (Vue) {
   dataDef.get = function () { return this._data };
   var propsDef = {};
   propsDef.get = function () { return this._props };
-  if (process.env.NODE_ENV !== 'production') {
+  if ("production" !== 'production') {
     dataDef.set = function (newData) {
       warn(
         'Avoid replacing instance root $data. ' +
@@ -3788,7 +3602,7 @@ function initInjections (vm) {
     observerState.shouldConvert = false;
     Object.keys(result).forEach(function (key) {
       /* istanbul ignore else */
-      if (process.env.NODE_ENV !== 'production') {
+      if ("production" !== 'production') {
         defineReactive(vm, key, result[key], function () {
           warn(
             "Avoid mutating an injected value directly since the changes will be " +
@@ -3833,7 +3647,7 @@ function resolveInject (inject, vm) {
           result[key] = typeof provideDefault === 'function'
             ? provideDefault.call(vm)
             : provideDefault;
-        } else if (process.env.NODE_ENV !== 'production') {
+        } else if ("production" !== 'production') {
           warn(("Injection \"" + key + "\" not found"), vm);
         }
       }
@@ -3892,7 +3706,7 @@ function renderSlot (
   if (scopedSlotFn) { // scoped slot
     props = props || {};
     if (bindObject) {
-      if (process.env.NODE_ENV !== 'production' && !isObject(bindObject)) {
+      if ("production" !== 'production' && !isObject(bindObject)) {
         warn(
           'slot v-bind without argument expects an Object',
           this
@@ -3905,7 +3719,7 @@ function renderSlot (
     var slotNodes = this.$slots[name];
     // warn duplicate slot usage
     if (slotNodes) {
-      if (process.env.NODE_ENV !== 'production' && slotNodes._rendered) {
+      if ("production" !== 'production' && slotNodes._rendered) {
         warn(
           "Duplicate presence of slot \"" + name + "\" found in the same render tree " +
           "- this will likely cause render errors.",
@@ -3973,7 +3787,7 @@ function bindObjectProps (
 ) {
   if (value) {
     if (!isObject(value)) {
-      process.env.NODE_ENV !== 'production' && warn(
+      "production" !== 'production' && warn(
         'v-bind without argument expects an Object or Array value',
         this
       );
@@ -4081,7 +3895,7 @@ function markStaticNode (node, key, isOnce) {
 function bindObjectListeners (data, value) {
   if (value) {
     if (!isPlainObject(value)) {
-      process.env.NODE_ENV !== 'production' && warn(
+      "production" !== 'production' && warn(
         'v-on without argument expects an Object value',
         this
       );
@@ -4324,7 +4138,7 @@ function createComponent (
   // if at this stage it's not a constructor or an async component factory,
   // reject.
   if (typeof Ctor !== 'function') {
-    if (process.env.NODE_ENV !== 'production') {
+    if ("production" !== 'production') {
       warn(("Invalid Component definition: " + (String(Ctor))), context);
     }
     return
@@ -4494,7 +4308,7 @@ function _createElement (
   normalizationType
 ) {
   if (isDef(data) && isDef((data).__ob__)) {
-    process.env.NODE_ENV !== 'production' && warn(
+    "production" !== 'production' && warn(
       "Avoid using observed data object as vnode data: " + (JSON.stringify(data)) + "\n" +
       'Always create fresh vnode data objects in each render!',
       context
@@ -4510,7 +4324,7 @@ function _createElement (
     return createEmptyVNode()
   }
   // warn against non-primitive key
-  if (process.env.NODE_ENV !== 'production' &&
+  if ("production" !== 'production' &&
     isDef(data) && isDef(data.key) && !isPrimitive(data.key)
   ) {
     {
@@ -4609,7 +4423,7 @@ function initRender (vm) {
   var parentData = parentVnode && parentVnode.data;
 
   /* istanbul ignore else */
-  if (process.env.NODE_ENV !== 'production') {
+  if ("production" !== 'production') {
     defineReactive(vm, '$attrs', parentData && parentData.attrs || emptyObject, function () {
       !isUpdatingChildComponent && warn("$attrs is readonly.", vm);
     }, true);
@@ -4663,7 +4477,7 @@ function renderMixin (Vue) {
       // return error render result,
       // or previous vnode to prevent render error causing blank component
       /* istanbul ignore else */
-      if (process.env.NODE_ENV !== 'production') {
+      if ("production" !== 'production') {
         if (vm.$options.renderError) {
           try {
             vnode = vm.$options.renderError.call(vm._renderProxy, vm.$createElement, e);
@@ -4680,7 +4494,7 @@ function renderMixin (Vue) {
     }
     // return empty vnode in case the render function errored out
     if (!(vnode instanceof VNode)) {
-      if (process.env.NODE_ENV !== 'production' && Array.isArray(vnode)) {
+      if ("production" !== 'production' && Array.isArray(vnode)) {
         warn(
           'Multiple root nodes returned from render function. Render function ' +
           'should return a single root node.',
@@ -4707,7 +4521,7 @@ function initMixin (Vue) {
 
     var startTag, endTag;
     /* istanbul ignore if */
-    if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
+    if ("production" !== 'production' && config.performance && mark) {
       startTag = "vue-perf-start:" + (vm._uid);
       endTag = "vue-perf-end:" + (vm._uid);
       mark(startTag);
@@ -4729,7 +4543,7 @@ function initMixin (Vue) {
       );
     }
     /* istanbul ignore else */
-    if (process.env.NODE_ENV !== 'production') {
+    if ("production" !== 'production') {
       initProxy(vm);
     } else {
       vm._renderProxy = vm;
@@ -4746,7 +4560,7 @@ function initMixin (Vue) {
     callHook(vm, 'created');
 
     /* istanbul ignore if */
-    if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
+    if ("production" !== 'production' && config.performance && mark) {
       vm._name = formatComponentName(vm, false);
       mark(endTag);
       measure(("vue " + (vm._name) + " init"), startTag, endTag);
@@ -4837,7 +4651,7 @@ function dedupe (latest, extended, sealed) {
 }
 
 function Vue$3 (options) {
-  if (process.env.NODE_ENV !== 'production' &&
+  if ("production" !== 'production' &&
     !(this instanceof Vue$3)
   ) {
     warn('Vue is a constructor and should be called with the `new` keyword');
@@ -4906,7 +4720,7 @@ function initExtend (Vue) {
     }
 
     var name = extendOptions.name || Super.options.name;
-    if (process.env.NODE_ENV !== 'production' && name) {
+    if ("production" !== 'production' && name) {
       validateComponentName(name);
     }
 
@@ -4989,7 +4803,7 @@ function initAssetRegisters (Vue) {
         return this.options[type + 's'][id]
       } else {
         /* istanbul ignore if */
-        if (process.env.NODE_ENV !== 'production' && type === 'component') {
+        if ("production" !== 'production' && type === 'component') {
           validateComponentName(id);
         }
         if (type === 'component' && isPlainObject(definition)) {
@@ -5144,7 +4958,7 @@ function initGlobalAPI (Vue) {
   // config
   var configDef = {};
   configDef.get = function () { return config; };
-  if (process.env.NODE_ENV !== 'production') {
+  if ("production" !== 'production') {
     configDef.set = function () {
       warn(
         'Do not replace the Vue.config object, set individual fields instead.'
@@ -5406,7 +5220,7 @@ function query (el) {
   if (typeof el === 'string') {
     var selected = document.querySelector(el);
     if (!selected) {
-      process.env.NODE_ENV !== 'production' && warn(
+      "production" !== 'production' && warn(
         'Cannot find element: ' + el
       );
       return document.createElement('div')
@@ -5651,7 +5465,7 @@ function createPatchFunction (backend) {
     var children = vnode.children;
     var tag = vnode.tag;
     if (isDef(tag)) {
-      if (process.env.NODE_ENV !== 'production') {
+      if ("production" !== 'production') {
         if (data && data.pre) {
           creatingElmInVPre++;
         }
@@ -5678,7 +5492,7 @@ function createPatchFunction (backend) {
         insert(parentElm, vnode.elm, refElm);
       }
 
-      if (process.env.NODE_ENV !== 'production' && data && data.pre) {
+      if ("production" !== 'production' && data && data.pre) {
         creatingElmInVPre--;
       }
     } else if (isTrue(vnode.isComment)) {
@@ -5765,7 +5579,7 @@ function createPatchFunction (backend) {
 
   function createChildren (vnode, children, insertedVnodeQueue) {
     if (Array.isArray(children)) {
-      if (process.env.NODE_ENV !== 'production') {
+      if ("production" !== 'production') {
         checkDuplicateKeys(children);
       }
       for (var i = 0; i < children.length; ++i) {
@@ -5899,7 +5713,7 @@ function createPatchFunction (backend) {
     // during leaving transitions
     var canMove = !removeOnly;
 
-    if (process.env.NODE_ENV !== 'production') {
+    if ("production" !== 'production') {
       checkDuplicateKeys(newCh);
     }
 
@@ -6073,7 +5887,7 @@ function createPatchFunction (backend) {
       return true
     }
     // assert node match
-    if (process.env.NODE_ENV !== 'production') {
+    if ("production" !== 'production') {
       if (!assertNodeMatch(elm, vnode, inVPre)) {
         return false
       }
@@ -6096,7 +5910,7 @@ function createPatchFunction (backend) {
           if (isDef(i = data) && isDef(i = i.domProps) && isDef(i = i.innerHTML)) {
             if (i !== elm.innerHTML) {
               /* istanbul ignore if */
-              if (process.env.NODE_ENV !== 'production' &&
+              if ("production" !== 'production' &&
                 typeof console !== 'undefined' &&
                 !hydrationBailed
               ) {
@@ -6122,7 +5936,7 @@ function createPatchFunction (backend) {
             // longer than the virtual children list.
             if (!childrenMatch || childNode) {
               /* istanbul ignore if */
-              if (process.env.NODE_ENV !== 'production' &&
+              if ("production" !== 'production' &&
                 typeof console !== 'undefined' &&
                 !hydrationBailed
               ) {
@@ -6197,7 +6011,7 @@ function createPatchFunction (backend) {
             if (hydrate(oldVnode, vnode, insertedVnodeQueue)) {
               invokeInsertHook(vnode, insertedVnodeQueue, true);
               return oldVnode
-            } else if (process.env.NODE_ENV !== 'production') {
+            } else if ("production" !== 'production') {
               warn(
                 'The client-side rendered virtual DOM tree is not matching ' +
                 'server-rendered content. This is likely caused by incorrect ' +
@@ -7235,7 +7049,7 @@ function enter (vnode, toggleDisplay) {
       : duration
   );
 
-  if (process.env.NODE_ENV !== 'production' && explicitEnterDuration != null) {
+  if ("production" !== 'production' && explicitEnterDuration != null) {
     checkDuration(explicitEnterDuration, 'enter', vnode);
   }
 
@@ -7341,7 +7155,7 @@ function leave (vnode, rm) {
       : duration
   );
 
-  if (process.env.NODE_ENV !== 'production' && isDef(explicitLeaveDuration)) {
+  if ("production" !== 'production' && isDef(explicitLeaveDuration)) {
     checkDuration(explicitLeaveDuration, 'leave', vnode);
   }
 
@@ -7568,7 +7382,7 @@ function actuallySetSelected (el, binding, vm) {
   var value = binding.value;
   var isMultiple = el.multiple;
   if (isMultiple && !Array.isArray(value)) {
-    process.env.NODE_ENV !== 'production' && warn(
+    "production" !== 'production' && warn(
       "<select multiple v-model=\"" + (binding.expression) + "\"> " +
       "expects an Array value for its binding, but got " + (Object.prototype.toString.call(value).slice(8, -1)),
       vm
@@ -7784,7 +7598,7 @@ var Transition = {
     }
 
     // warn multiple elements
-    if (process.env.NODE_ENV !== 'production' && children.length > 1) {
+    if ("production" !== 'production' && children.length > 1) {
       warn(
         '<transition> can only be used on a single element. Use ' +
         '<transition-group> for lists.',
@@ -7795,7 +7609,7 @@ var Transition = {
     var mode = this.mode;
 
     // warn invalid mode
-    if (process.env.NODE_ENV !== 'production' &&
+    if ("production" !== 'production' &&
       mode && mode !== 'in-out' && mode !== 'out-in'
     ) {
       warn(
@@ -7920,7 +7734,7 @@ var TransitionGroup = {
           children.push(c);
           map[c.key] = c
           ;(c.data || (c.data = {})).transition = transitionData;
-        } else if (process.env.NODE_ENV !== 'production') {
+        } else if ("production" !== 'production') {
           var opts = c.componentOptions;
           var name = opts ? (opts.Ctor.options.name || opts.tag || '') : c.tag;
           warn(("<transition-group> children must be keyed: <" + name + ">"));
@@ -8087,14 +7901,14 @@ Vue$3.nextTick(function () {
   if (config.devtools) {
     if (devtools) {
       devtools.emit('init', Vue$3);
-    } else if (process.env.NODE_ENV !== 'production' && isChrome) {
+    } else if ("production" !== 'production' && isChrome) {
       console[console.info ? 'info' : 'log'](
         'Download the Vue Devtools extension for a better development experience:\n' +
         'https://github.com/vuejs/vue-devtools'
       );
     }
   }
-  if (process.env.NODE_ENV !== 'production' &&
+  if ("production" !== 'production' &&
     config.productionTip !== false &&
     inBrowser && typeof console !== 'undefined'
   ) {
@@ -8110,8 +7924,8 @@ Vue$3.nextTick(function () {
 
 module.exports = Vue$3;
 
-}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"_process":1}],3:[function(require,module,exports){
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],2:[function(require,module,exports){
 var inserted = exports.cache = {}
 
 function noop () {}
@@ -8136,7 +7950,7 @@ exports.insert = function (css) {
   }
 }
 
-},{}],4:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 var Vue // late bind
 var version
 var map = (window.__VUE_HOT_MAP__ = Object.create(null))
@@ -8366,7 +8180,7 @@ exports.reload = tryWrap(function (id, options) {
   })
 })
 
-},{}],5:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -8442,7 +8256,7 @@ new Vue({
 
 
 
-},{"./components/Footer.vue":6,"./components/Gallery.vue":7,"./components/Header.vue":8,"./components/Menu.vue":9,"./components/Order.vue":10,"./components/People.vue":11,"./components/Products.vue":12,"./components/Swiper.vue":13,"./components/Trust.vue":14,"./components/Video.vue":15,"vue":2}],6:[function(require,module,exports){
+},{"./components/Footer.vue":5,"./components/Gallery.vue":6,"./components/Header.vue":7,"./components/Menu.vue":8,"./components/Order.vue":9,"./components/People.vue":10,"./components/Products.vue":11,"./components/Swiper.vue":12,"./components/Trust.vue":13,"./components/Video.vue":14,"vue":1}],5:[function(require,module,exports){
 var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("/* line 46, stdin */\n.fade-enter-active[data-v-48fd00b6], .fade-leave-active[data-v-48fd00b6] {\n  -webkit-transition: opacity .6s;\n  -moz-transition: opacity .6s;\n  -o-transition: opacity .6s;\n  transition: opacity .6s; }\n\n/* line 52, stdin */\n.fade-enter[data-v-48fd00b6], .fade-leave-to[data-v-48fd00b6] {\n  opacity: 0; }")
 ;(function(){
 'use strict';
@@ -8470,7 +8284,7 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('transition',{attrs:{"name":"fade"}},[_c('footer',{directives:[{name:"show",rawName:"v-show",value:(_vm.show),expression:"show"}],staticClass:"footer"},[_c('div',{staticClass:"flex footer__flex"},[_c('a',{staticClass:"flex footer__circle footer__circle-skype",attrs:{"href":""}},[_c('img',{staticClass:"footer__icon footer__icon-skype",attrs:{"src":"app/img/skype-icon.png","alt":"dunco footer skype icon"}})]),_vm._v(" "),_c('a',{staticClass:"flex footer__circle",attrs:{"href":""}},[_c('img',{staticClass:"footer__icon footer__icon-fb tada",attrs:{"src":"app/img/fb-icon.png","alt":"dunco footer facebook icon"}})]),_vm._v(" "),_c('a',{staticClass:"flex footer__circle",attrs:{"href":""}},[_c('img',{staticClass:"footer__icon footer__icon-youtube tada",attrs:{"src":"app/img/youtube-icon.png","alt":"dunco footer youtube icon"}})]),_vm._v(" "),_c('a',{staticClass:"flex footer__circle footer__circle-insta",attrs:{"href":""}},[_c('img',{staticClass:"footer__icon footer__icon-insta tada",attrs:{"src":"app/img/insta-icon.png","alt":"dunco footer instagram icon"}})])])])])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('transition',{attrs:{"name":"fade"}},[_c('footer',{directives:[{name:"show",rawName:"v-show",value:(_vm.show),expression:"show"}],staticClass:"footer"},[_c('div',{staticClass:"flex footer__flex"},[_c('a',{staticClass:"flex footer__circle footer__circle-skype",attrs:{"href":""}},[_c('img',{staticClass:"footer__icon footer__icon-skype",attrs:{"src":"dist/img/skype-icon.png","alt":"dunco footer skype icon"}})]),_vm._v(" "),_c('a',{staticClass:"flex footer__circle",attrs:{"href":""}},[_c('img',{staticClass:"footer__icon footer__icon-fb tada",attrs:{"src":"dist/img/fb-icon.png","alt":"dunco footer facebook icon"}})]),_vm._v(" "),_c('a',{staticClass:"flex footer__circle",attrs:{"href":""}},[_c('img',{staticClass:"footer__icon footer__icon-youtube tada",attrs:{"src":"dist/img/youtube-icon.png","alt":"dunco footer youtube icon"}})]),_vm._v(" "),_c('a',{staticClass:"flex footer__circle footer__circle-insta",attrs:{"href":""}},[_c('img',{staticClass:"footer__icon footer__icon-insta tada",attrs:{"src":"dist/img/insta-icon.png","alt":"dunco footer instagram icon"}})])])])])}
 __vue__options__.staticRenderFns = []
 __vue__options__._scopeId = "data-v-48fd00b6"
 if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-hot-reload-api")
@@ -8484,7 +8298,7 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
     hotAPI.reload("data-v-48fd00b6", __vue__options__)
   }
 })()}
-},{"vue":2,"vueify/lib/insert-css":3,"vueify/node_modules/vue-hot-reload-api":4}],7:[function(require,module,exports){
+},{"vue":1,"vueify/lib/insert-css":2,"vueify/node_modules/vue-hot-reload-api":3}],6:[function(require,module,exports){
 ;(function(){
 'use strict';
 
@@ -8531,7 +8345,6 @@ var __vue__options__ = (typeof module.exports === "function"? module.exports.opt
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
 __vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('section',{staticClass:"section__gallery",class:{paddingGallery: _vm.isActive},attrs:{"id":"gallery"}},[_vm._m(0),_vm._v(" "),_vm._m(1)])}
 __vue__options__.staticRenderFns = [function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"swiper-container s-gallery s-gallery-top"},[_c('div',{staticClass:"swiper-wrapper"},[_c('div',{staticClass:"swiper-slide s-gallery__photo0"}),_vm._v(" "),_c('div',{staticClass:"swiper-slide s-gallery__photo1"}),_vm._v(" "),_c('div',{staticClass:"swiper-slide s-gallery__photo2"}),_vm._v(" "),_c('div',{staticClass:"swiper-slide s-gallery__photo3"}),_vm._v(" "),_c('div',{staticClass:"swiper-slide s-gallery__photo4"}),_vm._v(" "),_c('div',{staticClass:"swiper-slide s-gallery__photo5"}),_vm._v(" "),_c('div',{staticClass:"swiper-slide s-gallery__photo6"}),_vm._v(" "),_c('div',{staticClass:"swiper-slide s-gallery__photo7"}),_vm._v(" "),_c('div',{staticClass:"swiper-slide s-gallery__photo8"}),_vm._v(" "),_c('div',{staticClass:"swiper-slide s-gallery__photo9"})]),_vm._v(" "),_c('div',{staticClass:"swiper-button-next swiper-button-white sbn-gallery"}),_vm._v(" "),_c('div',{staticClass:"swiper-button-prev swiper-button-white sbp-gallery"})])},function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"swiper-container s-gallery s-gallery-thumbs"},[_c('div',{staticClass:"swiper-wrapper"},[_c('div',{staticClass:"swiper-slide s-gallery__photo0"}),_vm._v(" "),_c('div',{staticClass:"swiper-slide s-gallery__photo1"}),_vm._v(" "),_c('div',{staticClass:"swiper-slide s-gallery__photo2"}),_vm._v(" "),_c('div',{staticClass:"swiper-slide s-gallery__photo3"}),_vm._v(" "),_c('div',{staticClass:"swiper-slide s-gallery__photo4"}),_vm._v(" "),_c('div',{staticClass:"swiper-slide s-gallery__photo5"}),_vm._v(" "),_c('div',{staticClass:"swiper-slide s-gallery__photo6"}),_vm._v(" "),_c('div',{staticClass:"swiper-slide s-gallery__photo7"}),_vm._v(" "),_c('div',{staticClass:"swiper-slide s-gallery__photo8"}),_vm._v(" "),_c('div',{staticClass:"swiper-slide s-gallery__photo9"})])])}]
-__vue__options__._scopeId = "data-v-17ad1347"
 if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
@@ -8542,7 +8355,7 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
     hotAPI.reload("data-v-17ad1347", __vue__options__)
   }
 })()}
-},{"vue":2,"vueify/node_modules/vue-hot-reload-api":4}],8:[function(require,module,exports){
+},{"vue":1,"vueify/node_modules/vue-hot-reload-api":3}],7:[function(require,module,exports){
 var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("/* line 96, stdin */\n.fade-enter-active[data-v-6a2f64a8], .fade-leave-active[data-v-6a2f64a8] {\n  -webkit-transition: opacity .3s;\n  -moz-transition: opacity .3s;\n  -o-transition: opacity .3s;\n  transition: opacity .3s; }\n\n/* line 102, stdin */\n.fade-enter[data-v-6a2f64a8], .fade-leave-to[data-v-6a2f64a8] {\n  opacity: 0; }")
 ;(function(){
 "use strict";
@@ -8578,8 +8391,8 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('header',{staticClass:"header"},[_c('div',{staticClass:"container header__container"},[_c('div',{staticClass:"flex header__flex"},[_vm._m(0),_vm._v(" "),_c('nav',{staticClass:"nav"},[_c('a',{staticClass:"nav__link nav__link-home",attrs:{"href":"/"}},[_vm._v("Главная")]),_vm._v(" "),_c('a',{staticClass:"nav__link nav__link-company",attrs:{"id":"1"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideTo($event)}}},[_vm._v("О компании")]),_vm._v(" "),_c('a',{staticClass:"nav__link nav__link-sale",attrs:{"href":"javascript:void(0);"}},[_vm._v("Скидки и Акции")]),_vm._v(" "),_c('a',{staticClass:"nav__link nav__link-gallery",attrs:{"href":"javascript:void(0);","id":"5"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideTo($event)}}},[_vm._v("Галерея")]),_vm._v(" "),_c('a',{staticClass:"nav__link nav__link-contacts",attrs:{"href":"javascript:void(0);","id":"6"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideTo($event)}}},[_vm._v("Контакти")])]),_vm._v(" "),_c('span',{staticClass:"header__tel"},[_vm._v("(068) 833-20-20")]),_vm._v(" "),_c('div',{staticClass:"header__right-side"},[_c('span',{staticClass:"header__search"}),_vm._v(" "),_c('span',{staticClass:"header__menu",on:{"click":function($event){_vm.showMenu = !_vm.showMenu}}})])])]),_vm._v(" "),_c('transition',{attrs:{"name":"fade"}},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.showMenu),expression:"showMenu"}],staticClass:"menu-mob flex menu-mob-g__flex"},[_c('div',{staticClass:"menu-mob__top"},[_c('img',{staticClass:"menu-mob__logo",attrs:{"src":"app/img/dunco-logo_big.png","alt":"Логотип компании Дунко"}}),_vm._v(" "),_c('span',{staticClass:"menu-mob__caption"},[_vm._v("компетенции, инновации, безопасность")])]),_vm._v(" "),_c('div',{staticClass:"flex menu-mob__flex"},[_c('a',{staticClass:"menu__item menu-mob__item",attrs:{"href":"javascript:void(0);","data-num":"4"},on:{"click":_vm.changeSlideToProducts}},[_c('span',{staticClass:"menu__icon icon window-icon-dunco-white"}),_vm._v(" "),_c('span',{staticClass:"menu__caption menu-mob__caption"},[_vm._v("Окна")])]),_vm._v(" "),_c('a',{staticClass:"menu__item menu-mob__item",attrs:{"href":"javascript:void(0);"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideToProducts($event)}}},[_c('span',{staticClass:"menu__icon icon door-icon-dunco-white"}),_vm._v(" "),_c('span',{staticClass:"menu__caption menu-mob__caption"},[_vm._v("Двери")])]),_vm._v(" "),_c('a',{staticClass:"menu__item menu-mob__item",attrs:{"href":"javascript:void(0);"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideToProducts($event)}}},[_c('span',{staticClass:"menu__icon icon roleta-window-icon-dunco-white"}),_vm._v(" "),_c('span',{staticClass:"menu__caption menu-mob__caption"},[_vm._v("Жалюзи")])]),_vm._v(" "),_c('a',{staticClass:"menu__item menu-mob__item",attrs:{"href":"javascript:void(0);"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideToProducts($event)}}},[_c('span',{staticClass:"menu__icon icon roleta-icon-dunco-white"}),_vm._v(" "),_c('span',{staticClass:"menu__caption menu-mob__caption"},[_vm._v("Ролеты")])]),_vm._v(" "),_c('a',{staticClass:"menu__item menu-mob__item",attrs:{"href":"javascript:void(0);"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideToProducts($event)}}},[_c('span',{staticClass:"menu__icon icon vorota-icon-dunco-white"}),_vm._v(" "),_c('span',{staticClass:"menu__caption menu-mob__caption"},[_vm._v("Ворота")])]),_vm._v(" "),_c('a',{staticClass:"menu__item menu-mob__item",attrs:{"href":"javascript:void(0);"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideToContacts($event)}}},[_c('span',{staticClass:"menu__icon icon tel-icon-dunco-white"}),_vm._v(" "),_c('span',{staticClass:"menu__caption menu-mob__caption"},[_vm._v("Вызов мастера")])])]),_vm._v(" "),_c('ul',{staticClass:"menu-mob__list"},[_c('li',{staticClass:"menu-mob__list-item"},[_c('a',{staticClass:"menu-mob__link",attrs:{"href":"javascript:void(0)"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideToContacts($event)}}},[_vm._v("Контакты")])])])])]),_vm._v(" "),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.showMenu),expression:"showMenu"}],staticClass:"menu-mob__mask",on:{"click":_vm.closeMenu}})],1)}
-__vue__options__.staticRenderFns = [function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('a',{staticClass:"header__logo",attrs:{"href":"/"}},[_c('img',{attrs:{"src":"app/img/dunco-logo.png","alt":"Логотип компании Данко"}})])}]
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('header',{staticClass:"header"},[_c('div',{staticClass:"container header__container"},[_c('div',{staticClass:"flex header__flex"},[_vm._m(0),_vm._v(" "),_c('nav',{staticClass:"nav"},[_c('a',{staticClass:"nav__link nav__link-home",attrs:{"href":"/"}},[_vm._v("Главная")]),_vm._v(" "),_c('a',{staticClass:"nav__link nav__link-company",attrs:{"id":"1"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideTo($event)}}},[_vm._v("О компании")]),_vm._v(" "),_c('a',{staticClass:"nav__link nav__link-sale",attrs:{"href":"javascript:void(0);"}},[_vm._v("Скидки и Акции")]),_vm._v(" "),_c('a',{staticClass:"nav__link nav__link-gallery",attrs:{"href":"javascript:void(0);","id":"5"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideTo($event)}}},[_vm._v("Галерея")]),_vm._v(" "),_c('a',{staticClass:"nav__link nav__link-contacts",attrs:{"href":"javascript:void(0);","id":"6"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideTo($event)}}},[_vm._v("Контакти")])]),_vm._v(" "),_c('span',{staticClass:"header__tel"},[_vm._v("(068) 833-20-20")]),_vm._v(" "),_c('div',{staticClass:"header__right-side"},[_c('span',{staticClass:"header__search"}),_vm._v(" "),_c('span',{staticClass:"header__menu",on:{"click":function($event){_vm.showMenu = !_vm.showMenu}}})])])]),_vm._v(" "),_c('transition',{attrs:{"name":"fade"}},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.showMenu),expression:"showMenu"}],staticClass:"menu-mob flex menu-mob-g__flex"},[_c('div',{staticClass:"menu-mob__top"},[_c('img',{staticClass:"menu-mob__logo",attrs:{"src":"dist/img/dunco-logo_big.png","alt":"Логотип компании Дунко"}}),_vm._v(" "),_c('span',{staticClass:"menu-mob__caption"},[_vm._v("компетенции, инновации, безопасность")])]),_vm._v(" "),_c('div',{staticClass:"flex menu-mob__flex"},[_c('a',{staticClass:"menu__item menu-mob__item",attrs:{"href":"javascript:void(0);","data-num":"4"},on:{"click":_vm.changeSlideToProducts}},[_c('span',{staticClass:"menu__icon icon window-icon-dunco-white"}),_vm._v(" "),_c('span',{staticClass:"menu__caption menu-mob__caption"},[_vm._v("Окна")])]),_vm._v(" "),_c('a',{staticClass:"menu__item menu-mob__item",attrs:{"href":"javascript:void(0);"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideToProducts($event)}}},[_c('span',{staticClass:"menu__icon icon door-icon-dunco-white"}),_vm._v(" "),_c('span',{staticClass:"menu__caption menu-mob__caption"},[_vm._v("Двери")])]),_vm._v(" "),_c('a',{staticClass:"menu__item menu-mob__item",attrs:{"href":"javascript:void(0);"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideToProducts($event)}}},[_c('span',{staticClass:"menu__icon icon roleta-window-icon-dunco-white"}),_vm._v(" "),_c('span',{staticClass:"menu__caption menu-mob__caption"},[_vm._v("Жалюзи")])]),_vm._v(" "),_c('a',{staticClass:"menu__item menu-mob__item",attrs:{"href":"javascript:void(0);"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideToProducts($event)}}},[_c('span',{staticClass:"menu__icon icon roleta-icon-dunco-white"}),_vm._v(" "),_c('span',{staticClass:"menu__caption menu-mob__caption"},[_vm._v("Ролеты")])]),_vm._v(" "),_c('a',{staticClass:"menu__item menu-mob__item",attrs:{"href":"javascript:void(0);"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideToProducts($event)}}},[_c('span',{staticClass:"menu__icon icon vorota-icon-dunco-white"}),_vm._v(" "),_c('span',{staticClass:"menu__caption menu-mob__caption"},[_vm._v("Ворота")])]),_vm._v(" "),_c('a',{staticClass:"menu__item menu-mob__item",attrs:{"href":"javascript:void(0);"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideToContacts($event)}}},[_c('span',{staticClass:"menu__icon icon tel-icon-dunco-white"}),_vm._v(" "),_c('span',{staticClass:"menu__caption menu-mob__caption"},[_vm._v("Вызов мастера")])])]),_vm._v(" "),_c('ul',{staticClass:"menu-mob__list"},[_c('li',{staticClass:"menu-mob__list-item"},[_c('a',{staticClass:"menu-mob__link",attrs:{"href":"javascript:void(0)"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideToContacts($event)}}},[_vm._v("Контакты")])])])])]),_vm._v(" "),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.showMenu),expression:"showMenu"}],staticClass:"menu-mob__mask",on:{"click":_vm.closeMenu}})],1)}
+__vue__options__.staticRenderFns = [function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('a',{staticClass:"header__logo",attrs:{"href":"/"}},[_c('img',{attrs:{"src":"dist/img/dunco-logo.png","alt":"Логотип компании Данко"}})])}]
 __vue__options__._scopeId = "data-v-6a2f64a8"
 if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -8592,7 +8405,7 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
     hotAPI.reload("data-v-6a2f64a8", __vue__options__)
   }
 })()}
-},{"vue":2,"vueify/lib/insert-css":3,"vueify/node_modules/vue-hot-reload-api":4}],9:[function(require,module,exports){
+},{"vue":1,"vueify/lib/insert-css":2,"vueify/node_modules/vue-hot-reload-api":3}],8:[function(require,module,exports){
 var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("/* line 86, stdin */\n.fade-enter-active[data-v-0029833a], .fade-leave-active[data-v-0029833a] {\n  -webkit-transition: opacity .8s;\n  -moz-transition: opacity .8s;\n  -o-transition: opacity .8s;\n  transition: opacity .8s; }\n\n/* line 92, stdin */\n.fade-enter[data-v-0029833a], .fade-leave-to[data-v-0029833a] {\n  opacity: 0; }")
 ;(function(){
 'use strict';
@@ -8660,7 +8473,7 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
     hotAPI.reload("data-v-0029833a", __vue__options__)
   }
 })()}
-},{"vue":2,"vueify/lib/insert-css":3,"vueify/node_modules/vue-hot-reload-api":4}],10:[function(require,module,exports){
+},{"vue":1,"vueify/lib/insert-css":2,"vueify/node_modules/vue-hot-reload-api":3}],9:[function(require,module,exports){
 ;(function(){
 'use strict';
 
@@ -8730,8 +8543,8 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('section',{staticClass:"section__order"},[_c('h3',{staticClass:"section__title order__title-our hidden",class:{visible : _vm.isVisible[0]}},[_vm._v("Наши партнеры")]),_vm._v(" "),_c('div',{staticClass:"swiper-container s-partners hidden",class:{visible : _vm.isVisible[1]}},[_vm._m(0),_vm._v(" "),_c('div',{staticClass:"swiper-button-next sbn-partners"}),_vm._v(" "),_c('div',{staticClass:"swiper-button-prev sbp-partners"})]),_vm._v(" "),_c('div',{staticClass:"order flex order__flex"},[_c('video',{staticClass:"video",attrs:{"autoplay":"","loop":"","muted":"","preload":""},domProps:{"muted":true}},[_c('source',{attrs:{"src":"app/video/dunco_bottom.webm","type":"video/webm"}}),_vm._v(" "),_c('source',{attrs:{"src":"app/video/dunco_bottom.mp4","type":"video/mp4"}})]),_vm._v(" "),_c('div',{staticClass:"order__content hidden",class:{visible : _vm.isVisible[2]}},[_c('div',{staticClass:"order__ask"},[_c('h3',{staticClass:"section__title order__title"},[_vm._v("У Вас остались вопросы?")]),_vm._v(" "),_c('p',{staticClass:"order__subtitle order__subtitle-ask"},[_vm._v("Задайте их нам!")]),_vm._v(" "),_c('div',{staticClass:"g-btn order__btn order__btn-ask",on:{"click":_vm.modalOpen}},[_c('span',{staticClass:"g-btn__bg order__btn_bg"}),_vm._v(" "),_c('span',{staticClass:"g-btn__text order__btn-text"},[_vm._v("Задать вопрос")])])]),_vm._v(" "),_vm._m(1)])])])}
-__vue__options__.staticRenderFns = [function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"swiper-wrapper"},[_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners1",attrs:{"src":"app/img/partner1.png","alt":"Логотип1 партнера компании Данко"}})])]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners2",attrs:{"src":"app/img/partner2.png","alt":"Логотип2 партнера компании Данко"}})])]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners3",attrs:{"src":"app/img/partner3.png","alt":"Логотип3 партнера компании Данко"}})])]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners4",attrs:{"src":"app/img/partner4.png","alt":"Логотип4 партнера компании Данко"}})])]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners5",attrs:{"src":"app/img/partner5.png","alt":"Логотип5 партнера компании Данко"}})])]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners6",attrs:{"src":"app/img/partner6.png","alt":"Логотип6 партнера компании Данко"}})])]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners7",attrs:{"src":"app/img/partner7.png","alt":"Логотип7 партнера компании Данко"}})])]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners8",attrs:{"src":"app/img/partner8.png","alt":"Логотип8 партнера компании Данко"}})])]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners9",attrs:{"src":"app/img/partner9.png","alt":"Логотип9 партнера компании Данко"}})])])])},function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"order__contacts flex"},[_c('div',{staticClass:"order__width order__wrap-tel"},[_c('a',{staticClass:"section__title order__contact order__tel",attrs:{"href":"tel:+380688332020"}},[_vm._v("+38 (068) 833 20 20")]),_vm._v(" "),_c('a',{staticClass:"section__title order__contact order__tel",attrs:{"href":"tel:0444662090"}},[_vm._v("(044) 466-20-90")])]),_vm._v(" "),_c('a',{staticClass:"section__title order__contact order__width order__mail",attrs:{"href":"mailto:mail@landing.ua"}},[_vm._v("mail@landing.ua")])])}]
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('section',{staticClass:"section__order"},[_c('h3',{staticClass:"section__title order__title-our hidden",class:{visible : _vm.isVisible[0]}},[_vm._v("Наши партнеры")]),_vm._v(" "),_c('div',{staticClass:"swiper-container s-partners hidden",class:{visible : _vm.isVisible[1]}},[_vm._m(0),_vm._v(" "),_c('div',{staticClass:"swiper-button-next sbn-partners"}),_vm._v(" "),_c('div',{staticClass:"swiper-button-prev sbp-partners"})]),_vm._v(" "),_c('div',{staticClass:"order order__flex"},[_c('video',{staticClass:"video",attrs:{"autoplay":"","loop":"","muted":"","preload":""},domProps:{"muted":true}},[_c('source',{attrs:{"src":"dist/video/dunco_bottom.webm","type":"video/webm"}}),_vm._v(" "),_c('source',{attrs:{"src":"dist/video/dunco_bottom.mp4","type":"video/mp4"}})]),_vm._v(" "),_c('div',{staticClass:"order__content hidden",class:{visible : _vm.isVisible[2]}},[_c('div',{staticClass:"order__ask"},[_c('h3',{staticClass:"section__title order__title"},[_vm._v("У Вас остались вопросы?")]),_vm._v(" "),_c('p',{staticClass:"order__subtitle order__subtitle-ask"},[_vm._v("Задайте их нам!")]),_vm._v(" "),_c('div',{staticClass:"g-btn order__btn order__btn-ask",on:{"click":_vm.modalOpen}},[_c('span',{staticClass:"g-btn__bg order__btn_bg"}),_vm._v(" "),_c('span',{staticClass:"g-btn__text order__btn-text"},[_vm._v("Задать вопрос")])])]),_vm._v(" "),_vm._m(1)])])])}
+__vue__options__.staticRenderFns = [function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"swiper-wrapper"},[_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners1",attrs:{"src":"dist/img/partner1.png","alt":"Логотип1 партнера компании Данко"}})])]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners2",attrs:{"src":"dist/img/partner2.png","alt":"Логотип2 партнера компании Данко"}})])]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners3",attrs:{"src":"dist/img/partner3.png","alt":"Логотип3 партнера компании Данко"}})])]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners4",attrs:{"src":"dist/img/partner4.png","alt":"Логотип4 партнера компании Данко"}})])]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners5",attrs:{"src":"dist/img/partner5.png","alt":"Логотип5 партнера компании Данко"}})])]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners6",attrs:{"src":"dist/img/partner6.png","alt":"Логотип6 партнера компании Данко"}})])]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners7",attrs:{"src":"dist/img/partner7.png","alt":"Логотип7 партнера компании Данко"}})])]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners8",attrs:{"src":"dist/img/partner8.png","alt":"Логотип8 партнера компании Данко"}})])]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners9",attrs:{"src":"dist/img/partner9.png","alt":"Логотип9 партнера компании Данко"}})])])])},function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"order__contacts flex"},[_c('div',{staticClass:"order__width order__wrap-tel"},[_c('a',{staticClass:"section__title order__contact order__tel",attrs:{"href":"tel:+380688332020"}},[_vm._v("+38 (068) 833 20 20")]),_vm._v(" "),_c('a',{staticClass:"section__title order__contact order__tel",attrs:{"href":"tel:0444662090"}},[_vm._v("(044) 466-20-90")])]),_vm._v(" "),_c('a',{staticClass:"section__title order__contact order__width order__mail",attrs:{"href":"mailto:mail@landing.ua"}},[_vm._v("mail@landing.ua")])])}]
 if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
@@ -8742,7 +8555,7 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
     hotAPI.reload("data-v-4b50b883", __vue__options__)
   }
 })()}
-},{"vue":2,"vueify/node_modules/vue-hot-reload-api":4}],11:[function(require,module,exports){
+},{"vue":1,"vueify/node_modules/vue-hot-reload-api":3}],10:[function(require,module,exports){
 ;(function(){
 'use strict';
 
@@ -8812,8 +8625,8 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('section',{staticClass:"section__people"},[_c('div',{staticClass:"container flex people__flex"},[_c('h3',{staticClass:"section__title title__people hidden",class:{visible : _vm.isVisible[0]}},[_vm._v("Наши партнеры которые нам доверяют")]),_vm._v(" "),_c('div',{staticClass:"people__photo-wrap hidden",class:{visible : _vm.isVisible[1]}},[_c('img',{staticClass:"people__photo",attrs:{"src":"app/img/people-photo.png","alt":"Люди которые нам доверяют"}})]),_vm._v(" "),_c('div',{staticClass:"swiper-container s-people hidden",class:{visible : _vm.isVisible[2]}},[_vm._m(0),_vm._v(" "),_c('div',{staticClass:"swiper-button-next sbn-people"}),_vm._v(" "),_c('div',{staticClass:"swiper-button-prev sbp-people"})])])])}
-__vue__options__.staticRenderFns = [function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"swiper-wrapper"},[_c('div',{staticClass:"swiper-slide"},[_c('img',{staticClass:"people__carousel people__carousel1",attrs:{"src":"app/img/people-carousel1.png","alt":"Компании которые нам доверяют"}})]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('img',{staticClass:"people__carousel people__carousel2",attrs:{"src":"app/img/people-carousel2.png","alt":"Компании которые нам доверяют"}})]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('img',{staticClass:"people__carousel people__carousel3",attrs:{"src":"app/img/people-carousel3.png","alt":"Компании которые нам доверяют"}})]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('img',{staticClass:"people__carousel people__carousel4",attrs:{"src":"app/img/people-carousel4.png","alt":"Компании которые нам доверяют"}})]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('img',{staticClass:"people__carousel people__carousel1",attrs:{"src":"app/img/people-carousel1.png","alt":"Компании которые нам доверяют"}})]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('img',{staticClass:"people__carousel people__carousel2",attrs:{"src":"app/img/people-carousel2.png","alt":"Компании которые нам доверяют"}})]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('img',{staticClass:"people__carousel people__carousel1",attrs:{"src":"app/img/people-carousel1.png","alt":"Компании которые нам доверяют"}})]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('img',{staticClass:"people__carousel people__carousel4",attrs:{"src":"app/img/people-carousel4.png","alt":"Компании которые нам доверяют"}})])])}]
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('section',{staticClass:"section__people"},[_c('div',{staticClass:"container flex people__flex"},[_c('h3',{staticClass:"section__title title__people hidden",class:{visible : _vm.isVisible[0]}},[_vm._v("Наши партнеры которые нам доверяют")]),_vm._v(" "),_c('div',{staticClass:"people__photo-wrap hidden",class:{visible : _vm.isVisible[1]}},[_c('img',{staticClass:"people__photo",attrs:{"src":"dist/img/people-photo.png","alt":"Люди которые нам доверяют"}})]),_vm._v(" "),_c('div',{staticClass:"swiper-container s-people hidden",class:{visible : _vm.isVisible[2]}},[_vm._m(0),_vm._v(" "),_c('div',{staticClass:"swiper-button-next sbn-people"}),_vm._v(" "),_c('div',{staticClass:"swiper-button-prev sbp-people"})])])])}
+__vue__options__.staticRenderFns = [function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"swiper-wrapper"},[_c('div',{staticClass:"swiper-slide"},[_c('img',{staticClass:"people__carousel people__carousel1",attrs:{"src":"dist/img/people-carousel1.png","alt":"Компании которые нам доверяют 1"}})]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('img',{staticClass:"people__carousel people__carousel2",attrs:{"src":"dist/img/people-carousel2.png","alt":"Компании которые нам доверяют 2"}})]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('img',{staticClass:"people__carousel people__carousel3",attrs:{"src":"dist/img/people-carousel3.png","alt":"Компании которые нам доверяют 3"}})]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('img',{staticClass:"people__carousel people__carousel4",attrs:{"src":"dist/img/people-carousel4.png","alt":"Компании которые нам доверяют 4"}})]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('img',{staticClass:"people__carousel people__carousel1",attrs:{"src":"dist/img/people-carousel1.png","alt":"Компании которые нам доверяют 5"}})]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('img',{staticClass:"people__carousel people__carousel2",attrs:{"src":"dist/img/people-carousel2.png","alt":"Компании которые нам доверяют 6"}})]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('img',{staticClass:"people__carousel people__carousel1",attrs:{"src":"dist/img/people-carousel1.png","alt":"Компании которые нам доверяют 7"}})]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('img',{staticClass:"people__carousel people__carousel4",attrs:{"src":"dist/img/people-carousel4.png","alt":"Компании которые нам доверяют 8"}})])])}]
 if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
@@ -8824,7 +8637,7 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
     hotAPI.reload("data-v-40d0e3aa", __vue__options__)
   }
 })()}
-},{"vue":2,"vueify/node_modules/vue-hot-reload-api":4}],12:[function(require,module,exports){
+},{"vue":1,"vueify/node_modules/vue-hot-reload-api":3}],11:[function(require,module,exports){
 ;(function(){
 'use strict';
 
@@ -9017,8 +8830,8 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
     hotAPI.reload("data-v-be54c982", __vue__options__)
   }
 })()}
-},{"vue":2,"vueify/node_modules/vue-hot-reload-api":4}],13:[function(require,module,exports){
-var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("/* line 151, stdin */\n.fade-enter-active[data-v-0ffb3d13], .fade-leave-active[data-v-0ffb3d13] {\n  transition: opacity .9s; }\n\n/* line 154, stdin */\n.fade-enter[data-v-0ffb3d13], .fade-leave-to[data-v-0ffb3d13] {\n  opacity: 0; }")
+},{"vue":1,"vueify/node_modules/vue-hot-reload-api":3}],12:[function(require,module,exports){
+var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("/* line 149, stdin */\n.fade-enter-active[data-v-0ffb3d13], .fade-leave-active[data-v-0ffb3d13] {\n  transition: opacity .9s; }\n\n/* line 152, stdin */\n.fade-enter[data-v-0ffb3d13], .fade-leave-to[data-v-0ffb3d13] {\n  opacity: 0; }")
 ;(function(){
 'use strict';
 
@@ -9031,10 +8844,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 module.exports = {
     data: function data() {
         return {
-            c: '',
-            ctx: '',
-            w: 0,
-            h: 0,
             windowWidth: 0,
             infinite: true,
             sFront: {},
@@ -9045,6 +8854,10 @@ module.exports = {
     mounted: function mounted() {
         var that = this;
         this.sFront = new Swiper('.s-front', {
+            loop: this.infinite,
+            autoplay: {
+                delay: 6000
+            },
             pagination: {
                 el: '.sp-front',
                 clickable: true
@@ -9053,13 +8866,7 @@ module.exports = {
                 nextEl: '.sbn-front',
                 prevEl: '.sbp-front'
             },
-            on: {
-                init: function init() {
-                    that.initCanvas();
-                    that.Snowy();
-                },
-                slideChange: function slideChange() {}
-            },
+
             grabCursor: true
         });
         this.$nextTick(function () {
@@ -9073,9 +8880,6 @@ module.exports = {
 
     methods: {
         getWindowWidth: function getWindowWidth() {
-            this.windowWidth = document.documentElement.clientWidth;
-            this.c.width = this.w = window.innerWidth;
-            this.c.height = this.h = window.innerHeight;
             if (this.windowWidth < 768) {
                 return this.showBr = false;
             } else {
@@ -9148,7 +8952,7 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"swiper-container s-front"},[_c('div',{staticClass:"swiper-wrapper"},[_c('swiperslide',{staticClass:"front-slide1"},[_c('canvas',{attrs:{"slot":"canvas","id":"canv"},slot:"canvas"}),_vm._v(" "),_c('h1',{staticClass:"front-slide__title",attrs:{"slot":"title"},slot:"title"},[_vm._v("Шум и холод вам мешают? Окна \"Данко\" помагают!")])]),_vm._v(" "),_c('swiperslide',{staticClass:"front-slide2"},[_c('h2',{staticClass:"front-slide__title",attrs:{"slot":"title"},slot:"title"},[_vm._v("Покупайте двери с выгодой!")])]),_vm._v(" "),_c('swiperslide',{staticClass:"front-slide3"},[_c('h2',{staticClass:"front-slide__title",attrs:{"slot":"title"},slot:"title"},[_vm._v("Правильное решение - это ваш гарантированный комфорт!")])]),_vm._v(" "),_c('swiperslide',{staticClass:"front-slide4"},[_c('h2',{staticClass:"front-slide__title",attrs:{"slot":"title"},slot:"title"},[_vm._v("Широкий выбор материалов превратит ваши окна в шедевр!")])]),_vm._v(" "),_c('swiperslide',{staticClass:"front-slide5"},[_c('h2',{staticClass:"front-slide__title",attrs:{"slot":"title"},slot:"title"},[_vm._v("Доверь свои мечты профессионалам!"),(_vm.showBr)?_c('br'):_vm._e(),_vm._v(" Больше, чем просто ролеты!")])])],1),_vm._v(" "),_c('div',{staticClass:"swiper-pagination sp-g sp-front"}),_vm._v(" "),_c('div',{staticClass:"swiper-button-next sbn-front"}),_vm._v(" "),_c('div',{staticClass:"swiper-button-prev sbp-front"})])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"swiper-container s-front"},[_c('div',{staticClass:"swiper-wrapper"},[_c('swiperslide',{staticClass:"front-slide1"},[_c('h1',{staticClass:"front-slide__title",attrs:{"slot":"title"},slot:"title"},[_vm._v("Шум и холод вам мешают? Окна \"Данко\" помагают!")])]),_vm._v(" "),_c('swiperslide',{staticClass:"front-slide2"},[_c('h2',{staticClass:"front-slide__title",attrs:{"slot":"title"},slot:"title"},[_vm._v("Покупайте двери с выгодой!")])]),_vm._v(" "),_c('swiperslide',{staticClass:"front-slide3"},[_c('h2',{staticClass:"front-slide__title",attrs:{"slot":"title"},slot:"title"},[_vm._v("Правильное решение - это ваш гарантированный комфорт!")])]),_vm._v(" "),_c('swiperslide',{staticClass:"front-slide4"},[_c('h2',{staticClass:"front-slide__title",attrs:{"slot":"title"},slot:"title"},[_vm._v("Широкий выбор материалов превратит ваши окна в шедевр!")])]),_vm._v(" "),_c('swiperslide',{staticClass:"front-slide5"},[_c('h2',{staticClass:"front-slide__title",attrs:{"slot":"title"},slot:"title"},[_vm._v("Доверь свои мечты профессионалам!"),(_vm.showBr)?_c('br'):_vm._e(),_vm._v(" Больше, чем просто ролеты!")])])],1),_vm._v(" "),_c('div',{staticClass:"swiper-pagination sp-g sp-front"}),_vm._v(" "),_c('div',{staticClass:"swiper-button-next sbn-front"}),_vm._v(" "),_c('div',{staticClass:"swiper-button-prev sbp-front"})])}
 __vue__options__.staticRenderFns = []
 __vue__options__._scopeId = "data-v-0ffb3d13"
 if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-hot-reload-api")
@@ -9162,7 +8966,7 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
     hotAPI.reload("data-v-0ffb3d13", __vue__options__)
   }
 })()}
-},{"./local/SwiperSlide.vue":16,"vue":2,"vueify/lib/insert-css":3,"vueify/node_modules/vue-hot-reload-api":4}],14:[function(require,module,exports){
+},{"./local/SwiperSlide.vue":15,"vue":1,"vueify/lib/insert-css":2,"vueify/node_modules/vue-hot-reload-api":3}],13:[function(require,module,exports){
 ;(function(){
 'use strict';
 
@@ -9236,8 +9040,8 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.show)?_c('section',{staticClass:"section__trust"},[_c('div',{staticClass:"container flex trust__flex_outer"},[_c('div',{staticClass:"trust__wrap"},[_c('h3',{staticClass:"section__title title__numbers hidden",class:{visible : _vm.isVisible[0]}},[_vm._v("Почему нам стоит доверять?")]),_vm._v(" "),_c('div',{staticClass:"flex trust__flex trust__numbers"},[_c('div',{staticClass:"trust__number hidden",class:{visible : _vm.isVisible[1]}},[_vm._m(0)]),_vm._v(" "),_c('div',{staticClass:"trust__number hidden",class:{visible : _vm.isVisible[2]}},[_vm._m(1)]),_vm._v(" "),_c('div',{staticClass:"trust__number hidden",class:{visible : _vm.isVisible[3]}},[_vm._m(2)]),_vm._v(" "),_c('div',{staticClass:"trust__number hidden",class:{visible : _vm.isVisible[4]}},[_vm._m(3)]),_vm._v(" "),_c('div',{staticClass:"trust__number hidden",class:{visible : _vm.isVisible[5]}},[_vm._m(4)]),_vm._v(" "),_c('div',{staticClass:"trust__number hidden",class:{visible : _vm.isVisible[6]}},[_vm._m(5)])]),_vm._v(" "),_c('h3',{staticClass:"section__title title__stage hidden",class:{visible : _vm.isVisible[7]}},[_vm._v("Как мы работаем")]),_vm._v(" "),_c('div',{staticClass:"flex stage__flex trust__stage hidden",class:{visible : _vm.isVisible[7]}},[(_vm.showImgDesc)?_c('img',{staticClass:"stage__img",attrs:{"src":"app/img/stage.png","alt":"Этапи роботы компании Данко"}}):_vm._e(),_vm._v(" "),(_vm.showImgMob)?_c('img',{staticClass:"stage__img_mob",attrs:{"src":"app/img/stage-sm.png","alt":"Этапи роботы компании Данко"}}):_vm._e(),_vm._v(" "),_c('div',{staticClass:"g-btn trust__btn",on:{"click":_vm.modalOpen}},[_c('span',{staticClass:"g-btn__bg trust__btn_bg"}),_vm._v(" "),_c('span',{staticClass:"g-btn__text trust__btn-text"},[_vm._v("Оставить заявку на выезд мастера")])])])])])]):_vm._e()}
-__vue__options__.staticRenderFns = [function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex number__flex"},[_c('img',{staticClass:"number__img number__img1",attrs:{"src":"app/img/one.jpg","alt":"Почему нам стоит доверять пункт первый"}}),_vm._v(" "),_c('span',{staticClass:"number__caption number__caption1"},[_vm._v("Мы​ ​на​ ​связи​ 24/7")])])},function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex number__flex"},[_c('img',{staticClass:"number__img",attrs:{"src":"app/img/two.jpg","alt":"Почему нам стоит доверять пункт второй"}}),_vm._v(" "),_c('span',{staticClass:"number__caption"},[_vm._v("\n                            Вы​ получите​ идеи/стиль"),_c('br'),_vm._v("и​ ​правильное решение​ в​ ​подборе​​ комплектующих\n                        ")])])},function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex number__flex"},[_c('img',{staticClass:"number__img",attrs:{"src":"app/img/three.jpg","alt":"Почему нам стоит доверять пункт третий"}}),_vm._v(" "),_c('span',{staticClass:"number__caption"},[_vm._v("\n                            полный​​ пакет​​ документов​ +​ гарантийное​ ​и​ постгарантийное обслуживание\n                        ")])])},function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex number__flex"},[_c('img',{staticClass:"number__img",attrs:{"src":"app/img/four.jpg","alt":"Почему нам стоит доверять пункт четвертый"}}),_vm._v(" "),_c('span',{staticClass:"number__caption"},[_vm._v("\n                            Бесплатный​ замер "),_c('br'),_vm._v("​​(при​ заключённом договоре),\n                        ")])])},function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex number__flex"},[_c('img',{staticClass:"number__img",attrs:{"src":"app/img/five.jpg","alt":"Почему нам стоит доверять пункт пятый"}}),_vm._v(" "),_c('span',{staticClass:"number__caption"},[_vm._v("\n                            Качество​​ производства​"),_c('br'),_vm._v("​и​ ​монтажа согласно​ ​инновационных технологий\n                        ")])])},function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex number__flex"},[_c('img',{staticClass:"number__img",attrs:{"src":"app/img/six.jpg","alt":"Почему нам стоит доверять пункт шестой"}}),_vm._v(" "),_c('span',{staticClass:"number__caption"},[_vm._v("\n                            Квалифицированная​ консультация специалиста\n                        ")])])}]
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.show)?_c('section',{staticClass:"section__trust"},[_c('div',{staticClass:"container flex trust__flex_outer"},[_c('div',{staticClass:"trust__wrap"},[_c('h3',{staticClass:"section__title title__numbers hidden",class:{visible : _vm.isVisible[0]}},[_vm._v("Почему нам стоит доверять?")]),_vm._v(" "),_c('div',{staticClass:"flex trust__flex trust__numbers"},[_c('div',{staticClass:"trust__number hidden",class:{visible : _vm.isVisible[1]}},[_vm._m(0)]),_vm._v(" "),_c('div',{staticClass:"trust__number hidden",class:{visible : _vm.isVisible[2]}},[_vm._m(1)]),_vm._v(" "),_c('div',{staticClass:"trust__number hidden",class:{visible : _vm.isVisible[3]}},[_vm._m(2)]),_vm._v(" "),_c('div',{staticClass:"trust__number hidden",class:{visible : _vm.isVisible[4]}},[_vm._m(3)]),_vm._v(" "),_c('div',{staticClass:"trust__number hidden",class:{visible : _vm.isVisible[5]}},[_vm._m(4)]),_vm._v(" "),_c('div',{staticClass:"trust__number hidden",class:{visible : _vm.isVisible[6]}},[_vm._m(5)])]),_vm._v(" "),_c('h3',{staticClass:"section__title title__stage hidden",class:{visible : _vm.isVisible[7]}},[_vm._v("Как мы работаем")]),_vm._v(" "),_c('div',{staticClass:"flex stage__flex trust__stage hidden",class:{visible : _vm.isVisible[7]}},[(_vm.showImgDesc)?_c('img',{staticClass:"stage__img",attrs:{"src":"dist/img/stage.png","alt":"Этапи роботы компании Данко"}}):_vm._e(),_vm._v(" "),(_vm.showImgMob)?_c('img',{staticClass:"stage__img_mob",attrs:{"src":"dist/img/stage-sm.png","alt":"Этапи роботы компании Данко"}}):_vm._e(),_vm._v(" "),_c('div',{staticClass:"g-btn trust__btn",on:{"click":_vm.modalOpen}},[_c('span',{staticClass:"g-btn__bg trust__btn_bg"}),_vm._v(" "),_c('span',{staticClass:"g-btn__text trust__btn-text"},[_vm._v("Оставить заявку на выезд мастера")])])])])])]):_vm._e()}
+__vue__options__.staticRenderFns = [function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex number__flex"},[_c('img',{staticClass:"number__img number__img1",attrs:{"src":"dist/img/one.jpg","alt":"Почему нам стоит доверять пункт первый"}}),_vm._v(" "),_c('span',{staticClass:"number__caption number__caption1"},[_vm._v("Мы​ ​на​ ​связи​ 24/7")])])},function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex number__flex"},[_c('img',{staticClass:"number__img",attrs:{"src":"dist/img/two.jpg","alt":"Почему нам стоит доверять пункт второй"}}),_vm._v(" "),_c('span',{staticClass:"number__caption"},[_vm._v("\n                            Вы​ получите​ идеи/стиль"),_c('br'),_vm._v("и​ ​правильное решение​ в​ ​подборе​​ комплектующих\n                        ")])])},function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex number__flex"},[_c('img',{staticClass:"number__img",attrs:{"src":"dist/img/three.jpg","alt":"Почему нам стоит доверять пункт третий"}}),_vm._v(" "),_c('span',{staticClass:"number__caption"},[_vm._v("\n                            полный​​ пакет​​ документов​ +​ гарантийное​ ​и​ постгарантийное обслуживание\n                        ")])])},function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex number__flex"},[_c('img',{staticClass:"number__img",attrs:{"src":"dist/img/four.jpg","alt":"Почему нам стоит доверять пункт четвертый"}}),_vm._v(" "),_c('span',{staticClass:"number__caption"},[_vm._v("\n                            Бесплатный​ замер "),_c('br'),_vm._v("​​(при​ заключённом договоре),\n                        ")])])},function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex number__flex"},[_c('img',{staticClass:"number__img",attrs:{"src":"dist/img/five.jpg","alt":"Почему нам стоит доверять пункт пятый"}}),_vm._v(" "),_c('span',{staticClass:"number__caption"},[_vm._v("\n                            Качество​​ производства​"),_c('br'),_vm._v("​и​ ​монтажа согласно​ ​инновационных технологий\n                        ")])])},function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex number__flex"},[_c('img',{staticClass:"number__img",attrs:{"src":"dist/img/six.jpg","alt":"Почему нам стоит доверять пункт шестой"}}),_vm._v(" "),_c('span',{staticClass:"number__caption"},[_vm._v("\n                            Квалифицированная​ консультация специалиста\n                        ")])])}]
 if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
@@ -9248,8 +9052,8 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
     hotAPI.reload("data-v-681e4ae6", __vue__options__)
   }
 })()}
-},{"vue":2,"vueify/node_modules/vue-hot-reload-api":4}],15:[function(require,module,exports){
-var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("/* line 114, stdin */\n.fade-enter-active[data-v-9bca31a0], .fade-leave-active[data-v-9bca31a0] {\n  -webkit-transition: opacity 3s;\n  -moz-transition: opacity 3s;\n  -o-transition: opacity 3s;\n  transition: opacity 3s; }\n\n/* line 120, stdin */\n.fade-enter[data-v-9bca31a0], .fade-leave-to[data-v-9bca31a0] {\n  opacity: 0; }")
+},{"vue":1,"vueify/node_modules/vue-hot-reload-api":3}],14:[function(require,module,exports){
+var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("/* line 113, stdin */\n.fade-enter-active[data-v-9bca31a0], .fade-leave-active[data-v-9bca31a0] {\n  -webkit-transition: opacity 3s;\n  -moz-transition: opacity 3s;\n  -o-transition: opacity 3s;\n  transition: opacity 3s; }\n\n/* line 119, stdin */\n.fade-enter[data-v-9bca31a0], .fade-leave-to[data-v-9bca31a0] {\n  opacity: 0; }")
 ;(function(){
 'use strict';
 
@@ -9331,7 +9135,7 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('section',{staticClass:"section__video"},[(_vm.showVideoMob)?_c('video',{staticClass:"video",attrs:{"autoplay":"","loop":"","muted":"","preload":""},domProps:{"muted":true}},[_c('source',{attrs:{"src":"app/video/dunco.webm","type":"video/webm"}}),_vm._v(" "),_c('source',{attrs:{"src":"app/video/dunco.mp4","type":"video/mp4"}})]):_vm._e(),_vm._v(" "),_c('transition',{attrs:{"name":"fade"}},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.showContent),expression:"showContent"}],staticClass:"video__inner"},[_c('img',{staticClass:"video__logo",attrs:{"src":"app/img/dunco-logo_big.png","alt":"Логотип компании Дунко"}}),_vm._v(" "),_c('h3',{staticClass:"section__title section__title-video"},[_vm._v("компетенции, инновации, безопасность")]),_vm._v(" "),_c('div',{staticClass:"play-video__wrap"},[_c('a',{staticClass:"video-play-button",attrs:{"id":"play-video"},on:{"click":function($event){$event.preventDefault();_vm.playFunc($event)}}},[_c('span')])]),_vm._v(" "),_c('div',{staticClass:"container about-company__wrap"},[_c('p',{staticClass:"about-company"},[_vm._v("\n                    Добро пожаловать на сайт компании окон и дверей - «Данко»!\n                    Компания «Данко» — это продукция высокого качества, безупречное отношение к Клиенту, многолетний опыт на рынке и ответственный подход  к каждому заказу.\n                    Компания «Данко» специализируется по таким направлениям как: окна и балконные конструкции, распашные и раздвижные входные и межофисные двери  из ПВХ и алюминия, индивидуальное архитектурное проектирование конструкций для остекления фасадов жилых и промышленных зданий, торговых центров, витрин и др.\n                    При выборе компании каждый Клиент задает себе вопрос: «Почему я готов довериться именно этой компании?»  Мы понимаем Ваше волнение и готовы предоставить ряд наших преимуществ и помочь Вам сделать правильный выбор!\n                    Наши преимущества:\n                    Мы всегда внимательно прислушиваемся к пожеланиям наших Клиентов и внедряем проверенные передовые технологии.  Многочисленные отзывы и рекомендации наших Клиентов — лучшее признание качества нашей продукции и услуг. Уникальный ассортимент готовых комплексных решений и широкие возможности для создания любого нестандартного индивидуального решения позволяют «Данко»  прочно удерживать позиции лидера на рынке Киева и Киевской области.  Вам буде предложено несколько вариантов коммерческих предложений, которые будут соответствовать Вашим пожеланиям, всем стандартам и технологиям. Наш график работы  7/24. У нас есть рекомендательные письма от известных загородных клубов, учебных заведений и известных людей которые нам доверились! Обращайте и Вы,  всегда рады Вам помочь!\n                ")])])])]),_vm._v(" "),_c('div',{staticClass:"video-overlay",class:{open: _vm.isActive},attrs:{"id":"video-overlay"},on:{"click":_vm.closeFunc}},[_c('div',{staticClass:"video-overlay-inner",on:{"mouseover":_vm.mouseOver,"mouseleave":_vm.mouseLeave}},[_c('a',{directives:[{name:"show",rawName:"v-show",value:(_vm.showClose),expression:"showClose"}],staticClass:"video-overlay-close",on:{"click":function($event){$event.preventDefault();_vm.closeFunc($event)}}},[_vm._v("×")]),_vm._v(" "),(_vm.showVideo)?_c('iframe',{attrs:{"id":"Youtube","src":"https://www.youtube.com/embed/mAhPgohwsQI?enablejsapi=1&autoplay=1","frameborder":"0","gesture":"media","allow":"encrypted-media","allowfullscreen":""}}):_vm._e()])])],1)}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('section',{staticClass:"section__video"},[(_vm.showVideoMob)?_c('video',{staticClass:"video",attrs:{"autoplay":"","loop":"","muted":"","preload":""},domProps:{"muted":true}},[_c('source',{attrs:{"src":"dist/video/dunco.webm","type":"video/webm"}}),_vm._v(" "),_c('source',{attrs:{"src":"dist/video/dunco.mp4","type":"video/mp4"}})]):_vm._e(),_vm._v(" "),_c('transition',{attrs:{"name":"fade"}},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.showContent),expression:"showContent"}],staticClass:"video__inner"},[_c('img',{staticClass:"video__logo",attrs:{"src":"dist/img/dunco-logo_big.png","alt":"Логотип компании Дунко"}}),_vm._v(" "),_c('h3',{staticClass:"section__title section__title-video"},[_vm._v("компетенции, инновации, безопасность")]),_vm._v(" "),_c('div',{staticClass:"play-video__wrap"},[_c('a',{staticClass:"video-play-button",attrs:{"id":"play-video"},on:{"click":function($event){$event.preventDefault();_vm.playFunc($event)}}},[_c('span')])]),_vm._v(" "),_c('div',{staticClass:"container about-company__wrap"},[_c('p',{staticClass:"about-company"},[_vm._v("\n                    Добро пожаловать на сайт компании окон и дверей - «Данко»!\n                    Компания «Данко» — это продукция высокого качества, безупречное отношение к Клиенту, многолетний опыт на рынке и ответственный подход  к каждому заказу.\n                    Компания «Данко» специализируется по таким направлениям как: окна и балконные конструкции, распашные и раздвижные входные и межофисные двери  из ПВХ и алюминия, индивидуальное архитектурное проектирование конструкций для остекления фасадов жилых и промышленных зданий, торговых центров, витрин и др.\n                    При выборе компании каждый Клиент задает себе вопрос: «Почему я готов довериться именно этой компании?»  Мы понимаем Ваше волнение и готовы предоставить ряд наших преимуществ и помочь Вам сделать правильный выбор!\n                    Наши преимущества:\n                    Мы всегда внимательно прислушиваемся к пожеланиям наших Клиентов и внедряем проверенные передовые технологии.  Многочисленные отзывы и рекомендации наших Клиентов — лучшее признание качества нашей продукции и услуг. Уникальный ассортимент готовых комплексных решений и широкие возможности для создания любого нестандартного индивидуального решения позволяют «Данко»  прочно удерживать позиции лидера на рынке Киева и Киевской области.  Вам буде предложено несколько вариантов коммерческих предложений, которые будут соответствовать Вашим пожеланиям, всем стандартам и технологиям. Наш график работы  7/24. У нас есть рекомендательные письма от известных загородных клубов, учебных заведений и известных людей которые нам доверились! Обращайте и Вы,  всегда рады Вам помочь!\n                ")])])])]),_vm._v(" "),_c('div',{staticClass:"video-overlay",class:{open: _vm.isActive},attrs:{"id":"video-overlay"},on:{"click":_vm.closeFunc}},[_c('div',{staticClass:"video-overlay-inner",on:{"mouseover":_vm.mouseOver,"mouseleave":_vm.mouseLeave}},[_c('a',{directives:[{name:"show",rawName:"v-show",value:(_vm.showClose),expression:"showClose"}],staticClass:"video-overlay-close",on:{"click":function($event){$event.preventDefault();_vm.closeFunc($event)}}},[_vm._v("×")]),_vm._v(" "),(_vm.showVideo)?_c('iframe',{attrs:{"id":"Youtube","src":"https://www.youtube.com/embed/mAhPgohwsQI?enablejsapi=1&autoplay=1","frameborder":"0","gesture":"media","allow":"encrypted-media","allowfullscreen":""}}):_vm._e()])])],1)}
 __vue__options__.staticRenderFns = []
 __vue__options__._scopeId = "data-v-9bca31a0"
 if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-hot-reload-api")
@@ -9345,7 +9149,7 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
     hotAPI.reload("data-v-9bca31a0", __vue__options__)
   }
 })()}
-},{"vue":2,"vueify/lib/insert-css":3,"vueify/node_modules/vue-hot-reload-api":4}],16:[function(require,module,exports){
+},{"vue":1,"vueify/lib/insert-css":2,"vueify/node_modules/vue-hot-reload-api":3}],15:[function(require,module,exports){
 var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("/* line 62, stdin */\n.fade-enter-active[data-v-42734daa], .fade-leave-active[data-v-42734daa] {\n  transition: opacity .9s; }\n\n/* line 65, stdin */\n.fade-enter[data-v-42734daa], .fade-leave-to[data-v-42734daa] {\n  opacity: 0; }")
 ;(function(){
 'use strict';
@@ -9378,4 +9182,4 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
     hotAPI.reload("data-v-42734daa", __vue__options__)
   }
 })()}
-},{"vue":2,"vueify/lib/insert-css":3,"vueify/node_modules/vue-hot-reload-api":4}]},{},[5]);
+},{"vue":1,"vueify/lib/insert-css":2,"vueify/node_modules/vue-hot-reload-api":3}]},{},[4]);

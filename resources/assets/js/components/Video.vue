@@ -1,14 +1,13 @@
 <template>
         <section class="section__video">
             <video class="video" autoplay loop muted preload v-if="showVideoMob">
-                 <source src="app/video/dunco.webm" type="video/webm">
-                 <source src="app/video/dunco.mp4" type="video/mp4">
+                 <source src="dist/video/dunco.webm" type="video/webm">
+                 <source src="dist/video/dunco.mp4" type="video/mp4">
             </video>
             <transition name="fade">
                 <div class="video__inner" v-show="showContent">
-                    <img src="app/img/dunco-logo_big.png" alt="Логотип компании Дунко" class="video__logo">
+                    <img src="dist/img/dunco-logo_big.png" alt="Логотип компании Дунко" class="video__logo">
                     <h3 class="section__title section__title-video">компетенции, инновации, безопасность</h3>
-                    <!--<div class="spiral"><span class="spiral__icon"></span></div>!-->
                     <div class="play-video__wrap">
                         <a id="play-video" class="video-play-button" v-on:click.prevent="playFunc">
                             <span></span>

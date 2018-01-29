@@ -1,0 +1,164 @@
+.icon {
+    font-size: 0.5px;
+}
+
+.icon:before {
+    content:' ';
+    vertical-align:middle;
+    display: inline-block;
+    background-image: url("../svg/sprite.svg");
+    background-repeat: no-repeat;
+    background-size: 100em 1600em;
+}
+
+.no-svg .icon:before {
+    background-image: url("../svg/sprite.png");
+}
+
+
+
+  .icon.door-icon-dunco-black:before {
+      background-position: 0em 0em;
+      width: 100em;
+      height: 100em;
+  }
+
+
+
+
+  .icon.door-icon-dunco-white:before {
+      background-position: 0em -100em;
+      width: 100em;
+      height: 100em;
+  }
+
+
+
+
+  .icon.mail-icon-dunco-black:before {
+      background-position: 0em -200em;
+      width: 100em;
+      height: 100em;
+  }
+
+
+
+
+  .icon.mail-icon-dunco-white:before {
+      background-position: 0em -300em;
+      width: 100em;
+      height: 100em;
+  }
+
+
+
+
+  .icon.roleta-icon-dunco-black:before {
+      background-position: 0em -400em;
+      width: 100em;
+      height: 100em;
+  }
+
+
+
+
+  .icon.roleta-icon-dunco-white:before {
+      background-position: 0em -500em;
+      width: 100em;
+      height: 100em;
+  }
+
+
+
+
+  .icon.roleta-window-icon-dunco-black:before {
+      background-position: 0em -600em;
+      width: 100em;
+      height: 100em;
+  }
+
+
+
+
+  .icon.roleta-window-icon-dunco-white:before {
+      background-position: 0em -700em;
+      width: 100em;
+      height: 100em;
+  }
+
+
+
+
+  .icon.site-icon-dunco-black:before {
+      background-position: 0em -800em;
+      width: 100em;
+      height: 100em;
+  }
+
+
+
+
+  .icon.site-icon-dunco-white:before {
+      background-position: 0em -900em;
+      width: 100em;
+      height: 100em;
+  }
+
+
+
+
+  .icon.tel-icon-dunco-black:before {
+      background-position: 0em -1000em;
+      width: 100em;
+      height: 100em;
+  }
+
+
+
+
+  .icon.tel-icon-dunco-white:before {
+      background-position: 0em -1100em;
+      width: 100em;
+      height: 100em;
+  }
+
+
+
+
+  .icon.vorota-icon-dunco-black:before {
+      background-position: 0em -1200em;
+      width: 100em;
+      height: 100em;
+  }
+
+
+
+
+  .icon.vorota-icon-dunco-white:before {
+      background-position: 0em -1300em;
+      width: 100em;
+      height: 100em;
+  }
+
+
+
+
+  .icon.window-icon-dunco-black:before {
+      background-position: 0em -1400em;
+      width: 100em;
+      height: 100em;
+  }
+
+
+
+
+  .icon.window-icon-dunco-white:before {
+      background-position: 0em -1500em;
+      width: 100em;
+      height: 100em;
+  }
+
+
+
+
+
