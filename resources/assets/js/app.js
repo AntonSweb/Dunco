@@ -13,6 +13,7 @@ const Vue         = require('vue');
 const Vueheader   = require('./components/Header.vue');
 const Vueswiper   = require('./components/Swiper.vue');
 const Vuemenu     = require('./components/Menu.vue');
+const Vuesnow     = require('./components/Snow.vue');
 const Vuevideo    = require('./components/Video.vue');
 const Vuetrust    = require('./components/Trust.vue');
 const Vuepeople   = require('./components/People.vue');
@@ -32,6 +33,10 @@ new Vue({
 new Vue({
     el: '.section__menu',
     render: h => h(Vuemenu)
+});
+new Vue({
+    el: '.section__snow',
+    render: h => h(Vuesnow)
 });
 new Vue({
    el: '.section__video',

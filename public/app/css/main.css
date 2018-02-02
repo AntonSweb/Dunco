@@ -608,16 +608,11 @@ section {
 .sbn-front {
   right: 5%; }
 
-#canv {
-  position: absolute;
-  left: 0;
-  top: 0; }
-
 .section__menu {
   width: 100%;
   height: 120px;
   z-index: 9;
-  background-color: rgba(255, 255, 255, 0.6); }
+  background-color: rgba(255, 255, 255, 0.3); }
   @media screen and (max-height: 768px) and (min-width: 768px) {
     .section__menu {
       opacity: 0;

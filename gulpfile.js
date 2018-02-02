@@ -54,7 +54,7 @@ gulp.task('scripts', function(){
 });
 //OPTIMIZATION IMAGES
 gulp.task('img', function(){
-    return gulp.src('public/app/svg/**/*')
+    return gulp.src('public/app/img/*')
         .pipe(imagemin({
             interlaced: true,
             progressive: true,
@@ -67,7 +67,7 @@ gulp.task('img', function(){
             ],
             une: [pngquant()]
         }))
-        .pipe(gulp.dest('public/dist/svg'))
+        .pipe(gulp.dest('public/dist/img'))
 });
 //SPRITES
 gulp.task('sprite', function () {

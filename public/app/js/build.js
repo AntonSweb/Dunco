@@ -8196,6 +8196,7 @@ const Vue         = require('vue');
 const Vueheader   = require('./components/Header.vue');
 const Vueswiper   = require('./components/Swiper.vue');
 const Vuemenu     = require('./components/Menu.vue');
+const Vuesnow     = require('./components/Snow.vue');
 const Vuevideo    = require('./components/Video.vue');
 const Vuetrust    = require('./components/Trust.vue');
 const Vuepeople   = require('./components/People.vue');
@@ -8215,6 +8216,10 @@ new Vue({
 new Vue({
     el: '.section__menu',
     render: h => h(Vuemenu)
+});
+new Vue({
+    el: '.section__snow',
+    render: h => h(Vuesnow)
 });
 new Vue({
    el: '.section__video',
@@ -8256,7 +8261,7 @@ new Vue({
 
 
 
-},{"./components/Footer.vue":5,"./components/Gallery.vue":6,"./components/Header.vue":7,"./components/Menu.vue":8,"./components/Order.vue":9,"./components/People.vue":10,"./components/Products.vue":11,"./components/Swiper.vue":12,"./components/Trust.vue":13,"./components/Video.vue":14,"vue":1}],5:[function(require,module,exports){
+},{"./components/Footer.vue":5,"./components/Gallery.vue":6,"./components/Header.vue":7,"./components/Menu.vue":8,"./components/Order.vue":9,"./components/People.vue":10,"./components/Products.vue":11,"./components/Snow.vue":12,"./components/Swiper.vue":13,"./components/Trust.vue":14,"./components/Video.vue":15,"vue":1}],5:[function(require,module,exports){
 var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("/* line 46, stdin */\n.fade-enter-active[data-v-48fd00b6], .fade-leave-active[data-v-48fd00b6] {\n  -webkit-transition: opacity .6s;\n  -moz-transition: opacity .6s;\n  -o-transition: opacity .6s;\n  transition: opacity .6s; }\n\n/* line 52, stdin */\n.fade-enter[data-v-48fd00b6], .fade-leave-to[data-v-48fd00b6] {\n  opacity: 0; }")
 ;(function(){
 'use strict';
@@ -8459,7 +8464,7 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('transition',{attrs:{"name":"fade"}},[_c('section',{directives:[{name:"show",rawName:"v-show",value:(_vm.show),expression:"show"}],staticClass:"flex fixed section__menu",class:_vm.posChange},[_c('div',{staticClass:"flex menu__flex container"},[_c('a',{staticClass:"menu__item",attrs:{"href":"javascript:void(0);","data-num":"4"},on:{"click":_vm.changeSlideTo}},[_c('span',{staticClass:"menu__icon icon window-icon-dunco-black"}),_vm._v(" "),_c('span',{staticClass:"menu__caption"},[_vm._v("Окна")])]),_vm._v(" "),_c('a',{staticClass:"menu__item",attrs:{"href":"javascript:void(0);"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideTo($event)}}},[_c('span',{staticClass:"menu__icon icon door-icon-dunco-black"}),_vm._v(" "),_c('span',{staticClass:"menu__caption"},[_vm._v("Двери")])]),_vm._v(" "),_c('a',{staticClass:"menu__item",attrs:{"href":"javascript:void(0);"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideTo($event)}}},[_c('span',{staticClass:"menu__icon icon roleta-window-icon-dunco-black"}),_vm._v(" "),_c('span',{staticClass:"menu__caption"},[_vm._v("Жалюзи")])]),_vm._v(" "),_c('a',{staticClass:"menu__item",attrs:{"href":"javascript:void(0);"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideTo($event)}}},[_c('span',{staticClass:"menu__icon icon roleta-icon-dunco-black"}),_vm._v(" "),_c('span',{staticClass:"menu__caption"},[_vm._v("Ролеты")])]),_vm._v(" "),_c('a',{staticClass:"menu__item",attrs:{"href":"javascript:void(0);"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideTo($event)}}},[_c('span',{staticClass:"menu__icon icon vorota-icon-dunco-black"}),_vm._v(" "),_c('span',{staticClass:"menu__caption"},[_vm._v("Ворота")])]),_vm._v(" "),_c('a',{staticClass:"menu__item",attrs:{"href":"javascript:void(0);"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideToContacts($event)}}},[_c('span',{staticClass:"menu__icon icon tel-icon-dunco-black"}),_vm._v(" "),_c('span',{staticClass:"menu__caption"},[_vm._v("Вызов мастера")])]),_vm._v(" "),_c('a',{staticClass:"menu__item",attrs:{"href":"javascript:void(0);"}},[_c('span',{staticClass:"menu__icon icon mail-icon-dunco-black"}),_vm._v(" "),_c('span',{staticClass:"menu__caption menu__caption7"},[_vm._v("Подписать договор")])])])])])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('transition',{attrs:{"name":"fade"}},[_c('section',{directives:[{name:"show",rawName:"v-show",value:(_vm.show),expression:"show"}],staticClass:"flex fixed section__menu",class:_vm.posChange},[_c('div',{staticClass:"flex menu__flex container"},[_c('a',{staticClass:"menu__item",attrs:{"href":"javascript:void(0);","data-num":"4"},on:{"click":_vm.changeSlideTo}},[_c('span',{staticClass:"menu__icon icon window-icon-dunco-black"}),_vm._v(" "),_c('span',{staticClass:"menu__caption"},[_vm._v("Окна")])]),_vm._v(" "),_c('a',{staticClass:"menu__item",attrs:{"href":"javascript:void(0);"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideTo($event)}}},[_c('span',{staticClass:"menu__icon icon door-icon-dunco-black"}),_vm._v(" "),_c('span',{staticClass:"menu__caption"},[_vm._v("Двери")])]),_vm._v(" "),_c('a',{staticClass:"menu__item",attrs:{"href":"javascript:void(0);"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideTo($event)}}},[_c('span',{staticClass:"menu__icon icon roleta-window-icon-dunco-black"}),_vm._v(" "),_c('span',{staticClass:"menu__caption"},[_vm._v("Жалюзи")])]),_vm._v(" "),_c('a',{staticClass:"menu__item",attrs:{"href":"javascript:void(0);"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideTo($event)}}},[_c('span',{staticClass:"menu__icon icon roleta-icon-dunco-black"}),_vm._v(" "),_c('span',{staticClass:"menu__caption"},[_vm._v("Ролеты")])]),_vm._v(" "),_c('a',{staticClass:"menu__item",attrs:{"href":"javascript:void(0);"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideTo($event)}}},[_c('span',{staticClass:"menu__icon icon vorota-icon-dunco-black"}),_vm._v(" "),_c('span',{staticClass:"menu__caption"},[_vm._v("Ворота")])]),_vm._v(" "),_c('a',{staticClass:"menu__item",attrs:{"href":"javascript:void(0);"}},[_c('span',{staticClass:"menu__icon icon mail-icon-dunco-black"}),_vm._v(" "),_c('span',{staticClass:"menu__caption menu__caption7"},[_vm._v("Подписать договор")])]),_vm._v(" "),_c('a',{staticClass:"menu__item",attrs:{"href":"tel:+380688332020"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideToContacts($event)}}},[_c('span',{staticClass:"menu__icon icon tel-icon-dunco-black"}),_vm._v(" "),_c('span',{staticClass:"menu__caption"},[_vm._v("Вызов мастера")])])])])])}
 __vue__options__.staticRenderFns = []
 __vue__options__._scopeId = "data-v-0029833a"
 if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-hot-reload-api")
@@ -8544,7 +8549,7 @@ if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
 __vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('section',{staticClass:"section__order"},[_c('h3',{staticClass:"section__title order__title-our hidden",class:{visible : _vm.isVisible[0]}},[_vm._v("Наши партнеры")]),_vm._v(" "),_c('div',{staticClass:"swiper-container s-partners hidden",class:{visible : _vm.isVisible[1]}},[_vm._m(0),_vm._v(" "),_c('div',{staticClass:"swiper-button-next sbn-partners"}),_vm._v(" "),_c('div',{staticClass:"swiper-button-prev sbp-partners"})]),_vm._v(" "),_c('div',{staticClass:"order order__flex"},[_c('video',{staticClass:"video",attrs:{"autoplay":"","loop":"","muted":"","preload":""},domProps:{"muted":true}},[_c('source',{attrs:{"src":"dist/video/dunco_bottom.webm","type":"video/webm"}}),_vm._v(" "),_c('source',{attrs:{"src":"dist/video/dunco_bottom.mp4","type":"video/mp4"}})]),_vm._v(" "),_c('div',{staticClass:"order__content hidden",class:{visible : _vm.isVisible[2]}},[_c('div',{staticClass:"order__ask"},[_c('h3',{staticClass:"section__title order__title"},[_vm._v("У Вас остались вопросы?")]),_vm._v(" "),_c('p',{staticClass:"order__subtitle order__subtitle-ask"},[_vm._v("Задайте их нам!")]),_vm._v(" "),_c('div',{staticClass:"g-btn order__btn order__btn-ask",on:{"click":_vm.modalOpen}},[_c('span',{staticClass:"g-btn__bg order__btn_bg"}),_vm._v(" "),_c('span',{staticClass:"g-btn__text order__btn-text"},[_vm._v("Задать вопрос")])])]),_vm._v(" "),_vm._m(1)])])])}
-__vue__options__.staticRenderFns = [function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"swiper-wrapper"},[_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners1",attrs:{"src":"dist/img/partner1.png","alt":"Логотип1 партнера компании Данко"}})])]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners2",attrs:{"src":"dist/img/partner2.png","alt":"Логотип2 партнера компании Данко"}})])]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners3",attrs:{"src":"dist/img/partner3.png","alt":"Логотип3 партнера компании Данко"}})])]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners4",attrs:{"src":"dist/img/partner4.png","alt":"Логотип4 партнера компании Данко"}})])]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners5",attrs:{"src":"dist/img/partner5.png","alt":"Логотип5 партнера компании Данко"}})])]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners6",attrs:{"src":"dist/img/partner6.png","alt":"Логотип6 партнера компании Данко"}})])]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners7",attrs:{"src":"dist/img/partner7.png","alt":"Логотип7 партнера компании Данко"}})])]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners8",attrs:{"src":"dist/img/partner8.png","alt":"Логотип8 партнера компании Данко"}})])]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners9",attrs:{"src":"dist/img/partner9.png","alt":"Логотип9 партнера компании Данко"}})])])])},function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"order__contacts flex"},[_c('div',{staticClass:"order__width order__wrap-tel"},[_c('a',{staticClass:"section__title order__contact order__tel",attrs:{"href":"tel:+380688332020"}},[_vm._v("+38 (068) 833 20 20")]),_vm._v(" "),_c('a',{staticClass:"section__title order__contact order__tel",attrs:{"href":"tel:0444662090"}},[_vm._v("(044) 466-20-90")])]),_vm._v(" "),_c('a',{staticClass:"section__title order__contact order__width order__mail",attrs:{"href":"mailto:mail@landing.ua"}},[_vm._v("mail@landing.ua")])])}]
+__vue__options__.staticRenderFns = [function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"swiper-wrapper"},[_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners1",attrs:{"src":"dist/img/partner1.png","alt":"Логотип1 партнера компании Данко"}})])]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners2",attrs:{"src":"dist/img/partner2.png","alt":"Логотип2 партнера компании Данко"}})])]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners3",attrs:{"src":"dist/img/partner3.png","alt":"Логотип3 партнера компании Данко"}})])]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners4",attrs:{"src":"dist/img/partner4.png","alt":"Логотип4 партнера компании Данко"}})])]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners5",attrs:{"src":"dist/img/partner5.png","alt":"Логотип5 партнера компании Данко"}})])]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners6",attrs:{"src":"dist/img/partner6.png","alt":"Логотип6 партнера компании Данко"}})])]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners7",attrs:{"src":"dist/img/partner7.png","alt":"Логотип7 партнера компании Данко"}})])]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners8",attrs:{"src":"dist/img/partner8.png","alt":"Логотип8 партнера компании Данко"}})])]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners9",attrs:{"src":"dist/img/partner9.png","alt":"Логотип9 партнера компании Данко"}})])])])},function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"order__contacts flex"},[_c('div',{staticClass:"order__width order__wrap-tel"},[_c('a',{staticClass:"section__title order__contact order__tel",attrs:{"href":"tel:+380688332020"}},[_vm._v("(068) 833 20 20")]),_vm._v(" "),_c('a',{staticClass:"section__title order__contact order__tel",attrs:{"href":"tel:0444662090"}},[_vm._v("(044) 466-20-90")])]),_vm._v(" "),_c('a',{staticClass:"section__title order__contact order__width order__mail",attrs:{"href":"mailto:mail@landing.ua"}},[_vm._v("mail@landing.ua")])])}]
 if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
@@ -8831,7 +8836,52 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
   }
 })()}
 },{"vue":1,"vueify/node_modules/vue-hot-reload-api":3}],12:[function(require,module,exports){
-var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("/* line 149, stdin */\n.fade-enter-active[data-v-0ffb3d13], .fade-leave-active[data-v-0ffb3d13] {\n  transition: opacity .9s; }\n\n/* line 152, stdin */\n.fade-enter[data-v-0ffb3d13], .fade-leave-to[data-v-0ffb3d13] {\n  opacity: 0; }")
+var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("#snow[data-v-4d59ad5e] {\n    background-color: transparent;\n    background-image: url(\"http://wp.agens.no/smakebit/wp-content/themes/smakebiten/img/snow1.png\"), url(\"http://wp.agens.no/smakebit/wp-content/themes/smakebiten/img/snow2.png\");\n    -webkit-animation: snow 20s linear infinite;\n    -moz-animation: snow 20s linear infinite;\n    -ms-animation: snow 20s linear infinite;\n    animation: snow 20s linear infinite;\n    z-index: 999;\n    right: 0;\n    top: 0;\n    left: 0;\n    bottom: 0;\n    margin-top: 0;\n    pointer-events: none;\n    position: absolute;\n}\n\n/*Keyframes*/\n@keyframes snow {\n    0% { background-position: 0px 0px, 0px 0px, 0px 0px }\n\n    100% { background-position: 500px 1000px, 400px 400px, 300px 300px }\n}\n\n@-moz-keyframes snow {\n    0% { background-position: 0px 0px, 0px 0px, 0px 0px }\n\n    100% { background-position: 500px 1000px, 400px 400px, 300px 300px }\n}\n\n@-webkit-keyframes snow {\n    0% { background-position: 0px 0px, 0px 0px, 0px 0px }\n\n    100% {\n        background-position: 500px 1000px, 400px 400px, 300px 300px;\n    }\n}\n\n@-ms-keyframes snow {\n    0% { background-position: 0px 0px, 0px 0px, 0px 0px }\n\n    100% { background-position: 500px 1000px, 400px 400px, 300px 300px }\n}")
+;(function(){
+'use strict';
+
+module.exports = {
+    data: function data() {
+        return {
+            snowHeight: 50,
+            windowWidth: document.documentElement.clientWidth
+        };
+    },
+    mounted: function mounted() {
+        sGlobal.on('slideChange', this.changeSlideFunc);
+    },
+
+    methods: {
+        changeSlideFunc: function changeSlideFunc() {
+            if (sGlobal.activeIndex !== 0 && this.windowWidth > 768) {
+                this.snowHeight = 170;
+            } else {
+                this.snowHeight = 50;
+            }
+        },
+        getWindowWidth: function getWindowWidth() {}
+    }
+};
+})()
+if (module.exports.__esModule) module.exports = module.exports.default
+var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
+if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('section',{style:({ height: _vm.snowHeight + 'px',}),attrs:{"id":"snow"}})}
+__vue__options__.staticRenderFns = []
+__vue__options__._scopeId = "data-v-4d59ad5e"
+if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  module.hot.dispose(__vueify_style_dispose__)
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-4d59ad5e", __vue__options__)
+  } else {
+    hotAPI.reload("data-v-4d59ad5e", __vue__options__)
+  }
+})()}
+},{"vue":1,"vueify/lib/insert-css":2,"vueify/node_modules/vue-hot-reload-api":3}],13:[function(require,module,exports){
+var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("/* line 92, stdin */\n.fade-enter-active[data-v-0ffb3d13], .fade-leave-active[data-v-0ffb3d13] {\n  transition: opacity .9s; }\n\n/* line 95, stdin */\n.fade-enter[data-v-0ffb3d13], .fade-leave-to[data-v-0ffb3d13] {\n  opacity: 0; }")
 ;(function(){
 'use strict';
 
@@ -8852,7 +8902,6 @@ module.exports = {
         };
     },
     mounted: function mounted() {
-        var that = this;
         this.sFront = new Swiper('.s-front', {
             loop: this.infinite,
             autoplay: {
@@ -8885,63 +8934,6 @@ module.exports = {
             } else {
                 this.showBr = true;
             }
-        },
-        initCanvas: function initCanvas() {
-            this.c = document.getElementById("canv");
-            this.ctx = this.c.getContext("2d");
-            this.w = this.c.width = window.innerWidth;
-            this.h = this.c.height = window.innerHeight;
-        },
-        Snowy: function Snowy() {
-            var that = this;
-            var snow,
-                arr = [],
-                f = [];
-            var num = 600,
-                tsc = 1,
-                sp = 1;
-            var sc = 1.3,
-                t = 0,
-                mv = 20,
-                min = 1;
-            for (var i = 0; i < num; ++i) {
-                snow = new Flake();
-                snow.y = Math.random() * (that.h + 50);
-                snow.x = Math.random() * that.w;
-                snow.t = Math.random() * (Math.PI * 2);
-                snow.sz = 100 / (10 + Math.random() * 100) * sc;
-                snow.sp = Math.pow(snow.sz * .8, 2) * .15 * sp;
-                snow.sp = snow.sp < min ? min : snow.sp;
-                arr.push(snow);
-            }
-            go();
-            function go() {
-                window.requestAnimationFrame(go);
-                that.ctx.clearRect(0, 0, that.w, that.h);
-                for (var i = 0; i < arr.length; ++i) {
-                    f = arr[i];
-                    f.t += .05;
-                    f.t = f.t >= Math.PI * 2 ? 0 : f.t;
-                    f.y += f.sp;
-                    f.x += Math.sin(f.t * tsc) * (f.sz * .3);
-                    if (f.y > that.h + 50) f.y = -10 - Math.random() * mv;
-                    if (f.x > that.w + mv) f.x = -mv;
-                    if (f.x < -mv) f.x = that.w + mv;
-                    f.draw();
-                }
-            }
-            function Flake() {
-                this.draw = function () {
-                    this.g = that.ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.sz);
-                    this.g.addColorStop(0, 'hsla(255,255%,255%,1)');
-                    this.g.addColorStop(1, 'hsla(255,255%,255%,0)');
-                    that.ctx.moveTo(this.x, this.y);
-                    that.ctx.fillStyle = this.g;
-                    that.ctx.beginPath();
-                    that.ctx.arc(this.x, this.y, this.sz, 0, Math.PI * 2, true);
-                    that.ctx.fill();
-                };
-            }
         }
     },
     components: {
@@ -8966,7 +8958,7 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
     hotAPI.reload("data-v-0ffb3d13", __vue__options__)
   }
 })()}
-},{"./local/SwiperSlide.vue":15,"vue":1,"vueify/lib/insert-css":2,"vueify/node_modules/vue-hot-reload-api":3}],13:[function(require,module,exports){
+},{"./local/SwiperSlide.vue":16,"vue":1,"vueify/lib/insert-css":2,"vueify/node_modules/vue-hot-reload-api":3}],14:[function(require,module,exports){
 ;(function(){
 'use strict';
 
@@ -9052,7 +9044,7 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
     hotAPI.reload("data-v-681e4ae6", __vue__options__)
   }
 })()}
-},{"vue":1,"vueify/node_modules/vue-hot-reload-api":3}],14:[function(require,module,exports){
+},{"vue":1,"vueify/node_modules/vue-hot-reload-api":3}],15:[function(require,module,exports){
 var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("/* line 113, stdin */\n.fade-enter-active[data-v-9bca31a0], .fade-leave-active[data-v-9bca31a0] {\n  -webkit-transition: opacity 3s;\n  -moz-transition: opacity 3s;\n  -o-transition: opacity 3s;\n  transition: opacity 3s; }\n\n/* line 119, stdin */\n.fade-enter[data-v-9bca31a0], .fade-leave-to[data-v-9bca31a0] {\n  opacity: 0; }")
 ;(function(){
 'use strict';
@@ -9149,7 +9141,7 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
     hotAPI.reload("data-v-9bca31a0", __vue__options__)
   }
 })()}
-},{"vue":1,"vueify/lib/insert-css":2,"vueify/node_modules/vue-hot-reload-api":3}],15:[function(require,module,exports){
+},{"vue":1,"vueify/lib/insert-css":2,"vueify/node_modules/vue-hot-reload-api":3}],16:[function(require,module,exports){
 var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("/* line 62, stdin */\n.fade-enter-active[data-v-42734daa], .fade-leave-active[data-v-42734daa] {\n  transition: opacity .9s; }\n\n/* line 65, stdin */\n.fade-enter[data-v-42734daa], .fade-leave-to[data-v-42734daa] {\n  opacity: 0; }")
 ;(function(){
 'use strict';

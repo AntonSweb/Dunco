@@ -74,7 +74,7 @@
                 </div>
                 <div class="order__contacts flex">
                     <div class="order__width order__wrap-tel">
-                        <a href="tel:+380688332020" class="section__title order__contact order__tel">+38 (068) 833 20 20</a>
+                        <a href="tel:+380688332020" class="section__title order__contact order__tel">(068) 833 20 20</a>
                         <a href="tel:0444662090" class="section__title order__contact order__tel">(044) 466-20-90</a>
                     </div>
                     <a href="mailto:mail@landing.ua" class="section__title order__contact order__width order__mail">mail@landing.ua</a>

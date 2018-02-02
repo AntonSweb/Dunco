@@ -553,57 +553,6 @@
     width: 100%;
     max-width: 751px; }
 
-.section__people {
-  padding-top: 170px;
-  height: 100vh;
-  background: url("../img/people.jpg") no-repeat center bottom;
-  -webkit-background-size: cover;
-          background-size: cover; }
-  @media screen and (max-height: 768px) {
-    .section__people {
-      padding-top: 50px; } }
-  @media screen and (max-width: 768px) {
-    .section__people {
-      padding-top: 50px; } }
-
-@media screen and (max-width: 768px) {
-  .title__people {
-    margin-top: 0;
-    font-size: 26px; } }
-
-.people__flex {
-  -webkit-flex-wrap: wrap;
-      -ms-flex-wrap: wrap;
-          flex-wrap: wrap;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-      -ms-flex-align: center;
-          align-items: center; }
-
-.people__photo {
-  width: 100%;
-  max-width: 966px;
-  height: auto;
-  max-height: 351px; }
-
-.s-people {
-  max-width: 850px;
-  max-height: 185px; }
-  .s-people .swiper-slide {
-    text-align: center; }
-
-.sbn-people {
-  /*right: 2%;*/
-  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2027%2044'%3E%3Cpath%20d%3D'M27%2C22L27%2C22L5%2C44l-2.1-2.1L22.8%2C22L2.9%2C2.1L5%2C0L27%2C22L27%2C22z'%20fill='#111a37'%2F%3E%3C%2Fsvg%3E"); }
-
-.sbp-people {
-  /*left: 2%;*/
-  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2027%2044'%3E%3Cpath%20d%3D'M0%2C22L22%2C0l2.1%2C2.1L4.2%2C22l19.9%2C19.9L22%2C44L0%2C22L0%2C22L0%2C22z'%20fill='#111a37'%2F%3E%3C%2Fsvg%3E"); }
-
 .section__our-products {
   height: 100vh; }
   .section__our-products .container {
