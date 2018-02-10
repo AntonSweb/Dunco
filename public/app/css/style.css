@@ -28,29 +28,6 @@
   font-weight: normal;
   font-style: normal; }
 
-.scroll-down {
-  margin: 50px auto 0 auto;
-  width: 25px;
-  height: 40px;
-  border: 2px solid white;
-  -webkit-border-radius: 20px;
-          border-radius: 20px; }
-  @media screen and (max-width: 768px) {
-    .scroll-down {
-      margin-top: 20px; }
-      .scroll-down__wrap {
-        position: absolute;
-        left: 50%;
-        bottom: 10px;
-        -webkit-transform: translateX(-50%);
-            -ms-transform: translateX(-50%);
-                transform: translateX(-50%); } }
-  .scroll-down__text {
-    display: inline-block;
-    margin-top: 10px;
-    font-size: 15px;
-    text-transform: initial; }
-
 .scroll-arrow {
   position: relative;
   top: 2px;
@@ -366,9 +343,16 @@
   @media screen and (max-width: 992px) {
     .about-company {
       font-size: 15px; } }
-  @media screen and (max-width: 768px) {
-    .about-company__wrap {
-      display: none; } }
+  .about-company__wrap {
+    position: relative;
+    margin: auto;
+    padding: 0 15px;
+    max-width: 1170px;
+    -webkit-box-sizing: content-box;
+            box-sizing: content-box; }
+    @media screen and (max-width: 768px) {
+      .about-company__wrap {
+        display: none; } }
 
 .section__trust {
   height: 100vh; }
@@ -575,7 +559,12 @@
   overflow-x: hidden; }
 
 .our-products__title {
-  margin: 22px 0; }
+  position: absolute;
+  top: 170px;
+  left: 0;
+  margin: 20px 0;
+  z-index: 9;
+  color: white; }
 
 .slide-inner {
   height: 100%; }

@@ -6,14 +6,14 @@
             </video>
             <transition name="fade">
                 <div class="video__inner" v-show="showContent">
-                    <img src="dist/img/dunco-logo_big.png" alt="Логотип компании Дунко" class="video__logo">
-                    <h3 class="section__title section__title-video">компетенции, инновации, безопасность</h3>
+                    <img src="dist/img/dunco-logo_big.png" alt="Логотип компании Данко" class="video__logo">
+                    <h3 class="section__title section__title-video">Компетенции - Инновации - Безопасность</h3>
                     <div class="play-video__wrap">
                         <a id="play-video" class="video-play-button" v-on:click.prevent="playFunc">
                             <span></span>
                         </a>
                     </div>
-                    <div class="container about-company__wrap">
+                    <div class="about-company__wrap">
                         <p class="about-company">
                             Добро пожаловать на сайт компании окон и дверей - «Данко»!
                             Компания «Данко» — это продукция высокого качества, безупречное отношение к Клиенту, многолетний опыт на рынке и ответственный подход  к каждому заказу.

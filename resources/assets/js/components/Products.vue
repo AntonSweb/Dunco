@@ -1,6 +1,7 @@
 <template>
     <section class="section__our-products">
         <div class="our-products__inner" v-if="show">
+            <h3 class="section__title our-products__title" v-if="!showMobile">Наши товары</h3>
             <div class="container no-padding" v-bind:class="{active: isActive}">
                 <div class="flex our-products__flex">
                     <div data-target='1' class="slide slide--1">

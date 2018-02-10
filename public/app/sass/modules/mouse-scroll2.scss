@@ -1,0 +1,20 @@
+.scroll-arrow {
+  position: relative;
+  top: 2px;
+  display: block;
+  margin: auto;
+  width: 5px;
+  height: 5px;
+  color: white;
+  text-align: center;
+  animation: mymove 4s infinite;
+  border-bottom: 2px solid white;
+  border-right: 2px solid white;
+  transform: rotate(45deg);
+}
+
+@keyframes mymove {
+  0%   {top: 2px;}
+  50%  {top: 11px;}
+  100% {top: 2px;}
+}

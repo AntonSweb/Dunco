@@ -19,7 +19,12 @@
 }
 
 .our-products__title{
-  margin: 22px 0;
+  position: absolute;
+  top: 170px;
+  left: 0;
+  margin: 20px 0;
+  z-index: 9;
+  color: white;
 }
 
 .slide-inner{

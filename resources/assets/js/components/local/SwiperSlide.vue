@@ -1,6 +1,5 @@
 <template>
     <div class="swiper-slide">
-        <slot name="canvas"></slot>
         <div class="front-slide front-slide__bg">
             <div class="container flex front-slide__flex">
                 <transition name="fade">
@@ -50,6 +49,11 @@
 
 <script>
     export default {
+        data: function() {
+            return {
+
+            };
+        },
         methods: {
             modalOpen: function (){
                 $('.mask__order').addClass('active');

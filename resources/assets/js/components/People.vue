@@ -1,7 +1,7 @@
 <template>
     <section class="section__people">
         <div class="container flex people__flex">
-            <h3 class="section__title title__people hidden" v-bind:class="{visible : isVisible[0]}">Наши партнеры которые нам доверяют</h3>
+            <h3 class="section__title title__people hidden" v-bind:class="{visible : isVisible[0]}">Нам доверяют!</h3>
             <div class="people__photo-wrap hidden" v-bind:class="{visible : isVisible[1]}">
                 <img class="people__photo" src="dist/img/people-photo.png" alt="Люди которые нам доверяют">
             </div>

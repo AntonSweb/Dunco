@@ -3,7 +3,6 @@
     <div class="swiper-container s-front">
         <div class="swiper-wrapper">
             <swiperslide class="front-slide1">
-                <!--<canvas slot="canvas" id='canv'></canvas>-->
                 <h1 slot="title" class="front-slide__title">Шум и холод вам мешают? Окна "Данко" помагают!</h1>
             </swiperslide>
             <swiperslide class="front-slide2">
@@ -40,7 +39,7 @@
                 showBr: true
             };
         },
-        mounted: function () {
+        mounted() {
             this.sFront = new Swiper ('.s-front', {
                 loop: this.infinite,
                 autoplay: {
@@ -79,8 +78,7 @@
                 } else {
                     this.showBr = true;
                 }
-            },
-
+            }
         },
         components: {
             Swiperslide

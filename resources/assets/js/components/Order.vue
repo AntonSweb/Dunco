@@ -59,7 +59,7 @@
             <div class="swiper-button-prev sbp-partners"></div>
         </div>
         <div class="order order__flex">
-            <video class="video" autoplay loop muted preload>
+            <video class="video" autoplay loop muted preload v-if="showVideoBottom">
                 <source src="dist/video/dunco_bottom.webm" type="video/webm">
                 <source src="dist/video/dunco_bottom.mp4" type="video/mp4">
             </video>
@@ -95,7 +95,9 @@
                     1: false,
                     2: false
                 },
-                counter: 0
+                counter: 0,
+                showVideoBottom: false,
+                windowWidth: 0
             };
         },
         mounted: function () {
@@ -123,6 +125,13 @@
                 },
             });
             sGlobal.on('slideChange', this.showOrderFunc);
+            this.$nextTick(function() {
+                window.addEventListener('resize', this.getWindowWidth);
+                this.getWindowWidth();
+            })
+        },
+        beforeDestroy() {
+            window.removeEventListener('resize', this.getWindowWidth);
         },
         methods: {
             showOrderFunc: function (){
@@ -134,6 +143,14 @@
                             that.isVisible[key] = true;
                         }, that.counter);
                     }
+                }
+            },
+            getWindowWidth() {
+                this.windowWidth = document.documentElement.clientWidth;
+                if (this.windowWidth < 768){
+                    return this.showVideoBottom = false;
+                } else {
+                    this.showVideoBottom = true;
                 }
             },
             modalOpen: function (){

@@ -63,28 +63,6 @@
     display: block;
     margin: 0 auto;
     transition: transform .2s ease-in-out;
-
-    &1{
-      //@include sprite($window-icon);
-    }
-    &2{
-      //@include sprite($doors-icon);
-    }
-    &3{
-      //@include sprite($jalousie-icon);
-    }
-    &4{
-      //@include sprite($roller-icon);
-    }
-    &5{
-      //@include sprite($gate-icon);
-    }
-    &6{
-      //@include sprite($call-icon);
-    }
-    &7{
-      //@include sprite($contract-icon);
-    }
   }
 
   &__caption{

@@ -1,6 +1,3 @@
-.paddingGallery{
-  //padding-top: 195px;
-}
 .section__gallery{
   height: 100vh;
   background-color: $empty-bg;
@@ -12,42 +9,105 @@
     background-size: cover;
     background-position: center;
   }
-
-  &__photo{
-
-    
-    &0{
-      background-image: url("../img/slide-window-snow.jpg");
-    }
-    &1{
-      background-image: url("../img/slide-window.jpg");
-    }
-    &2{
-      background-image: url("../img/slide-window2.jpg");
-    }
-    &3{
-      background-image: url("../img/slide-window3.jpg");
-    }
-    &4{
-      background-image: url("../img/slide-doors.jpg");
-    }
-    &5{
-      background-image: url("../img/slide-doors2.jpg");
-    }
-    &6{
-      background-image: url("../img/slide-jalousie.jpg");
-    }
-    &7{
-      background-image: url("../img/slide-roller.jpg");
-    }
-    &8{
-      background-image: url("../img/slide-gate.jpg");
-    }
-    &9{
-      background-image: url("../img/slide-gate2.jpg");
-    }
+}
+.gallery__title{
+  position: absolute;
+  top: 170px;
+  left: 0;
+  margin: 20px 0;
+  z-index: 9;
+  color: white;
+  @media screen and (max-width: 768px) {
+    top: 48%;
+    margin: 0;
+    transform: translateY(-50%);
   }
 }
+[data-num="photo1"]{
+  background-image: url("../img/1gate.jpg");
+}
+[data-num="photo2"]{
+  background-image: url("../img/2gate.JPG");
+}
+[data-num="photo3"]{
+  background-image: url("../img/3gate.jpg");
+}
+[data-num="photo4"]{
+  background-image: url("../img/amber.jpg");
+}
+[data-num="photo5"]{
+  background-image: url("../img/1amber.jpg");
+}
+[data-num="photo6"]{
+  background-image: url("../img/2amber.jpg");
+}
+[data-num="photo7"]{
+  background-image: url("../img/3gate.jpg");
+}
+[data-num="photo8"]{
+  background-image: url("../img/4amber.jpg");
+}
+[data-num="photo9"]{
+  background-image: url("../img/5amber.jpg");
+}
+[data-num="photo10"]{
+  background-image: url("../img/6amber.jpg");
+}
+[data-num="photo11"]{
+  background-image: url("../img/7amber.jpg");
+}
+[data-num="photo12"]{
+  background-image: url("../img/8amber.jpg");
+}
+[data-num="photo13"]{
+  background-image: url("../img/9amber.jpg");
+}
+[data-num="photo14"]{
+  background-image: url("../img/2sailor.jpg");
+}
+[data-num="photo15"]{
+  background-image: url("../img/3sailor.jpg");
+}
+[data-num="photo16"]{
+  background-image: url("../img/kiev.jpg");
+}
+[data-num="photo17"]{
+  background-image: url("../img/1kiev.jpg");
+}
+[data-num="photo18"]{
+  background-image: url("../img/2kiev.jpg");
+}
+[data-num="photo19"]{
+  background-image: url("../img/3kiev.jpg");
+}
+[data-num="photo20"]{
+  background-image: url("../img/1roleta-window.jpg");
+}
+[data-num="photo21"]{
+  background-image: url("../img/2roleta-window.jpg");
+}
+[data-num="photo22"]{
+  background-image: url("../img/3roleta-window.jpg");
+}
+[data-num="photo23"]{
+  background-image: url("../img/1doors.jpg");
+}
+[data-num="photo24"]{
+  background-image: url("../img/2doors.jpg");
+}
+[data-num="photo25"]{
+  background-image: url("../img/gracious.jpg");
+}
+[data-num="photo26"]{
+  background-image: url("../img/1gracious.jpg");
+}
+[data-num="photo27"]{
+  background-image: url("../img/5gracious.jpg");
+}
+[data-num="photo28"]{
+  background-image: url("../img/school.jpg");
+}
+
 .s-gallery-top {
   height: 80%;
   width: 100%;

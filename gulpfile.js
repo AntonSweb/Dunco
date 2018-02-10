@@ -54,7 +54,7 @@ gulp.task('scripts', function(){
 });
 //OPTIMIZATION IMAGES
 gulp.task('img', function(){
-    return gulp.src('public/app/img/*')
+    return gulp.src('public/app/img/dunco-logo.png')
         .pipe(imagemin({
             interlaced: true,
             progressive: true,

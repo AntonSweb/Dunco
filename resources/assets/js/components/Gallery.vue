@@ -1,18 +1,10 @@
 <!-- Swiper -->
 <template>
-    <section id="gallery" class="section__gallery" v-bind:class="{paddingGallery: isActive}">
+    <section id="gallery" class="section__gallery">
         <div class="swiper-container s-gallery s-gallery-top">
+            <h3 class="section__title gallery__title" v-if="showMobile">Наша галерея</h3>
             <div class="swiper-wrapper">
-                <div class="swiper-slide s-gallery__photo0"></div>
-                <div class="swiper-slide s-gallery__photo1"></div>
-                <div class="swiper-slide s-gallery__photo2"></div>
-                <div class="swiper-slide s-gallery__photo3"></div>
-                <div class="swiper-slide s-gallery__photo4"></div>
-                <div class="swiper-slide s-gallery__photo5"></div>
-                <div class="swiper-slide s-gallery__photo6"></div>
-                <div class="swiper-slide s-gallery__photo7"></div>
-                <div class="swiper-slide s-gallery__photo8"></div>
-                <div class="swiper-slide s-gallery__photo9"></div>
+                <div class="swiper-slide" v-for="n in 28" :data-num="'photo' + n"></div>
             </div>
             <!-- Add Arrows -->
             <div class="swiper-button-next swiper-button-white sbn-gallery"></div>
@@ -20,16 +12,7 @@
         </div>
         <div class="swiper-container s-gallery s-gallery-thumbs">
             <div class="swiper-wrapper">
-                <div class="swiper-slide s-gallery__photo0"></div>
-                <div class="swiper-slide s-gallery__photo1"></div>
-                <div class="swiper-slide s-gallery__photo2"></div>
-                <div class="swiper-slide s-gallery__photo3"></div>
-                <div class="swiper-slide s-gallery__photo4"></div>
-                <div class="swiper-slide s-gallery__photo5"></div>
-                <div class="swiper-slide s-gallery__photo6"></div>
-                <div class="swiper-slide s-gallery__photo7"></div>
-                <div class="swiper-slide s-gallery__photo8"></div>
-                <div class="swiper-slide s-gallery__photo9"></div>
+                <div class="swiper-slide" v-for="n in 28" :data-num="'photo' + n"></div>
             </div>
         </div>
     </section>
@@ -39,7 +22,7 @@
     module.exports = {
         data: function () {
             return{
-                isActive: false
+                showMobile: true
             }
         },
         mounted: function () {
@@ -61,16 +44,7 @@
             galleryTop.controller.control = galleryThumbs;
             galleryThumbs.controller.control = galleryTop;
 
-            sGlobal.on('slideChange', this.changeSlideFunc);
-        },
-        methods : {
-            changeSlideFunc: function () {
-                if (sGlobal.activeIndex === 5) {
-                    this.isActive = true;
-                } else if (this.isActive === true) {
-                    this.isActive = false;
-                }
-            }
+            // sGlobal.on('slideChange', this.changeSlideFunc);
         }
     }
 </script>
