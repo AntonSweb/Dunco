@@ -4,7 +4,9 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Dunco</title>
+        <meta name="description" content="Компания «Данко» (DUNCO) специализируется по таким направлениям как: окна и балконные конструкции, распашные и раздвижные входные и межофисные двери из ПВХ и алюминия, индивидуальное архитектурное проектирование конструкций для остекления фасадов жилых и промышленных зданий, торговых центров, витрин и др."/>
+        <meta name="keywords" content="купить пластиковые окна, купить окна, купить окна в киеве, купить окна от производителя, пластиковые окна цена, пластиковые окна рехау цена, окна пвх, металопластиковые окна"/>
+        <title>Компания «Данко» (DUNCO)</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.6/css/swiper.min.css">
         <link rel="stylesheet" href="dist/css/main.min.css">
         <script>
@@ -87,12 +89,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>
     <script src="//www.youtube.com/player_api"></script>
     <script>
-        var sGlobal=new Swiper('.s-global',{direction:'vertical',slidesPerView:1,mousewheel:!0,pagination:{el:'.sp-global',clickable:!0},parallax:!0,simulateTouch:!1,breakpoints:{768:{simulateTouch:!0}},});
-        $(function(){
+        var sGlobal=new Swiper('.s-global',{direction:'vertical',slidesPerView:1,mousewheel:!0,pagination:{el:'.sp-global',clickable:!0},parallax:!0,simulateTouch:!1,breakpoints:{768:{simulateTouch:!0}},});$(function(){
             $("#order-form").submit(function(e){e.preventDefault();var order=$(this);$.ajax({type:"post",url:"/order",data:order.serialize()}).done(function(){order.trigger("reset");setTimeout(function(){closeModal($('.mask__order'));$('.mask__thanks').addClass('active')},1000)})});sGlobal.on('slideChange',function(){if(sGlobal.activeIndex!==0){$('.sp-global').show()}else{$('.sp-global').hide()}});function closeModal(el){el.removeClass("active")}
-            $(".modal__order-close, .mask__order").on("click",function(){closeModal($('.mask__order'))});$(".modal__thanks-close, .mask__thanks").on("click",function(){closeModal($('.mask__thanks'))});$(document).keyup(function(e){if(e.keyCode===27&&sGlobal.activeIndex!==1){closeModal()}});$(".form__tel").mask("+380(99) 999-99-99")
-        })
+            $(".modal__order-close, .mask__order").on("click",function(){closeModal($('.mask__order'))});$(".modal__thanks-close, .mask__thanks").on("click",function(){closeModal($('.mask__thanks'))});$(document).keyup(function(e){if(e.keyCode===27&&sGlobal.activeIndex!==1){closeModal()}});$(".form__tel").mask("+380(99) 999-99-99")})
     </script>
-    <script src="app/js/build.js"></script>
+    <script src="dist/js/build.min.js"></script>
     </body>
 </html>

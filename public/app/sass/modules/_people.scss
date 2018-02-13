@@ -3,7 +3,7 @@
   height: 100vh;
   background: url("../img/people.jpg") no-repeat center bottom;
   background-size: cover;
-  @media screen and(max-height: 768px){
+  @media screen and(max-height: $height){
     padding-top: 50px;
   }
   @media screen and(max-width: 768px){

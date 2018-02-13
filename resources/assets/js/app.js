@@ -8,7 +8,6 @@
 // require('./bootstrap');
 
 // window.Vue = require('vue');
-
 const Vue         = require('vue');
 const Vueheader   = require('./components/Header.vue');
 const Vueswiper   = require('./components/Swiper.vue');

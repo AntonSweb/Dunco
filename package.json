@@ -5,6 +5,7 @@
     "watch": "watchify -t vueify -e resources/assets/js/app.js -o public/app/js/build.js"
   },
   "devDependencies": {
+    "@xkeshi/vue-countdown": "^0.5.0",
     "animate.css": "^3.5.2",
     "axios": "^0.16.2",
     "babel-core": "^6.26.0",

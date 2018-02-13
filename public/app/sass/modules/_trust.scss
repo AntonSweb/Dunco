@@ -1,6 +1,6 @@
 .section__trust{
   height: 100vh;
-  @media screen and(max-height: 768px) and(min-width: 769px){
+  @media screen and(max-height: $height) and(min-width: 769px){
     padding-top: 55px;
     height: auto;
   }
@@ -30,10 +30,10 @@
   }
 }
 .title__numbers, .title__stage{
-  @media screen and(max-height: 768px){
+  @media screen and(max-height: $height){
     margin: 30px 0;
   }
-  @media screen and(max-height: 768px) and(max-width: 992px){
+  @media screen and(max-height: $height) and(max-width: 992px){
     margin: 10px 0;
   }
   @media screen and(max-width: 768px){

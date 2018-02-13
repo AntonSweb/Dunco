@@ -1,6 +1,7 @@
 .section__video{
   height: 100vh;
   background-color: $empty-bg;
+  overflow: hidden;
   @media screen and(max-width: 768px){
     background-color:  $violet-bg;
   }
@@ -28,7 +29,7 @@
   height: 100%;
   transform: translateX(-50%) translateY(-50%);
   text-align: center;
-  @media screen and(max-height: 768px){
+  @media screen and(max-height: $height){
     padding-top: 55px;
   }
   @media screen and(max-width: 768px){

@@ -1,191 +1,353 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-// shim for using process in browser
-var process = module.exports = {};
+/*!
+ * vue-countdown v0.5.0
+ * https://github.com/xkeshi/vue-countdown
+ *
+ * Copyright (c) 2017 Xkeshi
+ * Released under the MIT license
+ *
+ * Date: 2017-11-20T03:10:33.102Z
+ */
 
-// cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
+(function (global, factory) {
+	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+	typeof define === 'function' && define.amd ? define(factory) :
+	(global.VueCountdown = factory());
+}(this, (function () { 'use strict';
 
-var cachedSetTimeout;
-var cachedClearTimeout;
+var MILLISECONDS_SECOND = 1000;
+var MILLISECONDS_MINUTE = 60 * MILLISECONDS_SECOND;
+var MILLISECONDS_HOUR = 60 * MILLISECONDS_MINUTE;
+var MILLISECONDS_DAY = 24 * MILLISECONDS_HOUR;
 
-function defaultSetTimout() {
-    throw new Error('setTimeout has not been defined');
-}
-function defaultClearTimeout () {
-    throw new Error('clearTimeout has not been defined');
-}
-(function () {
-    try {
-        if (typeof setTimeout === 'function') {
-            cachedSetTimeout = setTimeout;
-        } else {
-            cachedSetTimeout = defaultSetTimout;
-        }
-    } catch (e) {
-        cachedSetTimeout = defaultSetTimout;
+var index = {
+  data: function data() {
+    return {
+      /**
+       * Total number of time (in milliseconds) for the countdown.
+       * @type {number}
+       */
+      count: 0,
+
+      /**
+       * Define if the time is countdowning.
+       * @type {boolean}
+       */
+      counting: false,
+
+      /**
+       * The absolute end time.
+       * @type {number}
+       */
+      endTime: 0
+    };
+  },
+
+
+  props: {
+    /**
+     * Start to countdown automatically when initialized.
+     */
+    autoStart: {
+      type: Boolean,
+      default: true
+    },
+
+    /**
+     * Indicate if emit the countdown events or not.
+     */
+    emitEvents: {
+      type: Boolean,
+      default: true
+    },
+
+    /**
+     * Update interval time (in milliseconds) of the countdown.
+     */
+    interval: {
+      type: Number,
+      default: 1000
+    },
+
+    /**
+     * Add a leading zero to the output numbers if they are less than 10.
+     */
+    leadingZero: {
+      type: Boolean,
+      default: true
+    },
+
+    /**
+     * Generate the current time of a specific time zone.
+     */
+    now: {
+      type: Function,
+      default: function _default() {
+        return Date.now();
+      }
+    },
+
+    /**
+     * Total number of time (in milliseconds) for the countdown.
+     */
+    time: {
+      type: Number,
+      default: 0,
+      required: true,
+      validator: function validator(value) {
+        return value >= 0;
+      }
+    },
+
+    /**
+     * The tag of the component root element in the countdown.
+     */
+    tag: {
+      type: String,
+      default: 'span'
     }
-    try {
-        if (typeof clearTimeout === 'function') {
-            cachedClearTimeout = clearTimeout;
-        } else {
-            cachedClearTimeout = defaultClearTimeout;
-        }
-    } catch (e) {
-        cachedClearTimeout = defaultClearTimeout;
-    }
-} ())
-function runTimeout(fun) {
-    if (cachedSetTimeout === setTimeout) {
-        //normal enviroments in sane situations
-        return setTimeout(fun, 0);
-    }
-    // if setTimeout wasn't available but was latter defined
-    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-        cachedSetTimeout = setTimeout;
-        return setTimeout(fun, 0);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedSetTimeout(fun, 0);
-    } catch(e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-            return cachedSetTimeout.call(null, fun, 0);
-        } catch(e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-            return cachedSetTimeout.call(this, fun, 0);
-        }
-    }
+  },
+
+  computed: {
+    /**
+     * Remaining days.
+     * @returns {number}
+     */
+    days: function days() {
+      return Math.floor(this.count / MILLISECONDS_DAY);
+    },
 
 
-}
-function runClearTimeout(marker) {
-    if (cachedClearTimeout === clearTimeout) {
-        //normal enviroments in sane situations
-        return clearTimeout(marker);
+    /**
+     * Remaining hours.
+     * @returns {number}
+     */
+    hours: function hours() {
+      return Math.floor(this.count % MILLISECONDS_DAY / MILLISECONDS_HOUR);
+    },
+
+
+    /**
+     * Remaining minutes.
+     * @returns {number}
+     */
+    minutes: function minutes() {
+      return Math.floor(this.count % MILLISECONDS_HOUR / MILLISECONDS_MINUTE);
+    },
+
+
+    /**
+     * Remaining seconds.
+     * @returns {number}
+     */
+    seconds: function seconds() {
+      var interval = this.interval;
+
+      var seconds = this.count % MILLISECONDS_MINUTE / MILLISECONDS_SECOND;
+
+      if (interval < 10) {
+        return seconds.toFixed(3);
+      } else if (interval >= 10 && interval < 100) {
+        return seconds.toFixed(2);
+      } else if (interval >= 100 && interval < 1000) {
+        return seconds.toFixed(1);
+      }
+
+      return Math.floor(seconds);
+    },
+
+
+    /**
+     * Total remaining days.
+     * @returns {number}
+     */
+    totalDays: function totalDays() {
+      return this.days;
+    },
+
+
+    /**
+     * Total remaining hours.
+     * @returns {number}
+     */
+    totalHours: function totalHours() {
+      return Math.floor(this.count / MILLISECONDS_HOUR);
+    },
+
+
+    /**
+     * Total remaining minutes.
+     * @returns {number}
+     */
+    totalMinutes: function totalMinutes() {
+      return Math.floor(this.count / MILLISECONDS_MINUTE);
+    },
+
+
+    /**
+     * Total remaining seconds.
+     * @returns {number}
+     */
+    totalSeconds: function totalSeconds() {
+      return Math.floor(this.count / MILLISECONDS_SECOND);
     }
-    // if clearTimeout wasn't available but was latter defined
-    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-        cachedClearTimeout = clearTimeout;
-        return clearTimeout(marker);
+  },
+
+  render: function render(createElement) {
+    var _this = this;
+
+    var preprocess = function preprocess(value) {
+      return _this.leadingZero && value < 10 ? '0' + value : value;
+    };
+
+    return createElement(this.tag, this.$scopedSlots.default ? [this.$scopedSlots.default({
+      days: preprocess(this.days),
+      hours: preprocess(this.hours),
+      minutes: preprocess(this.minutes),
+      seconds: preprocess(this.seconds),
+      totalDays: this.totalDays,
+      totalHours: this.totalHours,
+      totalMinutes: this.totalMinutes,
+      totalSeconds: this.totalSeconds
+    })] : this.$slots.default);
+  },
+  created: function created() {
+    this.init();
+  },
+  mounted: function mounted() {
+    if (this.autoStart) {
+      this.start();
     }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedClearTimeout(marker);
-    } catch (e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-            return cachedClearTimeout.call(null, marker);
-        } catch (e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-            return cachedClearTimeout.call(this, marker);
-        }
+
+    window.addEventListener('focus', this.onFocus = this.update.bind(this));
+  },
+  beforeDestroy: function beforeDestroy() {
+    window.removeEventListener('focus', this.onFocus);
+    clearTimeout(this.timeout);
+  },
+
+
+  watch: {
+    time: function time() {
+      this.init();
     }
+  },
+
+  methods: {
+    /**
+     * Initialize count.
+     */
+    init: function init() {
+      var time = this.time;
 
 
+      if (time > 0) {
+        this.count = time;
+        this.endTime = this.now() + time;
+      }
+    },
 
-}
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
 
-function cleanUpNextTick() {
-    if (!draining || !currentQueue) {
+    /**
+     * Start to countdown.
+     * @public
+     * @emits Countdown#countdownstart
+     */
+    start: function start() {
+      if (this.counting) {
         return;
-    }
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-    } else {
-        queueIndex = -1;
-    }
-    if (queue.length) {
-        drainQueue();
-    }
-}
+      }
 
-function drainQueue() {
-    if (draining) {
+      if (this.emitEvents) {
+        /**
+         * Countdown start event.
+         * @event Countdown#countdownstart
+         */
+        this.$emit('countdownstart');
+      }
+
+      this.counting = true;
+      this.step();
+    },
+
+
+    /**
+     * Step to countdown.
+     * @private
+     * @emits Countdown#countdownprogress
+     */
+    step: function step() {
+      var _this2 = this;
+
+      if (!this.counting) {
         return;
-    }
-    var timeout = runTimeout(cleanUpNextTick);
-    draining = true;
+      }
 
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
-            }
-        }
-        queueIndex = -1;
-        len = queue.length;
-    }
-    currentQueue = null;
-    draining = false;
-    runClearTimeout(timeout);
-}
+      if (this.emitEvents) {
+        /**
+         * Countdown progress event.
+         * @event Countdown#countdownprogress
+         */
+        this.$emit('countdownprogress', {
+          days: this.days,
+          hours: this.hours,
+          minutes: this.minutes,
+          seconds: this.seconds
+        });
+      }
 
-process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-        }
+      if (this.count > 0) {
+        var interval = this.interval;
+
+
+        this.timeout = setTimeout(function () {
+          _this2.count -= interval;
+          _this2.step();
+        }, interval);
+      } else {
+        this.count = 0;
+        this.stop();
+      }
+    },
+
+
+    /**
+     * Stop the countdown.
+     * @public
+     * @emits Countdown#countdownend
+     */
+    stop: function stop() {
+      this.counting = false;
+      this.timeout = undefined;
+
+      if (this.emitEvents) {
+        /**
+         * Countdown end event.
+         * @event Countdown#countdownend
+         */
+        this.$emit('countdownend');
+      }
+    },
+
+
+    /**
+     * Update the count.
+     * @private
+     */
+    update: function update() {
+      if (this.counting) {
+        this.count = Math.max(0, this.endTime - this.now());
+      }
     }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
-        runTimeout(drainQueue);
-    }
+  }
 };
 
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
+return index;
 
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-process.prependListener = noop;
-process.prependOnceListener = noop;
-
-process.listeners = function (name) { return [] }
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
+})));
 
 },{}],2:[function(require,module,exports){
-(function (process,global){
+(function (global){
 /*!
  * Vue.js v2.5.13
  * (c) 2014-2017 Evan You
@@ -539,12 +701,12 @@ var config = ({
   /**
    * Show production mode tip message on boot?
    */
-  productionTip: process.env.NODE_ENV !== 'production',
+  productionTip: "production" !== 'production',
 
   /**
    * Whether to enable devtools
    */
-  devtools: process.env.NODE_ENV !== 'production',
+  devtools: "production" !== 'production',
 
   /**
    * Whether to record perf
@@ -748,7 +910,7 @@ var tip = noop;
 var generateComponentTrace = (noop); // work around flow check
 var formatComponentName = (noop);
 
-if (process.env.NODE_ENV !== 'production') {
+if ("production" !== 'production') {
   var hasConsole = typeof console !== 'undefined';
   var classifyRE = /(?:^|[-_])(\w)/g;
   var classify = function (str) { return str
@@ -1183,7 +1345,7 @@ function defineReactive (
         return
       }
       /* eslint-enable no-self-compare */
-      if (process.env.NODE_ENV !== 'production' && customSetter) {
+      if ("production" !== 'production' && customSetter) {
         customSetter();
       }
       if (setter) {
@@ -1214,7 +1376,7 @@ function set (target, key, val) {
   }
   var ob = (target).__ob__;
   if (target._isVue || (ob && ob.vmCount)) {
-    process.env.NODE_ENV !== 'production' && warn(
+    "production" !== 'production' && warn(
       'Avoid adding reactive properties to a Vue instance or its root $data ' +
       'at runtime - declare it upfront in the data option.'
     );
@@ -1239,7 +1401,7 @@ function del (target, key) {
   }
   var ob = (target).__ob__;
   if (target._isVue || (ob && ob.vmCount)) {
-    process.env.NODE_ENV !== 'production' && warn(
+    "production" !== 'production' && warn(
       'Avoid deleting properties on a Vue instance or its root $data ' +
       '- just set it to null.'
     );
@@ -1281,7 +1443,7 @@ var strats = config.optionMergeStrategies;
 /**
  * Options with restrictions
  */
-if (process.env.NODE_ENV !== 'production') {
+if ("production" !== 'production') {
   strats.el = strats.propsData = function (parent, child, vm, key) {
     if (!vm) {
       warn(
@@ -1365,7 +1527,7 @@ strats.data = function (
 ) {
   if (!vm) {
     if (childVal && typeof childVal !== 'function') {
-      process.env.NODE_ENV !== 'production' && warn(
+      "production" !== 'production' && warn(
         'The "data" option should be a function ' +
         'that returns a per-instance value in component ' +
         'definitions.',
@@ -1415,7 +1577,7 @@ function mergeAssets (
 ) {
   var res = Object.create(parentVal || null);
   if (childVal) {
-    process.env.NODE_ENV !== 'production' && assertObjectType(key, childVal, vm);
+    "production" !== 'production' && assertObjectType(key, childVal, vm);
     return extend(res, childVal)
   } else {
     return res
@@ -1443,7 +1605,7 @@ strats.watch = function (
   if (childVal === nativeWatch) { childVal = undefined; }
   /* istanbul ignore if */
   if (!childVal) { return Object.create(parentVal || null) }
-  if (process.env.NODE_ENV !== 'production') {
+  if ("production" !== 'production') {
     assertObjectType(key, childVal, vm);
   }
   if (!parentVal) { return childVal }
@@ -1474,7 +1636,7 @@ strats.computed = function (
   vm,
   key
 ) {
-  if (childVal && process.env.NODE_ENV !== 'production') {
+  if (childVal && "production" !== 'production') {
     assertObjectType(key, childVal, vm);
   }
   if (!parentVal) { return childVal }
@@ -1535,7 +1697,7 @@ function normalizeProps (options, vm) {
       if (typeof val === 'string') {
         name = camelize(val);
         res[name] = { type: null };
-      } else if (process.env.NODE_ENV !== 'production') {
+      } else if ("production" !== 'production') {
         warn('props must be strings when using array syntax.');
       }
     }
@@ -1547,7 +1709,7 @@ function normalizeProps (options, vm) {
         ? val
         : { type: val };
     }
-  } else if (process.env.NODE_ENV !== 'production') {
+  } else if ("production" !== 'production') {
     warn(
       "Invalid value for option \"props\": expected an Array or an Object, " +
       "but got " + (toRawType(props)) + ".",
@@ -1575,7 +1737,7 @@ function normalizeInject (options, vm) {
         ? extend({ from: key }, val)
         : { from: val };
     }
-  } else if (process.env.NODE_ENV !== 'production') {
+  } else if ("production" !== 'production') {
     warn(
       "Invalid value for option \"inject\": expected an Array or an Object, " +
       "but got " + (toRawType(inject)) + ".",
@@ -1618,7 +1780,7 @@ function mergeOptions (
   child,
   vm
 ) {
-  if (process.env.NODE_ENV !== 'production') {
+  if ("production" !== 'production') {
     checkComponents(child);
   }
 
@@ -1679,7 +1841,7 @@ function resolveAsset (
   if (hasOwn(assets, PascalCaseId)) { return assets[PascalCaseId] }
   // fallback to prototype chain
   var res = assets[id] || assets[camelizedId] || assets[PascalCaseId];
-  if (process.env.NODE_ENV !== 'production' && warnMissing && !res) {
+  if ("production" !== 'production' && warnMissing && !res) {
     warn(
       'Failed to resolve ' + type.slice(0, -1) + ': ' + id,
       options
@@ -1718,7 +1880,7 @@ function validateProp (
     observerState.shouldConvert = prevShouldConvert;
   }
   if (
-    process.env.NODE_ENV !== 'production' &&
+    "production" !== 'production' &&
     // skip validation for weex recycle-list child component props
     !(false && isObject(value) && ('@binding' in value))
   ) {
@@ -1737,7 +1899,7 @@ function getPropDefaultValue (vm, prop, key) {
   }
   var def = prop.default;
   // warn against non-factory defaults for Object & Array
-  if (process.env.NODE_ENV !== 'production' && isObject(def)) {
+  if ("production" !== 'production' && isObject(def)) {
     warn(
       'Invalid default value for prop "' + key + '": ' +
       'Props with type Object/Array must use a factory function ' +
@@ -1895,7 +2057,7 @@ function globalHandleError (err, vm, info) {
 }
 
 function logError (err, vm, info) {
-  if (process.env.NODE_ENV !== 'production') {
+  if ("production" !== 'production') {
     warn(("Error in " + info + ": \"" + (err.toString()) + "\""), vm);
   }
   /* istanbul ignore else */
@@ -2026,7 +2188,7 @@ function nextTick (cb, ctx) {
 
 var initProxy;
 
-if (process.env.NODE_ENV !== 'production') {
+if ("production" !== 'production') {
   var allowedGlobals = makeMap(
     'Infinity,undefined,NaN,isFinite,isNaN,' +
     'parseFloat,parseInt,decodeURI,decodeURIComponent,encodeURI,encodeURIComponent,' +
@@ -2138,7 +2300,7 @@ function _traverse (val, seen) {
 var mark;
 var measure;
 
-if (process.env.NODE_ENV !== 'production') {
+if ("production" !== 'production') {
   var perf = inBrowser && window.performance;
   /* istanbul ignore if */
   if (
@@ -2208,7 +2370,7 @@ function updateListeners (
     event = normalizeEvent(name);
     /* istanbul ignore if */
     if (isUndef(cur)) {
-      process.env.NODE_ENV !== 'production' && warn(
+      "production" !== 'production' && warn(
         "Invalid handler for event \"" + (event.name) + "\": got " + String(cur),
         vm
       );
@@ -2285,7 +2447,7 @@ function extractPropsFromVNodeData (
   if (isDef(attrs) || isDef(props)) {
     for (var key in propOptions) {
       var altKey = hyphenate(key);
-      if (process.env.NODE_ENV !== 'production') {
+      if ("production" !== 'production') {
         var keyInLowerCase = key.toLowerCase();
         if (
           key !== keyInLowerCase &&
@@ -2488,7 +2650,7 @@ function resolveAsyncComponent (
     });
 
     var reject = once(function (reason) {
-      process.env.NODE_ENV !== 'production' && warn(
+      "production" !== 'production' && warn(
         "Failed to resolve async component: " + (String(factory)) +
         (reason ? ("\nReason: " + reason) : '')
       );
@@ -2531,7 +2693,7 @@ function resolveAsyncComponent (
           setTimeout(function () {
             if (isUndef(factory.resolved)) {
               reject(
-                process.env.NODE_ENV !== 'production'
+                "production" !== 'production'
                   ? ("timeout (" + (res.timeout) + "ms)")
                   : null
               );
@@ -2680,7 +2842,7 @@ function eventsMixin (Vue) {
 
   Vue.prototype.$emit = function (event) {
     var vm = this;
-    if (process.env.NODE_ENV !== 'production') {
+    if ("production" !== 'production') {
       var lowerCaseEvent = event.toLowerCase();
       if (lowerCaseEvent !== event && vm._events[lowerCaseEvent]) {
         tip(
@@ -2907,7 +3069,7 @@ function mountComponent (
   vm.$el = el;
   if (!vm.$options.render) {
     vm.$options.render = createEmptyVNode;
-    if (process.env.NODE_ENV !== 'production') {
+    if ("production" !== 'production') {
       /* istanbul ignore if */
       if ((vm.$options.template && vm.$options.template.charAt(0) !== '#') ||
         vm.$options.el || el) {
@@ -2929,7 +3091,7 @@ function mountComponent (
 
   var updateComponent;
   /* istanbul ignore if */
-  if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
+  if ("production" !== 'production' && config.performance && mark) {
     updateComponent = function () {
       var name = vm._name;
       var id = vm._uid;
@@ -2974,7 +3136,7 @@ function updateChildComponent (
   parentVnode,
   renderChildren
 ) {
-  if (process.env.NODE_ENV !== 'production') {
+  if ("production" !== 'production') {
     isUpdatingChildComponent = true;
   }
 
@@ -3027,7 +3189,7 @@ function updateChildComponent (
     vm.$forceUpdate();
   }
 
-  if (process.env.NODE_ENV !== 'production') {
+  if ("production" !== 'production') {
     isUpdatingChildComponent = false;
   }
 }
@@ -3108,7 +3270,7 @@ var index = 0;
 function resetSchedulerState () {
   index = queue.length = activatedChildren.length = 0;
   has = {};
-  if (process.env.NODE_ENV !== 'production') {
+  if ("production" !== 'production') {
     circular = {};
   }
   waiting = flushing = false;
@@ -3139,7 +3301,7 @@ function flushSchedulerQueue () {
     has[id] = null;
     watcher.run();
     // in dev build, check and stop circular updates.
-    if (process.env.NODE_ENV !== 'production' && has[id] != null) {
+    if ("production" !== 'production' && has[id] != null) {
       circular[id] = (circular[id] || 0) + 1;
       if (circular[id] > MAX_UPDATE_COUNT) {
         warn(
@@ -3267,7 +3429,7 @@ var Watcher = function Watcher (
   this.newDeps = [];
   this.depIds = new _Set();
   this.newDepIds = new _Set();
-  this.expression = process.env.NODE_ENV !== 'production'
+  this.expression = "production" !== 'production'
     ? expOrFn.toString()
     : '';
   // parse expression for getter
@@ -3277,7 +3439,7 @@ var Watcher = function Watcher (
     this.getter = parsePath(expOrFn);
     if (!this.getter) {
       this.getter = function () {};
-      process.env.NODE_ENV !== 'production' && warn(
+      "production" !== 'production' && warn(
         "Failed watching path: \"" + expOrFn + "\" " +
         'Watcher only accepts simple dot-delimited paths. ' +
         'For full control, use a function instead.',
@@ -3490,7 +3652,7 @@ function initProps (vm, propsOptions) {
     keys.push(key);
     var value = validateProp(key, propsOptions, propsData, vm);
     /* istanbul ignore else */
-    if (process.env.NODE_ENV !== 'production') {
+    if ("production" !== 'production') {
       var hyphenatedKey = hyphenate(key);
       if (isReservedAttribute(hyphenatedKey) ||
           config.isReservedAttr(hyphenatedKey)) {
@@ -3532,7 +3694,7 @@ function initData (vm) {
     : data || {};
   if (!isPlainObject(data)) {
     data = {};
-    process.env.NODE_ENV !== 'production' && warn(
+    "production" !== 'production' && warn(
       'data functions should return an object:\n' +
       'https://vuejs.org/v2/guide/components.html#data-Must-Be-a-Function',
       vm
@@ -3545,7 +3707,7 @@ function initData (vm) {
   var i = keys.length;
   while (i--) {
     var key = keys[i];
-    if (process.env.NODE_ENV !== 'production') {
+    if ("production" !== 'production') {
       if (methods && hasOwn(methods, key)) {
         warn(
           ("Method \"" + key + "\" has already been defined as a data property."),
@@ -3554,7 +3716,7 @@ function initData (vm) {
       }
     }
     if (props && hasOwn(props, key)) {
-      process.env.NODE_ENV !== 'production' && warn(
+      "production" !== 'production' && warn(
         "The data property \"" + key + "\" is already declared as a prop. " +
         "Use prop default value instead.",
         vm
@@ -3587,7 +3749,7 @@ function initComputed (vm, computed) {
   for (var key in computed) {
     var userDef = computed[key];
     var getter = typeof userDef === 'function' ? userDef : userDef.get;
-    if (process.env.NODE_ENV !== 'production' && getter == null) {
+    if ("production" !== 'production' && getter == null) {
       warn(
         ("Getter is missing for computed property \"" + key + "\"."),
         vm
@@ -3609,7 +3771,7 @@ function initComputed (vm, computed) {
     // at instantiation here.
     if (!(key in vm)) {
       defineComputed(vm, key, userDef);
-    } else if (process.env.NODE_ENV !== 'production') {
+    } else if ("production" !== 'production') {
       if (key in vm.$data) {
         warn(("The computed property \"" + key + "\" is already defined in data."), vm);
       } else if (vm.$options.props && key in vm.$options.props) {
@@ -3640,7 +3802,7 @@ function defineComputed (
       ? userDef.set
       : noop;
   }
-  if (process.env.NODE_ENV !== 'production' &&
+  if ("production" !== 'production' &&
       sharedPropertyDefinition.set === noop) {
     sharedPropertyDefinition.set = function () {
       warn(
@@ -3670,7 +3832,7 @@ function createComputedGetter (key) {
 function initMethods (vm, methods) {
   var props = vm.$options.props;
   for (var key in methods) {
-    if (process.env.NODE_ENV !== 'production') {
+    if ("production" !== 'production') {
       if (methods[key] == null) {
         warn(
           "Method \"" + key + "\" has an undefined value in the component definition. " +
@@ -3732,7 +3894,7 @@ function stateMixin (Vue) {
   dataDef.get = function () { return this._data };
   var propsDef = {};
   propsDef.get = function () { return this._props };
-  if (process.env.NODE_ENV !== 'production') {
+  if ("production" !== 'production') {
     dataDef.set = function (newData) {
       warn(
         'Avoid replacing instance root $data. ' +
@@ -3788,7 +3950,7 @@ function initInjections (vm) {
     observerState.shouldConvert = false;
     Object.keys(result).forEach(function (key) {
       /* istanbul ignore else */
-      if (process.env.NODE_ENV !== 'production') {
+      if ("production" !== 'production') {
         defineReactive(vm, key, result[key], function () {
           warn(
             "Avoid mutating an injected value directly since the changes will be " +
@@ -3833,7 +3995,7 @@ function resolveInject (inject, vm) {
           result[key] = typeof provideDefault === 'function'
             ? provideDefault.call(vm)
             : provideDefault;
-        } else if (process.env.NODE_ENV !== 'production') {
+        } else if ("production" !== 'production') {
           warn(("Injection \"" + key + "\" not found"), vm);
         }
       }
@@ -3892,7 +4054,7 @@ function renderSlot (
   if (scopedSlotFn) { // scoped slot
     props = props || {};
     if (bindObject) {
-      if (process.env.NODE_ENV !== 'production' && !isObject(bindObject)) {
+      if ("production" !== 'production' && !isObject(bindObject)) {
         warn(
           'slot v-bind without argument expects an Object',
           this
@@ -3905,7 +4067,7 @@ function renderSlot (
     var slotNodes = this.$slots[name];
     // warn duplicate slot usage
     if (slotNodes) {
-      if (process.env.NODE_ENV !== 'production' && slotNodes._rendered) {
+      if ("production" !== 'production' && slotNodes._rendered) {
         warn(
           "Duplicate presence of slot \"" + name + "\" found in the same render tree " +
           "- this will likely cause render errors.",
@@ -3973,7 +4135,7 @@ function bindObjectProps (
 ) {
   if (value) {
     if (!isObject(value)) {
-      process.env.NODE_ENV !== 'production' && warn(
+      "production" !== 'production' && warn(
         'v-bind without argument expects an Object or Array value',
         this
       );
@@ -4081,7 +4243,7 @@ function markStaticNode (node, key, isOnce) {
 function bindObjectListeners (data, value) {
   if (value) {
     if (!isPlainObject(value)) {
-      process.env.NODE_ENV !== 'production' && warn(
+      "production" !== 'production' && warn(
         'v-on without argument expects an Object value',
         this
       );
@@ -4324,7 +4486,7 @@ function createComponent (
   // if at this stage it's not a constructor or an async component factory,
   // reject.
   if (typeof Ctor !== 'function') {
-    if (process.env.NODE_ENV !== 'production') {
+    if ("production" !== 'production') {
       warn(("Invalid Component definition: " + (String(Ctor))), context);
     }
     return
@@ -4494,7 +4656,7 @@ function _createElement (
   normalizationType
 ) {
   if (isDef(data) && isDef((data).__ob__)) {
-    process.env.NODE_ENV !== 'production' && warn(
+    "production" !== 'production' && warn(
       "Avoid using observed data object as vnode data: " + (JSON.stringify(data)) + "\n" +
       'Always create fresh vnode data objects in each render!',
       context
@@ -4510,7 +4672,7 @@ function _createElement (
     return createEmptyVNode()
   }
   // warn against non-primitive key
-  if (process.env.NODE_ENV !== 'production' &&
+  if ("production" !== 'production' &&
     isDef(data) && isDef(data.key) && !isPrimitive(data.key)
   ) {
     {
@@ -4609,7 +4771,7 @@ function initRender (vm) {
   var parentData = parentVnode && parentVnode.data;
 
   /* istanbul ignore else */
-  if (process.env.NODE_ENV !== 'production') {
+  if ("production" !== 'production') {
     defineReactive(vm, '$attrs', parentData && parentData.attrs || emptyObject, function () {
       !isUpdatingChildComponent && warn("$attrs is readonly.", vm);
     }, true);
@@ -4663,7 +4825,7 @@ function renderMixin (Vue) {
       // return error render result,
       // or previous vnode to prevent render error causing blank component
       /* istanbul ignore else */
-      if (process.env.NODE_ENV !== 'production') {
+      if ("production" !== 'production') {
         if (vm.$options.renderError) {
           try {
             vnode = vm.$options.renderError.call(vm._renderProxy, vm.$createElement, e);
@@ -4680,7 +4842,7 @@ function renderMixin (Vue) {
     }
     // return empty vnode in case the render function errored out
     if (!(vnode instanceof VNode)) {
-      if (process.env.NODE_ENV !== 'production' && Array.isArray(vnode)) {
+      if ("production" !== 'production' && Array.isArray(vnode)) {
         warn(
           'Multiple root nodes returned from render function. Render function ' +
           'should return a single root node.',
@@ -4707,7 +4869,7 @@ function initMixin (Vue) {
 
     var startTag, endTag;
     /* istanbul ignore if */
-    if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
+    if ("production" !== 'production' && config.performance && mark) {
       startTag = "vue-perf-start:" + (vm._uid);
       endTag = "vue-perf-end:" + (vm._uid);
       mark(startTag);
@@ -4729,7 +4891,7 @@ function initMixin (Vue) {
       );
     }
     /* istanbul ignore else */
-    if (process.env.NODE_ENV !== 'production') {
+    if ("production" !== 'production') {
       initProxy(vm);
     } else {
       vm._renderProxy = vm;
@@ -4746,7 +4908,7 @@ function initMixin (Vue) {
     callHook(vm, 'created');
 
     /* istanbul ignore if */
-    if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
+    if ("production" !== 'production' && config.performance && mark) {
       vm._name = formatComponentName(vm, false);
       mark(endTag);
       measure(("vue " + (vm._name) + " init"), startTag, endTag);
@@ -4837,7 +4999,7 @@ function dedupe (latest, extended, sealed) {
 }
 
 function Vue$3 (options) {
-  if (process.env.NODE_ENV !== 'production' &&
+  if ("production" !== 'production' &&
     !(this instanceof Vue$3)
   ) {
     warn('Vue is a constructor and should be called with the `new` keyword');
@@ -4906,7 +5068,7 @@ function initExtend (Vue) {
     }
 
     var name = extendOptions.name || Super.options.name;
-    if (process.env.NODE_ENV !== 'production' && name) {
+    if ("production" !== 'production' && name) {
       validateComponentName(name);
     }
 
@@ -4989,7 +5151,7 @@ function initAssetRegisters (Vue) {
         return this.options[type + 's'][id]
       } else {
         /* istanbul ignore if */
-        if (process.env.NODE_ENV !== 'production' && type === 'component') {
+        if ("production" !== 'production' && type === 'component') {
           validateComponentName(id);
         }
         if (type === 'component' && isPlainObject(definition)) {
@@ -5144,7 +5306,7 @@ function initGlobalAPI (Vue) {
   // config
   var configDef = {};
   configDef.get = function () { return config; };
-  if (process.env.NODE_ENV !== 'production') {
+  if ("production" !== 'production') {
     configDef.set = function () {
       warn(
         'Do not replace the Vue.config object, set individual fields instead.'
@@ -5406,7 +5568,7 @@ function query (el) {
   if (typeof el === 'string') {
     var selected = document.querySelector(el);
     if (!selected) {
-      process.env.NODE_ENV !== 'production' && warn(
+      "production" !== 'production' && warn(
         'Cannot find element: ' + el
       );
       return document.createElement('div')
@@ -5651,7 +5813,7 @@ function createPatchFunction (backend) {
     var children = vnode.children;
     var tag = vnode.tag;
     if (isDef(tag)) {
-      if (process.env.NODE_ENV !== 'production') {
+      if ("production" !== 'production') {
         if (data && data.pre) {
           creatingElmInVPre++;
         }
@@ -5678,7 +5840,7 @@ function createPatchFunction (backend) {
         insert(parentElm, vnode.elm, refElm);
       }
 
-      if (process.env.NODE_ENV !== 'production' && data && data.pre) {
+      if ("production" !== 'production' && data && data.pre) {
         creatingElmInVPre--;
       }
     } else if (isTrue(vnode.isComment)) {
@@ -5765,7 +5927,7 @@ function createPatchFunction (backend) {
 
   function createChildren (vnode, children, insertedVnodeQueue) {
     if (Array.isArray(children)) {
-      if (process.env.NODE_ENV !== 'production') {
+      if ("production" !== 'production') {
         checkDuplicateKeys(children);
       }
       for (var i = 0; i < children.length; ++i) {
@@ -5899,7 +6061,7 @@ function createPatchFunction (backend) {
     // during leaving transitions
     var canMove = !removeOnly;
 
-    if (process.env.NODE_ENV !== 'production') {
+    if ("production" !== 'production') {
       checkDuplicateKeys(newCh);
     }
 
@@ -6073,7 +6235,7 @@ function createPatchFunction (backend) {
       return true
     }
     // assert node match
-    if (process.env.NODE_ENV !== 'production') {
+    if ("production" !== 'production') {
       if (!assertNodeMatch(elm, vnode, inVPre)) {
         return false
       }
@@ -6096,7 +6258,7 @@ function createPatchFunction (backend) {
           if (isDef(i = data) && isDef(i = i.domProps) && isDef(i = i.innerHTML)) {
             if (i !== elm.innerHTML) {
               /* istanbul ignore if */
-              if (process.env.NODE_ENV !== 'production' &&
+              if ("production" !== 'production' &&
                 typeof console !== 'undefined' &&
                 !hydrationBailed
               ) {
@@ -6122,7 +6284,7 @@ function createPatchFunction (backend) {
             // longer than the virtual children list.
             if (!childrenMatch || childNode) {
               /* istanbul ignore if */
-              if (process.env.NODE_ENV !== 'production' &&
+              if ("production" !== 'production' &&
                 typeof console !== 'undefined' &&
                 !hydrationBailed
               ) {
@@ -6197,7 +6359,7 @@ function createPatchFunction (backend) {
             if (hydrate(oldVnode, vnode, insertedVnodeQueue)) {
               invokeInsertHook(vnode, insertedVnodeQueue, true);
               return oldVnode
-            } else if (process.env.NODE_ENV !== 'production') {
+            } else if ("production" !== 'production') {
               warn(
                 'The client-side rendered virtual DOM tree is not matching ' +
                 'server-rendered content. This is likely caused by incorrect ' +
@@ -7235,7 +7397,7 @@ function enter (vnode, toggleDisplay) {
       : duration
   );
 
-  if (process.env.NODE_ENV !== 'production' && explicitEnterDuration != null) {
+  if ("production" !== 'production' && explicitEnterDuration != null) {
     checkDuration(explicitEnterDuration, 'enter', vnode);
   }
 
@@ -7341,7 +7503,7 @@ function leave (vnode, rm) {
       : duration
   );
 
-  if (process.env.NODE_ENV !== 'production' && isDef(explicitLeaveDuration)) {
+  if ("production" !== 'production' && isDef(explicitLeaveDuration)) {
     checkDuration(explicitLeaveDuration, 'leave', vnode);
   }
 
@@ -7568,7 +7730,7 @@ function actuallySetSelected (el, binding, vm) {
   var value = binding.value;
   var isMultiple = el.multiple;
   if (isMultiple && !Array.isArray(value)) {
-    process.env.NODE_ENV !== 'production' && warn(
+    "production" !== 'production' && warn(
       "<select multiple v-model=\"" + (binding.expression) + "\"> " +
       "expects an Array value for its binding, but got " + (Object.prototype.toString.call(value).slice(8, -1)),
       vm
@@ -7784,7 +7946,7 @@ var Transition = {
     }
 
     // warn multiple elements
-    if (process.env.NODE_ENV !== 'production' && children.length > 1) {
+    if ("production" !== 'production' && children.length > 1) {
       warn(
         '<transition> can only be used on a single element. Use ' +
         '<transition-group> for lists.',
@@ -7795,7 +7957,7 @@ var Transition = {
     var mode = this.mode;
 
     // warn invalid mode
-    if (process.env.NODE_ENV !== 'production' &&
+    if ("production" !== 'production' &&
       mode && mode !== 'in-out' && mode !== 'out-in'
     ) {
       warn(
@@ -7920,7 +8082,7 @@ var TransitionGroup = {
           children.push(c);
           map[c.key] = c
           ;(c.data || (c.data = {})).transition = transitionData;
-        } else if (process.env.NODE_ENV !== 'production') {
+        } else if ("production" !== 'production') {
           var opts = c.componentOptions;
           var name = opts ? (opts.Ctor.options.name || opts.tag || '') : c.tag;
           warn(("<transition-group> children must be keyed: <" + name + ">"));
@@ -8087,14 +8249,14 @@ Vue$3.nextTick(function () {
   if (config.devtools) {
     if (devtools) {
       devtools.emit('init', Vue$3);
-    } else if (process.env.NODE_ENV !== 'production' && isChrome) {
+    } else if ("production" !== 'production' && isChrome) {
       console[console.info ? 'info' : 'log'](
         'Download the Vue Devtools extension for a better development experience:\n' +
         'https://github.com/vuejs/vue-devtools'
       );
     }
   }
-  if (process.env.NODE_ENV !== 'production' &&
+  if ("production" !== 'production' &&
     config.productionTip !== false &&
     inBrowser && typeof console !== 'undefined'
   ) {
@@ -8110,8 +8272,8 @@ Vue$3.nextTick(function () {
 
 module.exports = Vue$3;
 
-}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"_process":1}],3:[function(require,module,exports){
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],3:[function(require,module,exports){
 var inserted = exports.cache = {}
 
 function noop () {}
@@ -8377,7 +8539,6 @@ exports.reload = tryWrap(function (id, options) {
 // require('./bootstrap');
 
 // window.Vue = require('vue');
-
 const Vue         = require('vue');
 const Vueheader   = require('./components/Header.vue');
 const Vueswiper   = require('./components/Swiper.vue');
@@ -8739,7 +8900,7 @@ if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
 __vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('section',{staticClass:"section__order"},[_c('h3',{staticClass:"section__title order__title-our hidden",class:{visible : _vm.isVisible[0]}},[_vm._v("Наши партнеры")]),_vm._v(" "),_c('div',{staticClass:"swiper-container s-partners hidden",class:{visible : _vm.isVisible[1]}},[_vm._m(0),_vm._v(" "),_c('div',{staticClass:"swiper-button-next sbn-partners"}),_vm._v(" "),_c('div',{staticClass:"swiper-button-prev sbp-partners"})]),_vm._v(" "),_c('div',{staticClass:"order order__flex"},[(_vm.showVideoBottom)?_c('video',{staticClass:"video",attrs:{"autoplay":"","loop":"","muted":"","preload":""},domProps:{"muted":true}},[_c('source',{attrs:{"src":"dist/video/dunco_bottom.webm","type":"video/webm"}}),_vm._v(" "),_c('source',{attrs:{"src":"dist/video/dunco_bottom.mp4","type":"video/mp4"}})]):_vm._e(),_vm._v(" "),_c('div',{staticClass:"order__content hidden",class:{visible : _vm.isVisible[2]}},[_c('div',{staticClass:"order__ask"},[_c('h3',{staticClass:"section__title order__title"},[_vm._v("У Вас остались вопросы?")]),_vm._v(" "),_c('p',{staticClass:"order__subtitle order__subtitle-ask"},[_vm._v("Задайте их нам!")]),_vm._v(" "),_c('div',{staticClass:"g-btn order__btn order__btn-ask",on:{"click":_vm.modalOpen}},[_c('span',{staticClass:"g-btn__bg order__btn_bg"}),_vm._v(" "),_c('span',{staticClass:"g-btn__text order__btn-text"},[_vm._v("Задать вопрос")])])]),_vm._v(" "),_vm._m(1)])])])}
-__vue__options__.staticRenderFns = [function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"swiper-wrapper"},[_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners1",attrs:{"src":"dist/img/partner1.png","alt":"Логотип1 партнера компании Данко"}})])]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners2",attrs:{"src":"dist/img/partner2.png","alt":"Логотип2 партнера компании Данко"}})])]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners3",attrs:{"src":"dist/img/partner3.png","alt":"Логотип3 партнера компании Данко"}})])]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners4",attrs:{"src":"dist/img/partner4.png","alt":"Логотип4 партнера компании Данко"}})])]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners5",attrs:{"src":"dist/img/partner5.png","alt":"Логотип5 партнера компании Данко"}})])]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners6",attrs:{"src":"dist/img/partner6.png","alt":"Логотип6 партнера компании Данко"}})])]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners7",attrs:{"src":"dist/img/partner7.png","alt":"Логотип7 партнера компании Данко"}})])]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners8",attrs:{"src":"dist/img/partner8.png","alt":"Логотип8 партнера компании Данко"}})])]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners9",attrs:{"src":"dist/img/partner9.png","alt":"Логотип9 партнера компании Данко"}})])])])},function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"order__contacts flex"},[_c('div',{staticClass:"order__width order__wrap-tel"},[_c('a',{staticClass:"section__title order__contact order__tel",attrs:{"href":"tel:+380688332020"}},[_vm._v("(068) 833 20 20")]),_vm._v(" "),_c('a',{staticClass:"section__title order__contact order__tel",attrs:{"href":"tel:0444662090"}},[_vm._v("(044) 466-20-90")])]),_vm._v(" "),_c('a',{staticClass:"section__title order__contact order__width order__mail",attrs:{"href":"mailto:mail@landing.ua"}},[_vm._v("mail@landing.ua")])])}]
+__vue__options__.staticRenderFns = [function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"swiper-wrapper"},[_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners1",attrs:{"src":"dist/img/partner1.png","alt":"Логотип1 партнера компании Данко"}})])]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners2",attrs:{"src":"dist/img/partner2.png","alt":"Логотип2 партнера компании Данко"}})])]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners3",attrs:{"src":"dist/img/partner3.png","alt":"Логотип3 партнера компании Данко"}})])]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners4",attrs:{"src":"dist/img/partner4.png","alt":"Логотип4 партнера компании Данко"}})])]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners5",attrs:{"src":"dist/img/partner5.png","alt":"Логотип5 партнера компании Данко"}})])]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners6",attrs:{"src":"dist/img/partner6.png","alt":"Логотип6 партнера компании Данко"}})])]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners7",attrs:{"src":"dist/img/partner7.png","alt":"Логотип7 партнера компании Данко"}})])]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners8",attrs:{"src":"dist/img/partner8.png","alt":"Логотип8 партнера компании Данко"}})])]),_vm._v(" "),_c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"s-partners__logo"},[_c('img',{staticClass:"s-partners__img s-partners9",attrs:{"src":"dist/img/partner9.png","alt":"Логотип9 партнера компании Данко"}})])])])},function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"order__contacts flex"},[_c('div',{staticClass:"order__width order__wrap-tel"},[_c('a',{staticClass:"section__title order__contact order__tel",attrs:{"href":"tel:+380688332020"}},[_vm._v("(068) 833 20 20")]),_vm._v(" "),_c('a',{staticClass:"section__title order__contact order__tel",attrs:{"href":"tel:0444662090"}},[_vm._v("(044) 466-20-90")])]),_vm._v(" "),_c('a',{staticClass:"section__title order__contact order__width order__mail",attrs:{"href":"mailto:dunco.info@gmail.com"}},[_vm._v("dunco.info@gmail.com")])])}]
 if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
@@ -9331,28 +9492,43 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
   }
 })()}
 },{"vue":2,"vueify/lib/insert-css":3,"vueify/node_modules/vue-hot-reload-api":4}],17:[function(require,module,exports){
-var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("/* line 66, stdin */\n.fade-enter-active[data-v-42734daa], .fade-leave-active[data-v-42734daa] {\n  transition: opacity .9s; }\n\n/* line 69, stdin */\n.fade-enter[data-v-42734daa], .fade-leave-to[data-v-42734daa] {\n  opacity: 0; }")
+var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("/* line 76, stdin */\n.fade-enter-active[data-v-42734daa], .fade-leave-active[data-v-42734daa] {\n  transition: opacity .9s; }\n\n/* line 79, stdin */\n.fade-enter[data-v-42734daa], .fade-leave-to[data-v-42734daa] {\n  opacity: 0; }")
 ;(function(){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _vueCountdown = require('@xkeshi/vue-countdown');
+
+var _vueCountdown2 = _interopRequireDefault(_vueCountdown);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 exports.default = {
     data: function data() {
-        return {};
+        var now = new Date();
+        var newYear = new Date(2018, 3, 1, 15);
+
+        return {
+            time: newYear - now
+        };
     },
     methods: {
         modalOpen: function modalOpen() {
             $('.mask__order').addClass('active');
         }
+    },
+    components: {
+        countdown: _vueCountdown2.default
     }
 };
 })()
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"front-slide front-slide__bg"},[_c('div',{staticClass:"container flex front-slide__flex"},[_c('transition',{attrs:{"name":"fade"}},[_c('div',{staticClass:"front-slide__content"},[_c('div',{staticClass:"content__top-wrap"},[_vm._t("title"),_vm._v(" "),_c('p',{staticClass:"front-slide__subtitle"},[_vm._v("Успейте заказать товари в данко и гарантированно получите скидку")])],2),_vm._v(" "),_c('div',{staticClass:"content__bottom-wrap"},[_c('div',{staticClass:"flex sale-counter"},[_c('div',{staticClass:"sale-counter__item sale-counter__days"},[_c('span',{staticClass:"sale-counter__numbers"},[_vm._v("01")]),_vm._v(" "),_c('span',{staticClass:"sale-counter__text"},[_vm._v("Дней")])]),_vm._v(" "),_c('div',{staticClass:"sale-counter__item sale-counter__hours"},[_c('span',{staticClass:"sale-counter__numbers"},[_vm._v("23")]),_vm._v(" "),_c('span',{staticClass:"sale-counter__text"},[_vm._v("Часов")])]),_vm._v(" "),_c('div',{staticClass:"sale-counter__item sale-counter__minutes"},[_c('span',{staticClass:"sale-counter__numbers"},[_vm._v("59")]),_vm._v(" "),_c('span',{staticClass:"sale-counter__text"},[_vm._v("Минут")])]),_vm._v(" "),_c('div',{staticClass:"sale-counter__item sale-counter__seconds"},[_c('span',{staticClass:"sale-counter__numbers"},[_vm._v("38")]),_vm._v(" "),_c('span',{staticClass:"sale-counter__text"},[_vm._v("Секунд")])])]),_vm._v(" "),_c('div',{staticClass:"g-btn front-slide__btn",on:{"click":_vm.modalOpen}},[_c('span',{staticClass:"g-btn__bg front-slide__btn_bg"}),_vm._v(" "),_c('span',{staticClass:"g-btn__text front-slide__btn-text"},[_vm._v("Оставить заявку")])]),_vm._v(" "),_c('div',{staticClass:"scroll-down__wrap"},[_c('div',{staticClass:"scroll-down"},[_c('span',{staticClass:"scroll-arrow"}),_vm._v(" "),_c('span',{staticClass:"scroll-arrow scroll-arrow1"}),_vm._v(" "),_c('span',{staticClass:"scroll-arrow scroll-arrow2"})]),_vm._v(" "),_c('span',{staticClass:"scroll-down__text"},[_vm._v("Scroll down")])])])])])],1)])])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"swiper-slide"},[_c('div',{staticClass:"front-slide front-slide__bg"},[_c('div',{staticClass:"container flex front-slide__flex"},[_c('transition',{attrs:{"name":"fade"}},[_c('div',{staticClass:"front-slide__content"},[_c('div',{staticClass:"content__top-wrap"},[_vm._t("title"),_vm._v(" "),_c('p',{staticClass:"front-slide__subtitle"},[_vm._v("Успейте заказать товари в данко и гарантированно получите скидку")])],2),_vm._v(" "),_c('div',{staticClass:"content__bottom-wrap"},[_c('countdown',{attrs:{"time":_vm.time,"interval":1000,"tag":"p"},scopedSlots:_vm._u([{key:"default",fn:function(props){return _c('div',{staticClass:"flex sale-counter"},[_c('div',{staticClass:"sale-counter__item sale-counter__days"},[_c('span',{staticClass:"sale-counter__numbers"},[_vm._v(_vm._s(props.days))]),_vm._v(" "),_c('span',{staticClass:"sale-counter__text"},[_vm._v("Дней")])]),_vm._v(" "),_c('div',{staticClass:"sale-counter__item sale-counter__hours"},[_c('span',{staticClass:"sale-counter__numbers"},[_vm._v(_vm._s(props.hours))]),_vm._v(" "),_c('span',{staticClass:"sale-counter__text"},[_vm._v("Часов")])]),_vm._v(" "),_c('div',{staticClass:"sale-counter__item sale-counter__minutes"},[_c('span',{staticClass:"sale-counter__numbers"},[_vm._v(_vm._s(props.minutes))]),_vm._v(" "),_c('span',{staticClass:"sale-counter__text"},[_vm._v("Минут")])]),_vm._v(" "),_c('div',{staticClass:"sale-counter__item sale-counter__seconds"},[_c('span',{staticClass:"sale-counter__numbers"},[_vm._v(_vm._s(props.seconds))]),_vm._v(" "),_c('span',{staticClass:"sale-counter__text"},[_vm._v("Секунд")])])])}}])}),_vm._v(" "),_c('div',{staticClass:"g-btn front-slide__btn",on:{"click":_vm.modalOpen}},[_c('span',{staticClass:"g-btn__bg front-slide__btn_bg"}),_vm._v(" "),_c('span',{staticClass:"g-btn__text front-slide__btn-text"},[_vm._v("Оставить заявку")])]),_vm._v(" "),_c('div',{staticClass:"scroll-down__wrap"},[_c('div',{staticClass:"scroll-down"},[_c('span',{staticClass:"scroll-arrow"}),_vm._v(" "),_c('span',{staticClass:"scroll-arrow scroll-arrow1"}),_vm._v(" "),_c('span',{staticClass:"scroll-arrow scroll-arrow2"})]),_vm._v(" "),_c('span',{staticClass:"scroll-down__text"},[_vm._v("Scroll down")])])],1)])])],1)])])}
 __vue__options__.staticRenderFns = []
 __vue__options__._scopeId = "data-v-42734daa"
 if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-hot-reload-api")
@@ -9366,4 +9542,4 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
     hotAPI.reload("data-v-42734daa", __vue__options__)
   }
 })()}
-},{"vue":2,"vueify/lib/insert-css":3,"vueify/node_modules/vue-hot-reload-api":4}]},{},[5]);
+},{"@xkeshi/vue-countdown":1,"vue":2,"vueify/lib/insert-css":3,"vueify/node_modules/vue-hot-reload-api":4}]},{},[5]);
