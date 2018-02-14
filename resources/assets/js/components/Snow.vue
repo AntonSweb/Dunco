@@ -28,7 +28,7 @@
 <style scoped>
     #snow {
         background-color: transparent;
-        background-image: url("http://wp.agens.no/smakebit/wp-content/themes/smakebiten/img/snow1.png"), url("http://wp.agens.no/smakebit/wp-content/themes/smakebiten/img/snow2.png");
+        background-image: url("https://dunco.com.ua/dist/img/snow1.png"),  url("https://dunco.com.ua/dist/img/snow2.png");
         -webkit-animation: snow 20s linear infinite;
         -moz-animation: snow 20s linear infinite;
         -ms-animation: snow 20s linear infinite;

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ua" xmlns="http://www.w3.org/1999/xhtml">
+<html lang="ru" xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -82,8 +82,8 @@
         </div>
         <!-- Add Pagination -->
         <div class="swiper-pagination sp-g sp-global"></div>
+        <footer class="footer" is="vue-footer"></footer>
     </div>
-    <footer class="footer" is="vue-footer"></footer>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.6/js/swiper.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>

@@ -126,7 +126,7 @@
   @media screen and (max-width: 768px) {
     .video__inner {
       position: relative;
-      padding-top: 50px;
+      padding-top: 0;
       display: -webkit-box;
       display: -webkit-flex;
       display: -ms-flexbox;
@@ -566,6 +566,9 @@
   margin: 20px 0;
   z-index: 9;
   color: white; }
+  @media screen and (max-height: 900px) {
+    .our-products__title {
+      top: 70px; } }
 
 .slide-inner {
   height: 100%; }

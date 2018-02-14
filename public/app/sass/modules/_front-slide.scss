@@ -2,6 +2,9 @@
   color: white;
   text-transform: uppercase;
   text-align: center;
+  @media screen and(min-height: $height) and(min-width: 769px){
+    padding-bottom: 120px;
+  }
 
   &__bg{
     height: 100%;
