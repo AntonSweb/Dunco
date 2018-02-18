@@ -5,10 +5,10 @@
                 <a href="/" class="header__logo"><img src="dist/img/dunco-logo.png" alt="Логотип компании Данко"></a>
                 <nav class="nav">
                     <a href="/" class="nav__link nav__link-home">Главная</a>
-                    <a id="1" class="nav__link nav__link-company" v-on:click.prevent="changeSlideTo">О компании</a>
-                    <a href="javascript:void(0);" class="nav__link nav__link-sale">Скидки и Акции</a>
-                    <a href="javascript:void(0);" id="5" class="nav__link nav__link-gallery" v-on:click.prevent="changeSlideTo">Галерея</a>
-                    <a href="javascript:void(0);" id="6" class="nav__link nav__link-contacts" v-on:click.prevent="changeSlideTo">Контакти</a>
+                    <a href="javascript:void(0);" id="1" class="nav__link nav__link-company" v-on:click="changeSlideTo">О компании</a>
+                    <a href="javascript:void(0);" id="0" class="nav__link nav__link-sale" v-on:click="changeSlideTo">Скидки и Акции</a>
+                    <a href="javascript:void(0);" id="5" class="nav__link nav__link-gallery" v-on:click="changeSlideTo">Галерея</a>
+                    <a href="javascript:void(0);" id="6" class="nav__link nav__link-contacts" v-on:click="changeSlideTo">Контакти</a>
                 </nav>
                 <span class="header__tel">(068) 833-20-20</span>
                 <div class="header__right-side">
@@ -21,30 +21,30 @@
             <div class="menu-mob flex menu-mob-g__flex" v-show="showMenu">
                 <div class="menu-mob__top">
                     <img src="dist/img/dunco-logo_big.png" alt="Логотип компании Дунко" class="menu-mob__logo">
-                    <span class="menu-mob__caption">компетенции, инновации, безопасность</span>
+                    <span class="menu-mob__caption">Компетенции, Инновации, Безопасность</span>
                 </div>
                 <div class="flex menu-mob__flex">
                     <a href="javascript:void(0);" class="menu__item menu-mob__item" data-num="4" v-on:click="changeSlideToProducts">
                         <span class="menu__icon icon window-icon-dunco-white"></span>
                         <span class="menu__caption menu-mob__caption">Окна</span>
                     </a>
-                    <a href="javascript:void(0);" class="menu__item menu-mob__item" v-on:click.prevent="changeSlideToProducts">
+                    <a href="javascript:void(0);" class="menu__item menu-mob__item" v-on:click="changeSlideToProducts">
                         <span class="menu__icon icon door-icon-dunco-white"></span>
                         <span class="menu__caption menu-mob__caption">Двери</span>
                     </a>
-                    <a href="javascript:void(0);" class="menu__item menu-mob__item" v-on:click.prevent="changeSlideToProducts">
+                    <a href="javascript:void(0);" class="menu__item menu-mob__item" v-on:click="changeSlideToProducts">
                         <span class="menu__icon icon roleta-window-icon-dunco-white"></span>
                         <span class="menu__caption menu-mob__caption">Жалюзи</span>
                     </a>
-                    <a href="javascript:void(0);" class="menu__item menu-mob__item" v-on:click.prevent="changeSlideToProducts">
+                    <a href="javascript:void(0);" class="menu__item menu-mob__item" v-on:click="changeSlideToProducts">
                         <span class="menu__icon icon roleta-icon-dunco-white"></span>
                         <span class="menu__caption menu-mob__caption">Ролеты</span>
                     </a>
-                    <a href="javascript:void(0);" class="menu__item menu-mob__item" v-on:click.prevent="changeSlideToProducts">
+                    <a href="javascript:void(0);" class="menu__item menu-mob__item" v-on:click="changeSlideToProducts">
                         <span class="menu__icon icon vorota-icon-dunco-white"></span>
                         <span class="menu__caption menu-mob__caption">Ворота</span>
                     </a>
-                    <a href="javascript:void(0);" class="menu__item menu-mob__item" v-on:click.prevent="changeSlideToContacts">
+                    <a href="javascript:void(0);" class="menu__item menu-mob__item" v-on:click="changeSlideToContacts">
                         <span class="menu__icon icon tel-icon-dunco-white"></span>
                         <span class="menu__caption menu-mob__caption">Вызов мастера</span>
                     </a>
@@ -54,7 +54,7 @@
                     <!--</a>-->
                 </div>
                 <ul class="menu-mob__list">
-                    <li class="menu-mob__list-item"><a href="javascript:void(0)" class="menu-mob__link" v-on:click.prevent="changeSlideToContacts">Контакты</a></li>
+                    <li class="menu-mob__list-item"><a href="javascript:void(0)" class="menu-mob__link" v-on:click="changeSlideToContacts">Контакты</a></li>
                 </ul>
             </div>
         </transition>

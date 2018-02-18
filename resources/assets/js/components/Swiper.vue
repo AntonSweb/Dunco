@@ -21,8 +21,12 @@
         <!-- Add Pagination -->
         <div class="swiper-pagination sp-g sp-front"></div>
         <!-- Add Arrows -->
-        <div class="swiper-button-next sbn-front"></div>
-        <div class="swiper-button-prev sbp-front"></div>
+        <div class="swiper-button-next sbn-front">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 27 44"><path d="M27 22L5 44l-2.1-2.1L22.8 22 2.9 2.1 5 0l22 22z"/></svg>
+        </div>
+        <div class="swiper-button-prev sbp-front">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 27 44"><path d="M0,22L22,0l2.1,2.1L4.2,22l19.9,19.9L22,44L0,22L0,22L0,22z"/></svg>
+        </div>
     </div>
 </template>
 
@@ -53,14 +57,6 @@
                     nextEl: '.sbn-front',
                     prevEl: '.sbp-front'
                 },
-                // on: {
-                //     init: function () {
-
-                //     },
-                //     slideChange: function () {
-                //
-                //     }
-                // },
                 grabCursor: true
             });
             this.$nextTick(function() {

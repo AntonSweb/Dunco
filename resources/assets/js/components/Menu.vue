@@ -22,7 +22,7 @@
                     <span class="menu__icon icon vorota-icon-dunco-black"></span>
                     <span class="menu__caption">Ворота</span>
                 </a>
-                <a href="javascript:void(0);" class="menu__item">
+                <a href="javascript:void(0);" class="menu__item" v-on:click="modalOpen">
                     <span class="menu__icon icon mail-icon-dunco-black"></span>
                     <span class="menu__caption menu__caption7">Подписать договор</span>
                 </a>
@@ -73,6 +73,9 @@
                     sGlobal.on('slideChange', this.changeSlideFunc);
                     this.show = true;
                 }
+            },
+            modalOpen: function (){
+                $('.mask__order').addClass('active');
             }
         }
     }

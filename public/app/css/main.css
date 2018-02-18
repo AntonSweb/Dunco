@@ -459,7 +459,7 @@ section {
     @media screen and (max-height: 900px) {
       .front-slide__title {
         font-size: 40px !important;
-        min-height: auto; } }
+        min-height: 132px; } }
     @media screen and (max-width: 992px) {
       .front-slide__title {
         font-size: 40px !important; } }
@@ -596,11 +596,12 @@ section {
         -ms-transform: scale(1.1);
             transform: scale(1.1); }
 
-.swiper-button-next {
-  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2027%2044'%3E%3Cpath%20d%3D'M27%2C22L27%2C22L5%2C44l-2.1-2.1L22.8%2C22L2.9%2C2.1L5%2C0L27%2C22L27%2C22z'%20fill%3D'%23ffffff'%2F%3E%3C%2Fsvg%3E"); }
-
-.swiper-button-prev {
-  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2027%2044'%3E%3Cpath%20d%3D'M0%2C22L22%2C0l2.1%2C2.1L4.2%2C22l19.9%2C19.9L22%2C44L0%2C22L0%2C22L0%2C22z'%20fill%3D'%23ffffff'%2F%3E%3C%2Fsvg%3E"); }
+.swiper-button-next, .swiper-button-prev {
+  background-image: none;
+  width: 22px;
+  fill: #fff; }
+  .swiper-button-next:hover, .swiper-button-prev:hover {
+    fill: #A5446D; }
 
 .s-front .swiper-container-horizontal > .swiper-pagination-bullets, .s-front .swiper-pagination-custom, .s-front .swiper-pagination-fraction {
   bottom: 40px; }
@@ -1062,11 +1063,6 @@ section {
   height: 100vh;
   background-color: #161616; }
 
-.s-gallery .swiper-slide {
-  -webkit-background-size: cover;
-          background-size: cover;
-  background-position: center; }
-
 .gallery__title {
   position: absolute;
   top: 170px;
@@ -1082,89 +1078,101 @@ section {
           -ms-transform: translateY(-50%);
               transform: translateY(-50%); } }
 
+.gallery__photo {
+  width: 100%;
+  height: 100%;
+  -webkit-background-size: cover;
+          background-size: cover;
+  background-position: center;
+  -webkit-transition-property: -webkit-transform;
+  transition-property: -webkit-transform;
+  -o-transition-property: transform;
+  transition-property: transform;
+  transition-property: transform, -webkit-transform; }
+
 [data-num="photo1"] {
-  background-image: url("../img/1gate.jpg"); }
-
-[data-num="photo2"] {
-  background-image: url("../img/2gate.JPG"); }
-
-[data-num="photo3"] {
-  background-image: url("../img/3gate.jpg"); }
-
-[data-num="photo4"] {
-  background-image: url("../img/amber.jpg"); }
-
-[data-num="photo5"] {
   background-image: url("../img/1amber.jpg"); }
 
-[data-num="photo6"] {
-  background-image: url("../img/2amber.jpg"); }
-
-[data-num="photo7"] {
-  background-image: url("../img/3gate.jpg"); }
-
-[data-num="photo8"] {
-  background-image: url("../img/4amber.jpg"); }
-
-[data-num="photo9"] {
-  background-image: url("../img/5amber.jpg"); }
-
-[data-num="photo10"] {
-  background-image: url("../img/6amber.jpg"); }
-
-[data-num="photo11"] {
-  background-image: url("../img/7amber.jpg"); }
-
-[data-num="photo12"] {
-  background-image: url("../img/8amber.jpg"); }
-
-[data-num="photo13"] {
-  background-image: url("../img/9amber.jpg"); }
-
-[data-num="photo14"] {
+[data-num="photo2"] {
   background-image: url("../img/2sailor.jpg"); }
 
-[data-num="photo15"] {
-  background-image: url("../img/3sailor.jpg"); }
+[data-num="photo3"] {
+  background-image: url("../img/school.jpg"); }
 
-[data-num="photo16"] {
-  background-image: url("../img/kiev.jpg"); }
-
-[data-num="photo17"] {
-  background-image: url("../img/1kiev.jpg"); }
-
-[data-num="photo18"] {
-  background-image: url("../img/2kiev.jpg"); }
-
-[data-num="photo19"] {
-  background-image: url("../img/3kiev.jpg"); }
-
-[data-num="photo20"] {
-  background-image: url("../img/1roleta-window.jpg"); }
-
-[data-num="photo21"] {
-  background-image: url("../img/2roleta-window.jpg"); }
-
-[data-num="photo22"] {
-  background-image: url("../img/3roleta-window.jpg"); }
-
-[data-num="photo23"] {
-  background-image: url("../img/1doors.jpg"); }
-
-[data-num="photo24"] {
-  background-image: url("../img/2doors.jpg"); }
-
-[data-num="photo25"] {
-  background-image: url("../img/gracious.jpg"); }
-
-[data-num="photo26"] {
-  background-image: url("../img/1gracious.jpg"); }
-
-[data-num="photo27"] {
+[data-num="photo4"] {
   background-image: url("../img/5gracious.jpg"); }
 
+[data-num="photo5"] {
+  background-image: url("../img/1gracious.jpg"); }
+
+[data-num="photo6"] {
+  background-image: url("../img/gracious.jpg"); }
+
+[data-num="photo7"] {
+  background-image: url("../img/1doors.jpg"); }
+
+[data-num="photo8"] {
+  background-image: url("../img/2doors.jpg"); }
+
+[data-num="photo9"] {
+  background-image: url("../img/3roleta-window.jpg"); }
+
+[data-num="photo10"] {
+  background-image: url("../img/2roleta-window.jpg"); }
+
+[data-num="photo11"] {
+  background-image: url("../img/1roleta-window.jpg"); }
+
+[data-num="photo12"] {
+  background-image: url("../img/3kiev.jpg"); }
+
+[data-num="photo13"] {
+  background-image: url("../img/2kiev.jpg"); }
+
+[data-num="photo14"] {
+  background-image: url("../img/1kiev.jpg"); }
+
+[data-num="photo15"] {
+  background-image: url("../img/kiev.jpg"); }
+
+[data-num="photo16"] {
+  background-image: url("../img/3sailor.jpg"); }
+
+[data-num="photo17"] {
+  background-image: url("../img/9amber.jpg"); }
+
+[data-num="photo18"] {
+  background-image: url("../img/8amber.jpg"); }
+
+[data-num="photo19"] {
+  background-image: url("../img/7amber.jpg"); }
+
+[data-num="photo20"] {
+  background-image: url("../img/6amber.jpg"); }
+
+[data-num="photo21"] {
+  background-image: url("../img/5amber.jpg"); }
+
+[data-num="photo22"] {
+  background-image: url("../img/4amber.jpg"); }
+
+[data-num="photo23"] {
+  background-image: url("../img/3amber.jpg"); }
+
+[data-num="photo24"] {
+  background-image: url("../img/2amber.jpg"); }
+
+[data-num="photo25"] {
+  background-image: url("../img/amber.jpg"); }
+
+[data-num="photo26"] {
+  background-image: url("../img/1gate.jpg"); }
+
+[data-num="photo27"] {
+  background-image: url("../img/2gate.JPG"); }
+
 [data-num="photo28"] {
-  background-image: url("../img/school.jpg"); }
+  background-image: url("../img/3gate.jpg"); }
 
 .s-gallery-top {
   height: 80%;

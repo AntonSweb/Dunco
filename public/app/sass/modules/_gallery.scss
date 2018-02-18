@@ -6,8 +6,8 @@
 .s-gallery{
 
   .swiper-slide {
-    background-size: cover;
-    background-position: center;
+    //background-size: cover;
+    //background-position: center;
   }
 }
 .gallery__title{
@@ -23,89 +23,96 @@
     transform: translateY(-50%);
   }
 }
+.gallery__photo{
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  transition-property: transform;
+}
 [data-num="photo1"]{
-  background-image: url("../img/1gate.jpg");
-}
-[data-num="photo2"]{
-  background-image: url("../img/2gate.JPG");
-}
-[data-num="photo3"]{
-  background-image: url("../img/3gate.jpg");
-}
-[data-num="photo4"]{
-  background-image: url("../img/amber.jpg");
-}
-[data-num="photo5"]{
   background-image: url("../img/1amber.jpg");
 }
-[data-num="photo6"]{
-  background-image: url("../img/2amber.jpg");
-}
-[data-num="photo7"]{
-  background-image: url("../img/3gate.jpg");
-}
-[data-num="photo8"]{
-  background-image: url("../img/4amber.jpg");
-}
-[data-num="photo9"]{
-  background-image: url("../img/5amber.jpg");
-}
-[data-num="photo10"]{
-  background-image: url("../img/6amber.jpg");
-}
-[data-num="photo11"]{
-  background-image: url("../img/7amber.jpg");
-}
-[data-num="photo12"]{
-  background-image: url("../img/8amber.jpg");
-}
-[data-num="photo13"]{
-  background-image: url("../img/9amber.jpg");
-}
-[data-num="photo14"]{
+[data-num="photo2"]{
   background-image: url("../img/2sailor.jpg");
 }
-[data-num="photo15"]{
-  background-image: url("../img/3sailor.jpg");
+[data-num="photo3"]{
+  background-image: url("../img/school.jpg");
 }
-[data-num="photo16"]{
-  background-image: url("../img/kiev.jpg");
-}
-[data-num="photo17"]{
-  background-image: url("../img/1kiev.jpg");
-}
-[data-num="photo18"]{
-  background-image: url("../img/2kiev.jpg");
-}
-[data-num="photo19"]{
-  background-image: url("../img/3kiev.jpg");
-}
-[data-num="photo20"]{
-  background-image: url("../img/1roleta-window.jpg");
-}
-[data-num="photo21"]{
-  background-image: url("../img/2roleta-window.jpg");
-}
-[data-num="photo22"]{
-  background-image: url("../img/3roleta-window.jpg");
-}
-[data-num="photo23"]{
-  background-image: url("../img/1doors.jpg");
-}
-[data-num="photo24"]{
-  background-image: url("../img/2doors.jpg");
-}
-[data-num="photo25"]{
-  background-image: url("../img/gracious.jpg");
-}
-[data-num="photo26"]{
-  background-image: url("../img/1gracious.jpg");
-}
-[data-num="photo27"]{
+[data-num="photo4"]{
   background-image: url("../img/5gracious.jpg");
 }
+[data-num="photo5"]{
+  background-image: url("../img/1gracious.jpg");
+}
+[data-num="photo6"]{
+  background-image: url("../img/gracious.jpg");
+}
+[data-num="photo7"]{
+  background-image: url("../img/1doors.jpg");
+}
+[data-num="photo8"]{
+  background-image: url("../img/2doors.jpg");
+}
+[data-num="photo9"]{
+  background-image: url("../img/3roleta-window.jpg");
+}
+[data-num="photo10"]{
+  background-image: url("../img/2roleta-window.jpg");
+}
+[data-num="photo11"]{
+  background-image: url("../img/1roleta-window.jpg");
+}
+[data-num="photo12"]{
+  background-image: url("../img/3kiev.jpg");
+}
+[data-num="photo13"]{
+  background-image: url("../img/2kiev.jpg");
+}
+[data-num="photo14"]{
+  background-image: url("../img/1kiev.jpg");
+}
+[data-num="photo15"]{
+  background-image: url("../img/kiev.jpg");
+}
+[data-num="photo16"]{
+  background-image: url("../img/3sailor.jpg");
+}
+[data-num="photo17"]{
+  background-image: url("../img/9amber.jpg");
+}
+[data-num="photo18"]{
+  background-image: url("../img/8amber.jpg");
+}
+[data-num="photo19"]{
+  background-image: url("../img/7amber.jpg");
+}
+[data-num="photo20"]{
+  background-image: url("../img/6amber.jpg");
+}
+[data-num="photo21"]{
+  background-image: url("../img/5amber.jpg");
+}
+[data-num="photo22"]{
+  background-image: url("../img/4amber.jpg");
+}
+[data-num="photo23"]{
+  background-image: url("../img/3amber.jpg");
+}
+[data-num="photo24"]{
+  background-image: url("../img/2amber.jpg");
+}
+[data-num="photo25"]{
+  background-image: url("../img/amber.jpg");
+}
+[data-num="photo26"]{
+  background-image: url("../img/1gate.jpg");
+}
+[data-num="photo27"]{
+  background-image: url("../img/2gate.JPG");
+}
 [data-num="photo28"]{
-  background-image: url("../img/school.jpg");
+  background-image: url("../img/3gate.jpg");
 }
 
 .s-gallery-top {

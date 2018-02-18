@@ -347,7 +347,193 @@ return index;
 })));
 
 },{}],2:[function(require,module,exports){
-(function (global){
+// shim for using process in browser
+var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
+
+},{}],3:[function(require,module,exports){
+(function (process,global){
 /*!
  * Vue.js v2.5.13
  * (c) 2014-2017 Evan You
@@ -701,12 +887,12 @@ var config = ({
   /**
    * Show production mode tip message on boot?
    */
-  productionTip: "production" !== 'production',
+  productionTip: process.env.NODE_ENV !== 'production',
 
   /**
    * Whether to enable devtools
    */
-  devtools: "production" !== 'production',
+  devtools: process.env.NODE_ENV !== 'production',
 
   /**
    * Whether to record perf
@@ -910,7 +1096,7 @@ var tip = noop;
 var generateComponentTrace = (noop); // work around flow check
 var formatComponentName = (noop);
 
-if ("production" !== 'production') {
+if (process.env.NODE_ENV !== 'production') {
   var hasConsole = typeof console !== 'undefined';
   var classifyRE = /(?:^|[-_])(\w)/g;
   var classify = function (str) { return str
@@ -1345,7 +1531,7 @@ function defineReactive (
         return
       }
       /* eslint-enable no-self-compare */
-      if ("production" !== 'production' && customSetter) {
+      if (process.env.NODE_ENV !== 'production' && customSetter) {
         customSetter();
       }
       if (setter) {
@@ -1376,7 +1562,7 @@ function set (target, key, val) {
   }
   var ob = (target).__ob__;
   if (target._isVue || (ob && ob.vmCount)) {
-    "production" !== 'production' && warn(
+    process.env.NODE_ENV !== 'production' && warn(
       'Avoid adding reactive properties to a Vue instance or its root $data ' +
       'at runtime - declare it upfront in the data option.'
     );
@@ -1401,7 +1587,7 @@ function del (target, key) {
   }
   var ob = (target).__ob__;
   if (target._isVue || (ob && ob.vmCount)) {
-    "production" !== 'production' && warn(
+    process.env.NODE_ENV !== 'production' && warn(
       'Avoid deleting properties on a Vue instance or its root $data ' +
       '- just set it to null.'
     );
@@ -1443,7 +1629,7 @@ var strats = config.optionMergeStrategies;
 /**
  * Options with restrictions
  */
-if ("production" !== 'production') {
+if (process.env.NODE_ENV !== 'production') {
   strats.el = strats.propsData = function (parent, child, vm, key) {
     if (!vm) {
       warn(
@@ -1527,7 +1713,7 @@ strats.data = function (
 ) {
   if (!vm) {
     if (childVal && typeof childVal !== 'function') {
-      "production" !== 'production' && warn(
+      process.env.NODE_ENV !== 'production' && warn(
         'The "data" option should be a function ' +
         'that returns a per-instance value in component ' +
         'definitions.',
@@ -1577,7 +1763,7 @@ function mergeAssets (
 ) {
   var res = Object.create(parentVal || null);
   if (childVal) {
-    "production" !== 'production' && assertObjectType(key, childVal, vm);
+    process.env.NODE_ENV !== 'production' && assertObjectType(key, childVal, vm);
     return extend(res, childVal)
   } else {
     return res
@@ -1605,7 +1791,7 @@ strats.watch = function (
   if (childVal === nativeWatch) { childVal = undefined; }
   /* istanbul ignore if */
   if (!childVal) { return Object.create(parentVal || null) }
-  if ("production" !== 'production') {
+  if (process.env.NODE_ENV !== 'production') {
     assertObjectType(key, childVal, vm);
   }
   if (!parentVal) { return childVal }
@@ -1636,7 +1822,7 @@ strats.computed = function (
   vm,
   key
 ) {
-  if (childVal && "production" !== 'production') {
+  if (childVal && process.env.NODE_ENV !== 'production') {
     assertObjectType(key, childVal, vm);
   }
   if (!parentVal) { return childVal }
@@ -1697,7 +1883,7 @@ function normalizeProps (options, vm) {
       if (typeof val === 'string') {
         name = camelize(val);
         res[name] = { type: null };
-      } else if ("production" !== 'production') {
+      } else if (process.env.NODE_ENV !== 'production') {
         warn('props must be strings when using array syntax.');
       }
     }
@@ -1709,7 +1895,7 @@ function normalizeProps (options, vm) {
         ? val
         : { type: val };
     }
-  } else if ("production" !== 'production') {
+  } else if (process.env.NODE_ENV !== 'production') {
     warn(
       "Invalid value for option \"props\": expected an Array or an Object, " +
       "but got " + (toRawType(props)) + ".",
@@ -1737,7 +1923,7 @@ function normalizeInject (options, vm) {
         ? extend({ from: key }, val)
         : { from: val };
     }
-  } else if ("production" !== 'production') {
+  } else if (process.env.NODE_ENV !== 'production') {
     warn(
       "Invalid value for option \"inject\": expected an Array or an Object, " +
       "but got " + (toRawType(inject)) + ".",
@@ -1780,7 +1966,7 @@ function mergeOptions (
   child,
   vm
 ) {
-  if ("production" !== 'production') {
+  if (process.env.NODE_ENV !== 'production') {
     checkComponents(child);
   }
 
@@ -1841,7 +2027,7 @@ function resolveAsset (
   if (hasOwn(assets, PascalCaseId)) { return assets[PascalCaseId] }
   // fallback to prototype chain
   var res = assets[id] || assets[camelizedId] || assets[PascalCaseId];
-  if ("production" !== 'production' && warnMissing && !res) {
+  if (process.env.NODE_ENV !== 'production' && warnMissing && !res) {
     warn(
       'Failed to resolve ' + type.slice(0, -1) + ': ' + id,
       options
@@ -1880,7 +2066,7 @@ function validateProp (
     observerState.shouldConvert = prevShouldConvert;
   }
   if (
-    "production" !== 'production' &&
+    process.env.NODE_ENV !== 'production' &&
     // skip validation for weex recycle-list child component props
     !(false && isObject(value) && ('@binding' in value))
   ) {
@@ -1899,7 +2085,7 @@ function getPropDefaultValue (vm, prop, key) {
   }
   var def = prop.default;
   // warn against non-factory defaults for Object & Array
-  if ("production" !== 'production' && isObject(def)) {
+  if (process.env.NODE_ENV !== 'production' && isObject(def)) {
     warn(
       'Invalid default value for prop "' + key + '": ' +
       'Props with type Object/Array must use a factory function ' +
@@ -2057,7 +2243,7 @@ function globalHandleError (err, vm, info) {
 }
 
 function logError (err, vm, info) {
-  if ("production" !== 'production') {
+  if (process.env.NODE_ENV !== 'production') {
     warn(("Error in " + info + ": \"" + (err.toString()) + "\""), vm);
   }
   /* istanbul ignore else */
@@ -2188,7 +2374,7 @@ function nextTick (cb, ctx) {
 
 var initProxy;
 
-if ("production" !== 'production') {
+if (process.env.NODE_ENV !== 'production') {
   var allowedGlobals = makeMap(
     'Infinity,undefined,NaN,isFinite,isNaN,' +
     'parseFloat,parseInt,decodeURI,decodeURIComponent,encodeURI,encodeURIComponent,' +
@@ -2300,7 +2486,7 @@ function _traverse (val, seen) {
 var mark;
 var measure;
 
-if ("production" !== 'production') {
+if (process.env.NODE_ENV !== 'production') {
   var perf = inBrowser && window.performance;
   /* istanbul ignore if */
   if (
@@ -2370,7 +2556,7 @@ function updateListeners (
     event = normalizeEvent(name);
     /* istanbul ignore if */
     if (isUndef(cur)) {
-      "production" !== 'production' && warn(
+      process.env.NODE_ENV !== 'production' && warn(
         "Invalid handler for event \"" + (event.name) + "\": got " + String(cur),
         vm
       );
@@ -2447,7 +2633,7 @@ function extractPropsFromVNodeData (
   if (isDef(attrs) || isDef(props)) {
     for (var key in propOptions) {
       var altKey = hyphenate(key);
-      if ("production" !== 'production') {
+      if (process.env.NODE_ENV !== 'production') {
         var keyInLowerCase = key.toLowerCase();
         if (
           key !== keyInLowerCase &&
@@ -2650,7 +2836,7 @@ function resolveAsyncComponent (
     });
 
     var reject = once(function (reason) {
-      "production" !== 'production' && warn(
+      process.env.NODE_ENV !== 'production' && warn(
         "Failed to resolve async component: " + (String(factory)) +
         (reason ? ("\nReason: " + reason) : '')
       );
@@ -2693,7 +2879,7 @@ function resolveAsyncComponent (
           setTimeout(function () {
             if (isUndef(factory.resolved)) {
               reject(
-                "production" !== 'production'
+                process.env.NODE_ENV !== 'production'
                   ? ("timeout (" + (res.timeout) + "ms)")
                   : null
               );
@@ -2842,7 +3028,7 @@ function eventsMixin (Vue) {
 
   Vue.prototype.$emit = function (event) {
     var vm = this;
-    if ("production" !== 'production') {
+    if (process.env.NODE_ENV !== 'production') {
       var lowerCaseEvent = event.toLowerCase();
       if (lowerCaseEvent !== event && vm._events[lowerCaseEvent]) {
         tip(
@@ -3069,7 +3255,7 @@ function mountComponent (
   vm.$el = el;
   if (!vm.$options.render) {
     vm.$options.render = createEmptyVNode;
-    if ("production" !== 'production') {
+    if (process.env.NODE_ENV !== 'production') {
       /* istanbul ignore if */
       if ((vm.$options.template && vm.$options.template.charAt(0) !== '#') ||
         vm.$options.el || el) {
@@ -3091,7 +3277,7 @@ function mountComponent (
 
   var updateComponent;
   /* istanbul ignore if */
-  if ("production" !== 'production' && config.performance && mark) {
+  if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
     updateComponent = function () {
       var name = vm._name;
       var id = vm._uid;
@@ -3136,7 +3322,7 @@ function updateChildComponent (
   parentVnode,
   renderChildren
 ) {
-  if ("production" !== 'production') {
+  if (process.env.NODE_ENV !== 'production') {
     isUpdatingChildComponent = true;
   }
 
@@ -3189,7 +3375,7 @@ function updateChildComponent (
     vm.$forceUpdate();
   }
 
-  if ("production" !== 'production') {
+  if (process.env.NODE_ENV !== 'production') {
     isUpdatingChildComponent = false;
   }
 }
@@ -3270,7 +3456,7 @@ var index = 0;
 function resetSchedulerState () {
   index = queue.length = activatedChildren.length = 0;
   has = {};
-  if ("production" !== 'production') {
+  if (process.env.NODE_ENV !== 'production') {
     circular = {};
   }
   waiting = flushing = false;
@@ -3301,7 +3487,7 @@ function flushSchedulerQueue () {
     has[id] = null;
     watcher.run();
     // in dev build, check and stop circular updates.
-    if ("production" !== 'production' && has[id] != null) {
+    if (process.env.NODE_ENV !== 'production' && has[id] != null) {
       circular[id] = (circular[id] || 0) + 1;
       if (circular[id] > MAX_UPDATE_COUNT) {
         warn(
@@ -3429,7 +3615,7 @@ var Watcher = function Watcher (
   this.newDeps = [];
   this.depIds = new _Set();
   this.newDepIds = new _Set();
-  this.expression = "production" !== 'production'
+  this.expression = process.env.NODE_ENV !== 'production'
     ? expOrFn.toString()
     : '';
   // parse expression for getter
@@ -3439,7 +3625,7 @@ var Watcher = function Watcher (
     this.getter = parsePath(expOrFn);
     if (!this.getter) {
       this.getter = function () {};
-      "production" !== 'production' && warn(
+      process.env.NODE_ENV !== 'production' && warn(
         "Failed watching path: \"" + expOrFn + "\" " +
         'Watcher only accepts simple dot-delimited paths. ' +
         'For full control, use a function instead.',
@@ -3652,7 +3838,7 @@ function initProps (vm, propsOptions) {
     keys.push(key);
     var value = validateProp(key, propsOptions, propsData, vm);
     /* istanbul ignore else */
-    if ("production" !== 'production') {
+    if (process.env.NODE_ENV !== 'production') {
       var hyphenatedKey = hyphenate(key);
       if (isReservedAttribute(hyphenatedKey) ||
           config.isReservedAttr(hyphenatedKey)) {
@@ -3694,7 +3880,7 @@ function initData (vm) {
     : data || {};
   if (!isPlainObject(data)) {
     data = {};
-    "production" !== 'production' && warn(
+    process.env.NODE_ENV !== 'production' && warn(
       'data functions should return an object:\n' +
       'https://vuejs.org/v2/guide/components.html#data-Must-Be-a-Function',
       vm
@@ -3707,7 +3893,7 @@ function initData (vm) {
   var i = keys.length;
   while (i--) {
     var key = keys[i];
-    if ("production" !== 'production') {
+    if (process.env.NODE_ENV !== 'production') {
       if (methods && hasOwn(methods, key)) {
         warn(
           ("Method \"" + key + "\" has already been defined as a data property."),
@@ -3716,7 +3902,7 @@ function initData (vm) {
       }
     }
     if (props && hasOwn(props, key)) {
-      "production" !== 'production' && warn(
+      process.env.NODE_ENV !== 'production' && warn(
         "The data property \"" + key + "\" is already declared as a prop. " +
         "Use prop default value instead.",
         vm
@@ -3749,7 +3935,7 @@ function initComputed (vm, computed) {
   for (var key in computed) {
     var userDef = computed[key];
     var getter = typeof userDef === 'function' ? userDef : userDef.get;
-    if ("production" !== 'production' && getter == null) {
+    if (process.env.NODE_ENV !== 'production' && getter == null) {
       warn(
         ("Getter is missing for computed property \"" + key + "\"."),
         vm
@@ -3771,7 +3957,7 @@ function initComputed (vm, computed) {
     // at instantiation here.
     if (!(key in vm)) {
       defineComputed(vm, key, userDef);
-    } else if ("production" !== 'production') {
+    } else if (process.env.NODE_ENV !== 'production') {
       if (key in vm.$data) {
         warn(("The computed property \"" + key + "\" is already defined in data."), vm);
       } else if (vm.$options.props && key in vm.$options.props) {
@@ -3802,7 +3988,7 @@ function defineComputed (
       ? userDef.set
       : noop;
   }
-  if ("production" !== 'production' &&
+  if (process.env.NODE_ENV !== 'production' &&
       sharedPropertyDefinition.set === noop) {
     sharedPropertyDefinition.set = function () {
       warn(
@@ -3832,7 +4018,7 @@ function createComputedGetter (key) {
 function initMethods (vm, methods) {
   var props = vm.$options.props;
   for (var key in methods) {
-    if ("production" !== 'production') {
+    if (process.env.NODE_ENV !== 'production') {
       if (methods[key] == null) {
         warn(
           "Method \"" + key + "\" has an undefined value in the component definition. " +
@@ -3894,7 +4080,7 @@ function stateMixin (Vue) {
   dataDef.get = function () { return this._data };
   var propsDef = {};
   propsDef.get = function () { return this._props };
-  if ("production" !== 'production') {
+  if (process.env.NODE_ENV !== 'production') {
     dataDef.set = function (newData) {
       warn(
         'Avoid replacing instance root $data. ' +
@@ -3950,7 +4136,7 @@ function initInjections (vm) {
     observerState.shouldConvert = false;
     Object.keys(result).forEach(function (key) {
       /* istanbul ignore else */
-      if ("production" !== 'production') {
+      if (process.env.NODE_ENV !== 'production') {
         defineReactive(vm, key, result[key], function () {
           warn(
             "Avoid mutating an injected value directly since the changes will be " +
@@ -3995,7 +4181,7 @@ function resolveInject (inject, vm) {
           result[key] = typeof provideDefault === 'function'
             ? provideDefault.call(vm)
             : provideDefault;
-        } else if ("production" !== 'production') {
+        } else if (process.env.NODE_ENV !== 'production') {
           warn(("Injection \"" + key + "\" not found"), vm);
         }
       }
@@ -4054,7 +4240,7 @@ function renderSlot (
   if (scopedSlotFn) { // scoped slot
     props = props || {};
     if (bindObject) {
-      if ("production" !== 'production' && !isObject(bindObject)) {
+      if (process.env.NODE_ENV !== 'production' && !isObject(bindObject)) {
         warn(
           'slot v-bind without argument expects an Object',
           this
@@ -4067,7 +4253,7 @@ function renderSlot (
     var slotNodes = this.$slots[name];
     // warn duplicate slot usage
     if (slotNodes) {
-      if ("production" !== 'production' && slotNodes._rendered) {
+      if (process.env.NODE_ENV !== 'production' && slotNodes._rendered) {
         warn(
           "Duplicate presence of slot \"" + name + "\" found in the same render tree " +
           "- this will likely cause render errors.",
@@ -4135,7 +4321,7 @@ function bindObjectProps (
 ) {
   if (value) {
     if (!isObject(value)) {
-      "production" !== 'production' && warn(
+      process.env.NODE_ENV !== 'production' && warn(
         'v-bind without argument expects an Object or Array value',
         this
       );
@@ -4243,7 +4429,7 @@ function markStaticNode (node, key, isOnce) {
 function bindObjectListeners (data, value) {
   if (value) {
     if (!isPlainObject(value)) {
-      "production" !== 'production' && warn(
+      process.env.NODE_ENV !== 'production' && warn(
         'v-on without argument expects an Object value',
         this
       );
@@ -4486,7 +4672,7 @@ function createComponent (
   // if at this stage it's not a constructor or an async component factory,
   // reject.
   if (typeof Ctor !== 'function') {
-    if ("production" !== 'production') {
+    if (process.env.NODE_ENV !== 'production') {
       warn(("Invalid Component definition: " + (String(Ctor))), context);
     }
     return
@@ -4656,7 +4842,7 @@ function _createElement (
   normalizationType
 ) {
   if (isDef(data) && isDef((data).__ob__)) {
-    "production" !== 'production' && warn(
+    process.env.NODE_ENV !== 'production' && warn(
       "Avoid using observed data object as vnode data: " + (JSON.stringify(data)) + "\n" +
       'Always create fresh vnode data objects in each render!',
       context
@@ -4672,7 +4858,7 @@ function _createElement (
     return createEmptyVNode()
   }
   // warn against non-primitive key
-  if ("production" !== 'production' &&
+  if (process.env.NODE_ENV !== 'production' &&
     isDef(data) && isDef(data.key) && !isPrimitive(data.key)
   ) {
     {
@@ -4771,7 +4957,7 @@ function initRender (vm) {
   var parentData = parentVnode && parentVnode.data;
 
   /* istanbul ignore else */
-  if ("production" !== 'production') {
+  if (process.env.NODE_ENV !== 'production') {
     defineReactive(vm, '$attrs', parentData && parentData.attrs || emptyObject, function () {
       !isUpdatingChildComponent && warn("$attrs is readonly.", vm);
     }, true);
@@ -4825,7 +5011,7 @@ function renderMixin (Vue) {
       // return error render result,
       // or previous vnode to prevent render error causing blank component
       /* istanbul ignore else */
-      if ("production" !== 'production') {
+      if (process.env.NODE_ENV !== 'production') {
         if (vm.$options.renderError) {
           try {
             vnode = vm.$options.renderError.call(vm._renderProxy, vm.$createElement, e);
@@ -4842,7 +5028,7 @@ function renderMixin (Vue) {
     }
     // return empty vnode in case the render function errored out
     if (!(vnode instanceof VNode)) {
-      if ("production" !== 'production' && Array.isArray(vnode)) {
+      if (process.env.NODE_ENV !== 'production' && Array.isArray(vnode)) {
         warn(
           'Multiple root nodes returned from render function. Render function ' +
           'should return a single root node.',
@@ -4869,7 +5055,7 @@ function initMixin (Vue) {
 
     var startTag, endTag;
     /* istanbul ignore if */
-    if ("production" !== 'production' && config.performance && mark) {
+    if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
       startTag = "vue-perf-start:" + (vm._uid);
       endTag = "vue-perf-end:" + (vm._uid);
       mark(startTag);
@@ -4891,7 +5077,7 @@ function initMixin (Vue) {
       );
     }
     /* istanbul ignore else */
-    if ("production" !== 'production') {
+    if (process.env.NODE_ENV !== 'production') {
       initProxy(vm);
     } else {
       vm._renderProxy = vm;
@@ -4908,7 +5094,7 @@ function initMixin (Vue) {
     callHook(vm, 'created');
 
     /* istanbul ignore if */
-    if ("production" !== 'production' && config.performance && mark) {
+    if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
       vm._name = formatComponentName(vm, false);
       mark(endTag);
       measure(("vue " + (vm._name) + " init"), startTag, endTag);
@@ -4999,7 +5185,7 @@ function dedupe (latest, extended, sealed) {
 }
 
 function Vue$3 (options) {
-  if ("production" !== 'production' &&
+  if (process.env.NODE_ENV !== 'production' &&
     !(this instanceof Vue$3)
   ) {
     warn('Vue is a constructor and should be called with the `new` keyword');
@@ -5068,7 +5254,7 @@ function initExtend (Vue) {
     }
 
     var name = extendOptions.name || Super.options.name;
-    if ("production" !== 'production' && name) {
+    if (process.env.NODE_ENV !== 'production' && name) {
       validateComponentName(name);
     }
 
@@ -5151,7 +5337,7 @@ function initAssetRegisters (Vue) {
         return this.options[type + 's'][id]
       } else {
         /* istanbul ignore if */
-        if ("production" !== 'production' && type === 'component') {
+        if (process.env.NODE_ENV !== 'production' && type === 'component') {
           validateComponentName(id);
         }
         if (type === 'component' && isPlainObject(definition)) {
@@ -5306,7 +5492,7 @@ function initGlobalAPI (Vue) {
   // config
   var configDef = {};
   configDef.get = function () { return config; };
-  if ("production" !== 'production') {
+  if (process.env.NODE_ENV !== 'production') {
     configDef.set = function () {
       warn(
         'Do not replace the Vue.config object, set individual fields instead.'
@@ -5568,7 +5754,7 @@ function query (el) {
   if (typeof el === 'string') {
     var selected = document.querySelector(el);
     if (!selected) {
-      "production" !== 'production' && warn(
+      process.env.NODE_ENV !== 'production' && warn(
         'Cannot find element: ' + el
       );
       return document.createElement('div')
@@ -5813,7 +5999,7 @@ function createPatchFunction (backend) {
     var children = vnode.children;
     var tag = vnode.tag;
     if (isDef(tag)) {
-      if ("production" !== 'production') {
+      if (process.env.NODE_ENV !== 'production') {
         if (data && data.pre) {
           creatingElmInVPre++;
         }
@@ -5840,7 +6026,7 @@ function createPatchFunction (backend) {
         insert(parentElm, vnode.elm, refElm);
       }
 
-      if ("production" !== 'production' && data && data.pre) {
+      if (process.env.NODE_ENV !== 'production' && data && data.pre) {
         creatingElmInVPre--;
       }
     } else if (isTrue(vnode.isComment)) {
@@ -5927,7 +6113,7 @@ function createPatchFunction (backend) {
 
   function createChildren (vnode, children, insertedVnodeQueue) {
     if (Array.isArray(children)) {
-      if ("production" !== 'production') {
+      if (process.env.NODE_ENV !== 'production') {
         checkDuplicateKeys(children);
       }
       for (var i = 0; i < children.length; ++i) {
@@ -6061,7 +6247,7 @@ function createPatchFunction (backend) {
     // during leaving transitions
     var canMove = !removeOnly;
 
-    if ("production" !== 'production') {
+    if (process.env.NODE_ENV !== 'production') {
       checkDuplicateKeys(newCh);
     }
 
@@ -6235,7 +6421,7 @@ function createPatchFunction (backend) {
       return true
     }
     // assert node match
-    if ("production" !== 'production') {
+    if (process.env.NODE_ENV !== 'production') {
       if (!assertNodeMatch(elm, vnode, inVPre)) {
         return false
       }
@@ -6258,7 +6444,7 @@ function createPatchFunction (backend) {
           if (isDef(i = data) && isDef(i = i.domProps) && isDef(i = i.innerHTML)) {
             if (i !== elm.innerHTML) {
               /* istanbul ignore if */
-              if ("production" !== 'production' &&
+              if (process.env.NODE_ENV !== 'production' &&
                 typeof console !== 'undefined' &&
                 !hydrationBailed
               ) {
@@ -6284,7 +6470,7 @@ function createPatchFunction (backend) {
             // longer than the virtual children list.
             if (!childrenMatch || childNode) {
               /* istanbul ignore if */
-              if ("production" !== 'production' &&
+              if (process.env.NODE_ENV !== 'production' &&
                 typeof console !== 'undefined' &&
                 !hydrationBailed
               ) {
@@ -6359,7 +6545,7 @@ function createPatchFunction (backend) {
             if (hydrate(oldVnode, vnode, insertedVnodeQueue)) {
               invokeInsertHook(vnode, insertedVnodeQueue, true);
               return oldVnode
-            } else if ("production" !== 'production') {
+            } else if (process.env.NODE_ENV !== 'production') {
               warn(
                 'The client-side rendered virtual DOM tree is not matching ' +
                 'server-rendered content. This is likely caused by incorrect ' +
@@ -7397,7 +7583,7 @@ function enter (vnode, toggleDisplay) {
       : duration
   );
 
-  if ("production" !== 'production' && explicitEnterDuration != null) {
+  if (process.env.NODE_ENV !== 'production' && explicitEnterDuration != null) {
     checkDuration(explicitEnterDuration, 'enter', vnode);
   }
 
@@ -7503,7 +7689,7 @@ function leave (vnode, rm) {
       : duration
   );
 
-  if ("production" !== 'production' && isDef(explicitLeaveDuration)) {
+  if (process.env.NODE_ENV !== 'production' && isDef(explicitLeaveDuration)) {
     checkDuration(explicitLeaveDuration, 'leave', vnode);
   }
 
@@ -7730,7 +7916,7 @@ function actuallySetSelected (el, binding, vm) {
   var value = binding.value;
   var isMultiple = el.multiple;
   if (isMultiple && !Array.isArray(value)) {
-    "production" !== 'production' && warn(
+    process.env.NODE_ENV !== 'production' && warn(
       "<select multiple v-model=\"" + (binding.expression) + "\"> " +
       "expects an Array value for its binding, but got " + (Object.prototype.toString.call(value).slice(8, -1)),
       vm
@@ -7946,7 +8132,7 @@ var Transition = {
     }
 
     // warn multiple elements
-    if ("production" !== 'production' && children.length > 1) {
+    if (process.env.NODE_ENV !== 'production' && children.length > 1) {
       warn(
         '<transition> can only be used on a single element. Use ' +
         '<transition-group> for lists.',
@@ -7957,7 +8143,7 @@ var Transition = {
     var mode = this.mode;
 
     // warn invalid mode
-    if ("production" !== 'production' &&
+    if (process.env.NODE_ENV !== 'production' &&
       mode && mode !== 'in-out' && mode !== 'out-in'
     ) {
       warn(
@@ -8082,7 +8268,7 @@ var TransitionGroup = {
           children.push(c);
           map[c.key] = c
           ;(c.data || (c.data = {})).transition = transitionData;
-        } else if ("production" !== 'production') {
+        } else if (process.env.NODE_ENV !== 'production') {
           var opts = c.componentOptions;
           var name = opts ? (opts.Ctor.options.name || opts.tag || '') : c.tag;
           warn(("<transition-group> children must be keyed: <" + name + ">"));
@@ -8249,14 +8435,14 @@ Vue$3.nextTick(function () {
   if (config.devtools) {
     if (devtools) {
       devtools.emit('init', Vue$3);
-    } else if ("production" !== 'production' && isChrome) {
+    } else if (process.env.NODE_ENV !== 'production' && isChrome) {
       console[console.info ? 'info' : 'log'](
         'Download the Vue Devtools extension for a better development experience:\n' +
         'https://github.com/vuejs/vue-devtools'
       );
     }
   }
-  if ("production" !== 'production' &&
+  if (process.env.NODE_ENV !== 'production' &&
     config.productionTip !== false &&
     inBrowser && typeof console !== 'undefined'
   ) {
@@ -8272,8 +8458,8 @@ Vue$3.nextTick(function () {
 
 module.exports = Vue$3;
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],3:[function(require,module,exports){
+}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"_process":2}],4:[function(require,module,exports){
 var inserted = exports.cache = {}
 
 function noop () {}
@@ -8298,7 +8484,7 @@ exports.insert = function (css) {
   }
 }
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 var Vue // late bind
 var version
 var map = (window.__VUE_HOT_MAP__ = Object.create(null))
@@ -8528,7 +8714,7 @@ exports.reload = tryWrap(function (id, options) {
   })
 })
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -8608,7 +8794,7 @@ new Vue({
 
 
 
-},{"./components/Footer.vue":6,"./components/Gallery.vue":7,"./components/Header.vue":8,"./components/Menu.vue":9,"./components/Order.vue":10,"./components/People.vue":11,"./components/Products.vue":12,"./components/Snow.vue":13,"./components/Swiper.vue":14,"./components/Trust.vue":15,"./components/Video.vue":16,"vue":2}],6:[function(require,module,exports){
+},{"./components/Footer.vue":7,"./components/Gallery.vue":8,"./components/Header.vue":9,"./components/Menu.vue":10,"./components/Order.vue":11,"./components/People.vue":12,"./components/Products.vue":13,"./components/Snow.vue":14,"./components/Swiper.vue":15,"./components/Trust.vue":16,"./components/Video.vue":17,"vue":3}],7:[function(require,module,exports){
 var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("/* line 46, stdin */\n.fade-enter-active[data-v-48fd00b6], .fade-leave-active[data-v-48fd00b6] {\n  -webkit-transition: opacity .6s;\n  -moz-transition: opacity .6s;\n  -o-transition: opacity .6s;\n  transition: opacity .6s; }\n\n/* line 52, stdin */\n.fade-enter[data-v-48fd00b6], .fade-leave-to[data-v-48fd00b6] {\n  opacity: 0; }")
 ;(function(){
 'use strict';
@@ -8650,17 +8836,20 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
     hotAPI.reload("data-v-48fd00b6", __vue__options__)
   }
 })()}
-},{"vue":2,"vueify/lib/insert-css":3,"vueify/node_modules/vue-hot-reload-api":4}],7:[function(require,module,exports){
+},{"vue":3,"vueify/lib/insert-css":4,"vueify/node_modules/vue-hot-reload-api":5}],8:[function(require,module,exports){
+var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert(".gallery__photo[data-v-17ad1347] {\n    position: relative;\n    z-index: 2;\n}\n.loader[data-v-17ad1347] {\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    transform: translateX(-50%);\n    z-index: 1;\n    margin: 0 0 2em;\n    text-align: center;\n    padding: 1em;\n    margin: 0 auto 1em;\n    display: inline-block;\n    vertical-align: top;\n}\n/*\n  Set the color of the icon\n*/\nsvg path[data-v-17ad1347],\nsvg rect[data-v-17ad1347] {\n    fill: #FF6700;\n}")
 ;(function(){
 'use strict';
 
 module.exports = {
     data: function data() {
         return {
+            show: false,
             showMobile: true
         };
     },
     mounted: function mounted() {
+        var that = this;
         var galleryTop = new Swiper('.s-gallery-top', {
             spaceBetween: 10,
             navigation: {
@@ -8678,25 +8867,38 @@ module.exports = {
 
         galleryTop.controller.control = galleryThumbs;
         galleryThumbs.controller.control = galleryTop;
+        sGlobal.on('slideChange', function () {
+            if (sGlobal.activeIndex === 5) {
+                that.galleryInit();
+            }
+        });
+    },
+    methods: {
+        galleryInit: function galleryInit(e) {
+            this.show = true;
+            console.log(e);
+        }
     }
 };
 })()
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('section',{staticClass:"section__gallery",attrs:{"id":"gallery"}},[_c('div',{staticClass:"swiper-container s-gallery s-gallery-top"},[(_vm.showMobile)?_c('h3',{staticClass:"section__title gallery__title"},[_vm._v("Наша галерея")]):_vm._e(),_vm._v(" "),_c('div',{staticClass:"swiper-wrapper"},_vm._l((28),function(n){return _c('div',{staticClass:"swiper-slide",attrs:{"data-num":'photo' + n}})})),_vm._v(" "),_c('div',{staticClass:"swiper-button-next swiper-button-white sbn-gallery"}),_vm._v(" "),_c('div',{staticClass:"swiper-button-prev swiper-button-white sbp-gallery"})]),_vm._v(" "),_c('div',{staticClass:"swiper-container s-gallery s-gallery-thumbs"},[_c('div',{staticClass:"swiper-wrapper"},_vm._l((28),function(n){return _c('div',{staticClass:"swiper-slide",attrs:{"data-num":'photo' + n}})}))])])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('section',{staticClass:"section__gallery",attrs:{"id":"gallery"}},[_c('div',{staticClass:"swiper-container s-gallery s-gallery-top"},[(_vm.showMobile)?_c('h3',{staticClass:"section__title gallery__title"},[_vm._v("Наша галерея")]):_vm._e(),_vm._v(" "),_c('div',{staticClass:"swiper-wrapper"},_vm._l((28),function(n){return _c('div',{staticClass:"swiper-slide"},[(_vm.show)?_c('div',{staticClass:"gallery__photo",attrs:{"data-num":'photo' + n}}):_vm._e(),_vm._v(" "),(n === 1)?_c('div',{staticClass:"loader loader--style3",attrs:{"title":"2"}},[_c('svg',{staticStyle:{"enable-background":"new 0 0 50 50"},attrs:{"version":"1.1","id":"loader-1","xmlns":"http://www.w3.org/2000/svg","x":"0px","y":"0px","width":"40px","height":"40px","viewBox":"0 0 50 50","xml:space":"preserve"}},[_c('path',{attrs:{"fill":"#000","d":"M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z"}},[_c('animateTransform',{attrs:{"attributeType":"xml","attributeName":"transform","type":"rotate","from":"0 25 25","to":"360 25 25","dur":"0.6s","repeatCount":"indefinite"}})],1)])]):_vm._e()])})),_vm._v(" "),_c('div',{staticClass:"swiper-button-next swiper-button-white sbn-gallery"}),_vm._v(" "),_c('div',{staticClass:"swiper-button-prev swiper-button-white sbp-gallery"})]),_vm._v(" "),_c('div',{staticClass:"swiper-container s-gallery s-gallery-thumbs"},[_c('div',{staticClass:"swiper-wrapper"},_vm._l((28),function(n){return _c('div',{staticClass:"swiper-slide"},[(_vm.show)?_c('div',{staticClass:"gallery__photo",attrs:{"data-num":'photo' + n}}):_vm._e()])}))])])}
 __vue__options__.staticRenderFns = []
+__vue__options__._scopeId = "data-v-17ad1347"
 if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.accept()
+  module.hot.dispose(__vueify_style_dispose__)
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-17ad1347", __vue__options__)
   } else {
     hotAPI.reload("data-v-17ad1347", __vue__options__)
   }
 })()}
-},{"vue":2,"vueify/node_modules/vue-hot-reload-api":4}],8:[function(require,module,exports){
+},{"vue":3,"vueify/lib/insert-css":4,"vueify/node_modules/vue-hot-reload-api":5}],9:[function(require,module,exports){
 var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("/* line 96, stdin */\n.fade-enter-active[data-v-6a2f64a8], .fade-leave-active[data-v-6a2f64a8] {\n  -webkit-transition: opacity .3s;\n  -moz-transition: opacity .3s;\n  -o-transition: opacity .3s;\n  transition: opacity .3s; }\n\n/* line 102, stdin */\n.fade-enter[data-v-6a2f64a8], .fade-leave-to[data-v-6a2f64a8] {\n  opacity: 0; }")
 ;(function(){
 "use strict";
@@ -8732,7 +8934,7 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('header',{staticClass:"header"},[_c('div',{staticClass:"container header__container"},[_c('div',{staticClass:"flex header__flex"},[_vm._m(0),_vm._v(" "),_c('nav',{staticClass:"nav"},[_c('a',{staticClass:"nav__link nav__link-home",attrs:{"href":"/"}},[_vm._v("Главная")]),_vm._v(" "),_c('a',{staticClass:"nav__link nav__link-company",attrs:{"id":"1"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideTo($event)}}},[_vm._v("О компании")]),_vm._v(" "),_c('a',{staticClass:"nav__link nav__link-sale",attrs:{"href":"javascript:void(0);"}},[_vm._v("Скидки и Акции")]),_vm._v(" "),_c('a',{staticClass:"nav__link nav__link-gallery",attrs:{"href":"javascript:void(0);","id":"5"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideTo($event)}}},[_vm._v("Галерея")]),_vm._v(" "),_c('a',{staticClass:"nav__link nav__link-contacts",attrs:{"href":"javascript:void(0);","id":"6"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideTo($event)}}},[_vm._v("Контакти")])]),_vm._v(" "),_c('span',{staticClass:"header__tel"},[_vm._v("(068) 833-20-20")]),_vm._v(" "),_c('div',{staticClass:"header__right-side"},[_c('span',{staticClass:"header__search"}),_vm._v(" "),_c('span',{staticClass:"header__menu",on:{"click":function($event){_vm.showMenu = !_vm.showMenu}}})])])]),_vm._v(" "),_c('transition',{attrs:{"name":"fade"}},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.showMenu),expression:"showMenu"}],staticClass:"menu-mob flex menu-mob-g__flex"},[_c('div',{staticClass:"menu-mob__top"},[_c('img',{staticClass:"menu-mob__logo",attrs:{"src":"dist/img/dunco-logo_big.png","alt":"Логотип компании Дунко"}}),_vm._v(" "),_c('span',{staticClass:"menu-mob__caption"},[_vm._v("компетенции, инновации, безопасность")])]),_vm._v(" "),_c('div',{staticClass:"flex menu-mob__flex"},[_c('a',{staticClass:"menu__item menu-mob__item",attrs:{"href":"javascript:void(0);","data-num":"4"},on:{"click":_vm.changeSlideToProducts}},[_c('span',{staticClass:"menu__icon icon window-icon-dunco-white"}),_vm._v(" "),_c('span',{staticClass:"menu__caption menu-mob__caption"},[_vm._v("Окна")])]),_vm._v(" "),_c('a',{staticClass:"menu__item menu-mob__item",attrs:{"href":"javascript:void(0);"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideToProducts($event)}}},[_c('span',{staticClass:"menu__icon icon door-icon-dunco-white"}),_vm._v(" "),_c('span',{staticClass:"menu__caption menu-mob__caption"},[_vm._v("Двери")])]),_vm._v(" "),_c('a',{staticClass:"menu__item menu-mob__item",attrs:{"href":"javascript:void(0);"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideToProducts($event)}}},[_c('span',{staticClass:"menu__icon icon roleta-window-icon-dunco-white"}),_vm._v(" "),_c('span',{staticClass:"menu__caption menu-mob__caption"},[_vm._v("Жалюзи")])]),_vm._v(" "),_c('a',{staticClass:"menu__item menu-mob__item",attrs:{"href":"javascript:void(0);"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideToProducts($event)}}},[_c('span',{staticClass:"menu__icon icon roleta-icon-dunco-white"}),_vm._v(" "),_c('span',{staticClass:"menu__caption menu-mob__caption"},[_vm._v("Ролеты")])]),_vm._v(" "),_c('a',{staticClass:"menu__item menu-mob__item",attrs:{"href":"javascript:void(0);"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideToProducts($event)}}},[_c('span',{staticClass:"menu__icon icon vorota-icon-dunco-white"}),_vm._v(" "),_c('span',{staticClass:"menu__caption menu-mob__caption"},[_vm._v("Ворота")])]),_vm._v(" "),_c('a',{staticClass:"menu__item menu-mob__item",attrs:{"href":"javascript:void(0);"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideToContacts($event)}}},[_c('span',{staticClass:"menu__icon icon tel-icon-dunco-white"}),_vm._v(" "),_c('span',{staticClass:"menu__caption menu-mob__caption"},[_vm._v("Вызов мастера")])])]),_vm._v(" "),_c('ul',{staticClass:"menu-mob__list"},[_c('li',{staticClass:"menu-mob__list-item"},[_c('a',{staticClass:"menu-mob__link",attrs:{"href":"javascript:void(0)"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideToContacts($event)}}},[_vm._v("Контакты")])])])])]),_vm._v(" "),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.showMenu),expression:"showMenu"}],staticClass:"menu-mob__mask",on:{"click":_vm.closeMenu}})],1)}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('header',{staticClass:"header"},[_c('div',{staticClass:"container header__container"},[_c('div',{staticClass:"flex header__flex"},[_vm._m(0),_vm._v(" "),_c('nav',{staticClass:"nav"},[_c('a',{staticClass:"nav__link nav__link-home",attrs:{"href":"/"}},[_vm._v("Главная")]),_vm._v(" "),_c('a',{staticClass:"nav__link nav__link-company",attrs:{"href":"javascript:void(0);","id":"1"},on:{"click":_vm.changeSlideTo}},[_vm._v("О компании")]),_vm._v(" "),_c('a',{staticClass:"nav__link nav__link-sale",attrs:{"href":"javascript:void(0);","id":"0"},on:{"click":_vm.changeSlideTo}},[_vm._v("Скидки и Акции")]),_vm._v(" "),_c('a',{staticClass:"nav__link nav__link-gallery",attrs:{"href":"javascript:void(0);","id":"5"},on:{"click":_vm.changeSlideTo}},[_vm._v("Галерея")]),_vm._v(" "),_c('a',{staticClass:"nav__link nav__link-contacts",attrs:{"href":"javascript:void(0);","id":"6"},on:{"click":_vm.changeSlideTo}},[_vm._v("Контакти")])]),_vm._v(" "),_c('span',{staticClass:"header__tel"},[_vm._v("(068) 833-20-20")]),_vm._v(" "),_c('div',{staticClass:"header__right-side"},[_c('span',{staticClass:"header__search"}),_vm._v(" "),_c('span',{staticClass:"header__menu",on:{"click":function($event){_vm.showMenu = !_vm.showMenu}}})])])]),_vm._v(" "),_c('transition',{attrs:{"name":"fade"}},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.showMenu),expression:"showMenu"}],staticClass:"menu-mob flex menu-mob-g__flex"},[_c('div',{staticClass:"menu-mob__top"},[_c('img',{staticClass:"menu-mob__logo",attrs:{"src":"dist/img/dunco-logo_big.png","alt":"Логотип компании Дунко"}}),_vm._v(" "),_c('span',{staticClass:"menu-mob__caption"},[_vm._v("Компетенции, Инновации, Безопасность")])]),_vm._v(" "),_c('div',{staticClass:"flex menu-mob__flex"},[_c('a',{staticClass:"menu__item menu-mob__item",attrs:{"href":"javascript:void(0);","data-num":"4"},on:{"click":_vm.changeSlideToProducts}},[_c('span',{staticClass:"menu__icon icon window-icon-dunco-white"}),_vm._v(" "),_c('span',{staticClass:"menu__caption menu-mob__caption"},[_vm._v("Окна")])]),_vm._v(" "),_c('a',{staticClass:"menu__item menu-mob__item",attrs:{"href":"javascript:void(0);"},on:{"click":_vm.changeSlideToProducts}},[_c('span',{staticClass:"menu__icon icon door-icon-dunco-white"}),_vm._v(" "),_c('span',{staticClass:"menu__caption menu-mob__caption"},[_vm._v("Двери")])]),_vm._v(" "),_c('a',{staticClass:"menu__item menu-mob__item",attrs:{"href":"javascript:void(0);"},on:{"click":_vm.changeSlideToProducts}},[_c('span',{staticClass:"menu__icon icon roleta-window-icon-dunco-white"}),_vm._v(" "),_c('span',{staticClass:"menu__caption menu-mob__caption"},[_vm._v("Жалюзи")])]),_vm._v(" "),_c('a',{staticClass:"menu__item menu-mob__item",attrs:{"href":"javascript:void(0);"},on:{"click":_vm.changeSlideToProducts}},[_c('span',{staticClass:"menu__icon icon roleta-icon-dunco-white"}),_vm._v(" "),_c('span',{staticClass:"menu__caption menu-mob__caption"},[_vm._v("Ролеты")])]),_vm._v(" "),_c('a',{staticClass:"menu__item menu-mob__item",attrs:{"href":"javascript:void(0);"},on:{"click":_vm.changeSlideToProducts}},[_c('span',{staticClass:"menu__icon icon vorota-icon-dunco-white"}),_vm._v(" "),_c('span',{staticClass:"menu__caption menu-mob__caption"},[_vm._v("Ворота")])]),_vm._v(" "),_c('a',{staticClass:"menu__item menu-mob__item",attrs:{"href":"javascript:void(0);"},on:{"click":_vm.changeSlideToContacts}},[_c('span',{staticClass:"menu__icon icon tel-icon-dunco-white"}),_vm._v(" "),_c('span',{staticClass:"menu__caption menu-mob__caption"},[_vm._v("Вызов мастера")])])]),_vm._v(" "),_c('ul',{staticClass:"menu-mob__list"},[_c('li',{staticClass:"menu-mob__list-item"},[_c('a',{staticClass:"menu-mob__link",attrs:{"href":"javascript:void(0)"},on:{"click":_vm.changeSlideToContacts}},[_vm._v("Контакты")])])])])]),_vm._v(" "),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.showMenu),expression:"showMenu"}],staticClass:"menu-mob__mask",on:{"click":_vm.closeMenu}})],1)}
 __vue__options__.staticRenderFns = [function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('a',{staticClass:"header__logo",attrs:{"href":"/"}},[_c('img',{attrs:{"src":"dist/img/dunco-logo.png","alt":"Логотип компании Данко"}})])}]
 __vue__options__._scopeId = "data-v-6a2f64a8"
 if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-hot-reload-api")
@@ -8746,8 +8948,8 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
     hotAPI.reload("data-v-6a2f64a8", __vue__options__)
   }
 })()}
-},{"vue":2,"vueify/lib/insert-css":3,"vueify/node_modules/vue-hot-reload-api":4}],9:[function(require,module,exports){
-var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("/* line 82, stdin */\n.fade-enter-active[data-v-0029833a], .fade-leave-active[data-v-0029833a] {\n  -webkit-transition: opacity .8s;\n  -moz-transition: opacity .8s;\n  -o-transition: opacity .8s;\n  transition: opacity .8s; }\n\n/* line 88, stdin */\n.fade-enter[data-v-0029833a], .fade-leave-to[data-v-0029833a] {\n  opacity: 0; }")
+},{"vue":3,"vueify/lib/insert-css":4,"vueify/node_modules/vue-hot-reload-api":5}],10:[function(require,module,exports){
+var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("/* line 85, stdin */\n.fade-enter-active[data-v-0029833a], .fade-leave-active[data-v-0029833a] {\n  -webkit-transition: opacity .8s;\n  -moz-transition: opacity .8s;\n  -o-transition: opacity .8s;\n  transition: opacity .8s; }\n\n/* line 91, stdin */\n.fade-enter[data-v-0029833a], .fade-leave-to[data-v-0029833a] {\n  opacity: 0; }")
 ;(function(){
 'use strict';
 
@@ -8789,6 +8991,10 @@ module.exports = {
                 sGlobal.on('slideChange', this.changeSlideFunc);
                 this.show = true;
             }
+        },
+
+        modalOpen: function modalOpen() {
+            $('.mask__order').addClass('active');
         }
     }
 };
@@ -8796,7 +9002,7 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('transition',{attrs:{"name":"fade"}},[_c('section',{directives:[{name:"show",rawName:"v-show",value:(_vm.show),expression:"show"}],staticClass:"flex fixed section__menu",class:_vm.posChange},[_c('div',{staticClass:"flex menu__flex container"},[_c('a',{staticClass:"menu__item",attrs:{"href":"javascript:void(0);","data-num":"4"},on:{"click":_vm.changeSlideTo}},[_c('span',{staticClass:"menu__icon icon window-icon-dunco-black"}),_vm._v(" "),_c('span',{staticClass:"menu__caption"},[_vm._v("Окна")])]),_vm._v(" "),_c('a',{staticClass:"menu__item",attrs:{"href":"javascript:void(0);"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideTo($event)}}},[_c('span',{staticClass:"menu__icon icon door-icon-dunco-black"}),_vm._v(" "),_c('span',{staticClass:"menu__caption"},[_vm._v("Двери")])]),_vm._v(" "),_c('a',{staticClass:"menu__item",attrs:{"href":"javascript:void(0);"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideTo($event)}}},[_c('span',{staticClass:"menu__icon icon roleta-window-icon-dunco-black"}),_vm._v(" "),_c('span',{staticClass:"menu__caption"},[_vm._v("Жалюзи")])]),_vm._v(" "),_c('a',{staticClass:"menu__item",attrs:{"href":"javascript:void(0);"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideTo($event)}}},[_c('span',{staticClass:"menu__icon icon roleta-icon-dunco-black"}),_vm._v(" "),_c('span',{staticClass:"menu__caption"},[_vm._v("Ролеты")])]),_vm._v(" "),_c('a',{staticClass:"menu__item",attrs:{"href":"javascript:void(0);"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideTo($event)}}},[_c('span',{staticClass:"menu__icon icon vorota-icon-dunco-black"}),_vm._v(" "),_c('span',{staticClass:"menu__caption"},[_vm._v("Ворота")])]),_vm._v(" "),_c('a',{staticClass:"menu__item",attrs:{"href":"javascript:void(0);"}},[_c('span',{staticClass:"menu__icon icon mail-icon-dunco-black"}),_vm._v(" "),_c('span',{staticClass:"menu__caption menu__caption7"},[_vm._v("Подписать договор")])]),_vm._v(" "),_c('a',{staticClass:"menu__item",attrs:{"href":"tel:+380688332020"}},[_c('span',{staticClass:"menu__icon icon tel-icon-dunco-black"}),_vm._v(" "),_c('span',{staticClass:"menu__caption"},[_vm._v("Вызов мастера")])])])])])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('transition',{attrs:{"name":"fade"}},[_c('section',{directives:[{name:"show",rawName:"v-show",value:(_vm.show),expression:"show"}],staticClass:"flex fixed section__menu",class:_vm.posChange},[_c('div',{staticClass:"flex menu__flex container"},[_c('a',{staticClass:"menu__item",attrs:{"href":"javascript:void(0);","data-num":"4"},on:{"click":_vm.changeSlideTo}},[_c('span',{staticClass:"menu__icon icon window-icon-dunco-black"}),_vm._v(" "),_c('span',{staticClass:"menu__caption"},[_vm._v("Окна")])]),_vm._v(" "),_c('a',{staticClass:"menu__item",attrs:{"href":"javascript:void(0);"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideTo($event)}}},[_c('span',{staticClass:"menu__icon icon door-icon-dunco-black"}),_vm._v(" "),_c('span',{staticClass:"menu__caption"},[_vm._v("Двери")])]),_vm._v(" "),_c('a',{staticClass:"menu__item",attrs:{"href":"javascript:void(0);"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideTo($event)}}},[_c('span',{staticClass:"menu__icon icon roleta-window-icon-dunco-black"}),_vm._v(" "),_c('span',{staticClass:"menu__caption"},[_vm._v("Жалюзи")])]),_vm._v(" "),_c('a',{staticClass:"menu__item",attrs:{"href":"javascript:void(0);"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideTo($event)}}},[_c('span',{staticClass:"menu__icon icon roleta-icon-dunco-black"}),_vm._v(" "),_c('span',{staticClass:"menu__caption"},[_vm._v("Ролеты")])]),_vm._v(" "),_c('a',{staticClass:"menu__item",attrs:{"href":"javascript:void(0);"},on:{"click":function($event){$event.preventDefault();_vm.changeSlideTo($event)}}},[_c('span',{staticClass:"menu__icon icon vorota-icon-dunco-black"}),_vm._v(" "),_c('span',{staticClass:"menu__caption"},[_vm._v("Ворота")])]),_vm._v(" "),_c('a',{staticClass:"menu__item",attrs:{"href":"javascript:void(0);"},on:{"click":_vm.modalOpen}},[_c('span',{staticClass:"menu__icon icon mail-icon-dunco-black"}),_vm._v(" "),_c('span',{staticClass:"menu__caption menu__caption7"},[_vm._v("Подписать договор")])]),_vm._v(" "),_c('a',{staticClass:"menu__item",attrs:{"href":"tel:+380688332020"}},[_c('span',{staticClass:"menu__icon icon tel-icon-dunco-black"}),_vm._v(" "),_c('span',{staticClass:"menu__caption"},[_vm._v("Вызов мастера")])])])])])}
 __vue__options__.staticRenderFns = []
 __vue__options__._scopeId = "data-v-0029833a"
 if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-hot-reload-api")
@@ -8810,7 +9016,7 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
     hotAPI.reload("data-v-0029833a", __vue__options__)
   }
 })()}
-},{"vue":2,"vueify/lib/insert-css":3,"vueify/node_modules/vue-hot-reload-api":4}],10:[function(require,module,exports){
+},{"vue":3,"vueify/lib/insert-css":4,"vueify/node_modules/vue-hot-reload-api":5}],11:[function(require,module,exports){
 ;(function(){
 'use strict';
 
@@ -8911,7 +9117,7 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
     hotAPI.reload("data-v-4b50b883", __vue__options__)
   }
 })()}
-},{"vue":2,"vueify/node_modules/vue-hot-reload-api":4}],11:[function(require,module,exports){
+},{"vue":3,"vueify/node_modules/vue-hot-reload-api":5}],12:[function(require,module,exports){
 ;(function(){
 'use strict';
 
@@ -8993,7 +9199,7 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
     hotAPI.reload("data-v-40d0e3aa", __vue__options__)
   }
 })()}
-},{"vue":2,"vueify/node_modules/vue-hot-reload-api":4}],12:[function(require,module,exports){
+},{"vue":3,"vueify/node_modules/vue-hot-reload-api":5}],13:[function(require,module,exports){
 ;(function(){
 'use strict';
 
@@ -9186,30 +9392,16 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
     hotAPI.reload("data-v-be54c982", __vue__options__)
   }
 })()}
-},{"vue":2,"vueify/node_modules/vue-hot-reload-api":4}],13:[function(require,module,exports){
+},{"vue":3,"vueify/node_modules/vue-hot-reload-api":5}],14:[function(require,module,exports){
 var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("#snow[data-v-4d59ad5e] {\n    background-color: transparent;\n    background-image: url(\"https://dunco.com.ua/dist/img/snow1.png\"),  url(\"https://dunco.com.ua/dist/img/snow2.png\");\n    -webkit-animation: snow 20s linear infinite;\n    -moz-animation: snow 20s linear infinite;\n    -ms-animation: snow 20s linear infinite;\n    animation: snow 20s linear infinite;\n    z-index: 999;\n    right: 0;\n    top: 0;\n    left: 0;\n    bottom: 0;\n    margin-top: 0;\n    pointer-events: none;\n    position: absolute;\n}\n\n/*Keyframes*/\n@keyframes snow {\n    0% { background-position: 0px 0px, 0px 0px, 0px 0px }\n\n    100% { background-position: 500px 1000px, 400px 400px, 300px 300px }\n}\n\n@-moz-keyframes snow {\n    0% { background-position: 0px 0px, 0px 0px, 0px 0px }\n\n    100% { background-position: 500px 1000px, 400px 400px, 300px 300px }\n}\n\n@-webkit-keyframes snow {\n    0% { background-position: 0px 0px, 0px 0px, 0px 0px }\n\n    100% {\n        background-position: 500px 1000px, 400px 400px, 300px 300px;\n    }\n}\n\n@-ms-keyframes snow {\n    0% { background-position: 0px 0px, 0px 0px, 0px 0px }\n\n    100% { background-position: 500px 1000px, 400px 400px, 300px 300px }\n}")
 ;(function(){
-'use strict';
+"use strict";
 
 module.exports = {
     data: function data() {
         return {
-            snowHeight: 50,
-            windowWidth: document.documentElement.clientWidth
+            snowHeight: 50
         };
-    },
-    mounted: function mounted() {
-        sGlobal.on('slideChange', this.changeSlideFunc);
-    },
-
-    methods: {
-        changeSlideFunc: function changeSlideFunc() {
-            if (sGlobal.activeIndex !== 0 && this.windowWidth > 768) {
-                this.snowHeight = 170;
-            } else {
-                this.snowHeight = 50;
-            }
-        }
     }
 };
 })()
@@ -9230,8 +9422,8 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
     hotAPI.reload("data-v-4d59ad5e", __vue__options__)
   }
 })()}
-},{"vue":2,"vueify/lib/insert-css":3,"vueify/node_modules/vue-hot-reload-api":4}],14:[function(require,module,exports){
-var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("/* line 90, stdin */\n.fade-enter-active[data-v-0ffb3d13], .fade-leave-active[data-v-0ffb3d13] {\n  transition: opacity .9s; }\n\n/* line 93, stdin */\n.fade-enter[data-v-0ffb3d13], .fade-leave-to[data-v-0ffb3d13] {\n  opacity: 0; }")
+},{"vue":3,"vueify/lib/insert-css":4,"vueify/node_modules/vue-hot-reload-api":5}],15:[function(require,module,exports){
+var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("/* line 86, stdin */\n.fade-enter-active[data-v-0ffb3d13], .fade-leave-active[data-v-0ffb3d13] {\n  transition: opacity .9s; }\n\n/* line 89, stdin */\n.fade-enter[data-v-0ffb3d13], .fade-leave-to[data-v-0ffb3d13] {\n  opacity: 0; }")
 ;(function(){
 'use strict';
 
@@ -9265,7 +9457,6 @@ module.exports = {
                 nextEl: '.sbn-front',
                 prevEl: '.sbp-front'
             },
-
             grabCursor: true
         });
         this.$nextTick(function () {
@@ -9294,7 +9485,7 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"swiper-container s-front"},[_c('div',{staticClass:"swiper-wrapper"},[_c('swiperslide',{staticClass:"front-slide1"},[_c('h1',{staticClass:"front-slide__title",attrs:{"slot":"title"},slot:"title"},[_vm._v("Шум и холод вам мешают? Окна \"Данко\" помагают!")])]),_vm._v(" "),_c('swiperslide',{staticClass:"front-slide2"},[_c('h2',{staticClass:"front-slide__title",attrs:{"slot":"title"},slot:"title"},[_vm._v("Покупайте двери с выгодой!")])]),_vm._v(" "),_c('swiperslide',{staticClass:"front-slide3"},[_c('h2',{staticClass:"front-slide__title",attrs:{"slot":"title"},slot:"title"},[_vm._v("Правильное решение - это ваш гарантированный комфорт!")])]),_vm._v(" "),_c('swiperslide',{staticClass:"front-slide4"},[_c('h2',{staticClass:"front-slide__title",attrs:{"slot":"title"},slot:"title"},[_vm._v("Широкий выбор материалов превратит ваши окна в шедевр!")])]),_vm._v(" "),_c('swiperslide',{staticClass:"front-slide5"},[_c('h2',{staticClass:"front-slide__title",attrs:{"slot":"title"},slot:"title"},[_vm._v("Доверь свои мечты профессионалам!"),(_vm.showBr)?_c('br'):_vm._e(),_vm._v(" Больше, чем просто ролеты!")])])],1),_vm._v(" "),_c('div',{staticClass:"swiper-pagination sp-g sp-front"}),_vm._v(" "),_c('div',{staticClass:"swiper-button-next sbn-front"}),_vm._v(" "),_c('div',{staticClass:"swiper-button-prev sbp-front"})])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"swiper-container s-front"},[_c('div',{staticClass:"swiper-wrapper"},[_c('swiperslide',{staticClass:"front-slide1"},[_c('h1',{staticClass:"front-slide__title",attrs:{"slot":"title"},slot:"title"},[_vm._v("Шум и холод вам мешают? Окна \"Данко\" помагают!")])]),_vm._v(" "),_c('swiperslide',{staticClass:"front-slide2"},[_c('h2',{staticClass:"front-slide__title",attrs:{"slot":"title"},slot:"title"},[_vm._v("Покупайте двери с выгодой!")])]),_vm._v(" "),_c('swiperslide',{staticClass:"front-slide3"},[_c('h2',{staticClass:"front-slide__title",attrs:{"slot":"title"},slot:"title"},[_vm._v("Правильное решение - это ваш гарантированный комфорт!")])]),_vm._v(" "),_c('swiperslide',{staticClass:"front-slide4"},[_c('h2',{staticClass:"front-slide__title",attrs:{"slot":"title"},slot:"title"},[_vm._v("Широкий выбор материалов превратит ваши окна в шедевр!")])]),_vm._v(" "),_c('swiperslide',{staticClass:"front-slide5"},[_c('h2',{staticClass:"front-slide__title",attrs:{"slot":"title"},slot:"title"},[_vm._v("Доверь свои мечты профессионалам!"),(_vm.showBr)?_c('br'):_vm._e(),_vm._v(" Больше, чем просто ролеты!")])])],1),_vm._v(" "),_c('div',{staticClass:"swiper-pagination sp-g sp-front"}),_vm._v(" "),_c('div',{staticClass:"swiper-button-next sbn-front"},[_c('svg',{attrs:{"xmlns":"http://www.w3.org/2000/svg","viewBox":"0 0 27 44"}},[_c('path',{attrs:{"d":"M27 22L5 44l-2.1-2.1L22.8 22 2.9 2.1 5 0l22 22z"}})])]),_vm._v(" "),_c('div',{staticClass:"swiper-button-prev sbp-front"},[_c('svg',{attrs:{"xmlns":"http://www.w3.org/2000/svg","viewBox":"0 0 27 44"}},[_c('path',{attrs:{"d":"M0,22L22,0l2.1,2.1L4.2,22l19.9,19.9L22,44L0,22L0,22L0,22z"}})])])])}
 __vue__options__.staticRenderFns = []
 __vue__options__._scopeId = "data-v-0ffb3d13"
 if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-hot-reload-api")
@@ -9308,7 +9499,7 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
     hotAPI.reload("data-v-0ffb3d13", __vue__options__)
   }
 })()}
-},{"./local/SwiperSlide.vue":17,"vue":2,"vueify/lib/insert-css":3,"vueify/node_modules/vue-hot-reload-api":4}],15:[function(require,module,exports){
+},{"./local/SwiperSlide.vue":18,"vue":3,"vueify/lib/insert-css":4,"vueify/node_modules/vue-hot-reload-api":5}],16:[function(require,module,exports){
 ;(function(){
 'use strict';
 
@@ -9394,7 +9585,7 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
     hotAPI.reload("data-v-681e4ae6", __vue__options__)
   }
 })()}
-},{"vue":2,"vueify/node_modules/vue-hot-reload-api":4}],16:[function(require,module,exports){
+},{"vue":3,"vueify/node_modules/vue-hot-reload-api":5}],17:[function(require,module,exports){
 var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("/* line 113, stdin */\n.fade-enter-active[data-v-9bca31a0], .fade-leave-active[data-v-9bca31a0] {\n  -webkit-transition: opacity 3s;\n  -moz-transition: opacity 3s;\n  -o-transition: opacity 3s;\n  transition: opacity 3s; }\n\n/* line 119, stdin */\n.fade-enter[data-v-9bca31a0], .fade-leave-to[data-v-9bca31a0] {\n  opacity: 0; }")
 ;(function(){
 'use strict';
@@ -9491,7 +9682,7 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
     hotAPI.reload("data-v-9bca31a0", __vue__options__)
   }
 })()}
-},{"vue":2,"vueify/lib/insert-css":3,"vueify/node_modules/vue-hot-reload-api":4}],17:[function(require,module,exports){
+},{"vue":3,"vueify/lib/insert-css":4,"vueify/node_modules/vue-hot-reload-api":5}],18:[function(require,module,exports){
 var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("/* line 76, stdin */\n.fade-enter-active[data-v-42734daa], .fade-leave-active[data-v-42734daa] {\n  transition: opacity .9s; }\n\n/* line 79, stdin */\n.fade-enter[data-v-42734daa], .fade-leave-to[data-v-42734daa] {\n  opacity: 0; }")
 ;(function(){
 'use strict';
@@ -9542,4 +9733,4 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
     hotAPI.reload("data-v-42734daa", __vue__options__)
   }
 })()}
-},{"@xkeshi/vue-countdown":1,"vue":2,"vueify/lib/insert-css":3,"vueify/node_modules/vue-hot-reload-api":4}]},{},[5]);
+},{"@xkeshi/vue-countdown":1,"vue":3,"vueify/lib/insert-css":4,"vueify/node_modules/vue-hot-reload-api":5}]},{},[6]);

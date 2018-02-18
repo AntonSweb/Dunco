@@ -6,21 +6,8 @@
     module.exports = {
         data: function() {
             return {
-                snowHeight: 50,
-                windowWidth: document.documentElement.clientWidth
+                snowHeight: 50
             };
-        },
-        mounted (){
-            sGlobal.on('slideChange', this.changeSlideFunc);
-        },
-        methods: {
-            changeSlideFunc: function (){
-                if (sGlobal.activeIndex !== 0 && this.windowWidth > 768){
-                    this.snowHeight = 170;
-                } else {
-                    this.snowHeight = 50;
-                }
-            }
         }
     }
 </script>

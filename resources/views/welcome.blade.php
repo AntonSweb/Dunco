@@ -34,7 +34,7 @@
                 <form id="order-form" class="form">
                     {{ csrf_field() }}
                     <input type="hidden" name="project_name" value="dunco.com.ua">
-                    <input type="hidden" name="admin_email" value="asaltskyi@gmail.com">
+                    <input type="hidden" name="admin_email" value="dunco.info@gmail.com">
                     <input type="hidden" name="form_subject" value="Заявка с сайта dunco.com.ua">
                     <div class="form__field">
                         <input class="form__input form__in" type="text" name="name" placeholder="Как Вас зовут?" required>
@@ -93,6 +93,7 @@
             $("#order-form").submit(function(e){e.preventDefault();var order=$(this);$.ajax({type:"post",url:"/order",data:order.serialize()}).done(function(){order.trigger("reset");setTimeout(function(){closeModal($('.mask__order'));$('.mask__thanks').addClass('active')},1000)})});sGlobal.on('slideChange',function(){if(sGlobal.activeIndex!==0){$('.sp-global').show()}else{$('.sp-global').hide()}});function closeModal(el){el.removeClass("active")}
             $(".modal__order-close, .mask__order").on("click",function(){closeModal($('.mask__order'))});$(".modal__thanks-close, .mask__thanks").on("click",function(){closeModal($('.mask__thanks'))});$(document).keyup(function(e){if(e.keyCode===27&&sGlobal.activeIndex!==1){closeModal()}});$(".form__tel").mask("+380(99) 999-99-99")})
     </script>
-    <script src="dist/js/build.min.js"></script>
+    {{--<script src="dist/js/build.min.js"></script>--}}
+    <script src="app/js/build.js"></script>
     </body>
 </html>
