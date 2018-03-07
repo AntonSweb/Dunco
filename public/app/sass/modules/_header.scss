@@ -36,13 +36,17 @@
   }
 
   &__right-side{
+    @media screen and (min-width: 769px){
+      display: none;
+    }
     @media screen and (max-width: 768px){
       display: flex;
     }
   }
   &__search{
     @include sprite($search-icon);
-    display: inline-block;
+    //display: inline-block;
+    display: none;
     @media screen and (max-width: 768px){
       margin-right: 20px;
     }

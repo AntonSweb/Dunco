@@ -5,7 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="Компания «Данко» (DUNCO) специализируется по таким направлениям как: окна и балконные конструкции, распашные и раздвижные входные и межофисные двери из ПВХ и алюминия, индивидуальное архитектурное проектирование конструкций для остекления фасадов жилых и промышленных зданий, торговых центров, витрин и др."/>
-        <meta name="keywords" content="купить пластиковые окна, купить окна, купить окна в киеве, купить окна от производителя, пластиковые окна цена, пластиковые окна рехау цена, окна пвх, металопластиковые окна"/>
+        <meta name="keywords" content="компания dunco, dunco окна, dunco, данко, купить пластиковые окна, купить окна, купить окна в киеве, купить окна от производителя, пластиковые окна цена, окна пвх, металопластиковые окна"/>
         <title>Компания «Данко» (DUNCO)</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.6/css/swiper.min.css">
         <link rel="stylesheet" href="dist/css/main.min.css">
@@ -53,6 +53,38 @@
             <div class="form__hint">Отправляя заявку вы даете соглашение на<br>обработку ваших персональных данных.<br></div>
         </div>
     </div>
+    <div class="mask mask__message" role="dialog"></div>
+    <div class="flex modal modal__flex modal__message" role="alert">
+        <button class="modal__close modal__message-close">X</button>
+        <div class="modal__order">
+            <div class="section__title modal__title">Отправьте заявку</div>
+            <div class="modal__subtitle">И мы свяжемся с Вами в течении 30 минут</div>
+            <div class="modal__form">
+                <form id="order-form" class="form">
+                    {{ csrf_field() }}
+                    <input type="hidden" name="project_name" value="dunco.com.ua">
+                    <input type="hidden" name="admin_email" value="asaltskyi@gmail.com">
+                    <input type="hidden" name="form_subject" value="Заявка с сайта dunco.com.ua">
+                    <div class="form__field">
+                        <input class="form__input form__in" type="text" name="name" placeholder="Как Вас зовут?" required>
+                    </div>
+                    <div class="form__field">
+                        <input class="form__input form__in" type="email" name="email" placeholder="Ваш e-mail" required>
+                    </div>
+                    <div class="form__field">
+                        <input class="form__input form__in form__tel" type="tel" name="tel" placeholder="Ваш контактный телефон" required>
+                    </div>
+                    <div class="form__field form__field-text">
+                        <textarea class="form__in form__textarea" type="text" name="message" placeholder="Введите сообщение"></textarea>
+                    </div>
+                    <div class="form__field">
+                        <input class="form__in form__submit" type="submit" value="Свяжитесь со мной" name="send">
+                    </div>
+                </form>
+            </div>
+            <div class="form__hint">Отправляя заявку вы даете соглашение на<br>обработку ваших персональных данных.<br></div>
+        </div>
+    </div>
     <header class="header" is="vue-header"></header>
     <section class="section__snow"></section>
     <section class="section__menu"></section>
@@ -91,9 +123,8 @@
     <script>
         var sGlobal=new Swiper('.s-global',{direction:'vertical',slidesPerView:1,mousewheel:!0,pagination:{el:'.sp-global',clickable:!0},parallax:!0,simulateTouch:!1,breakpoints:{768:{simulateTouch:!0}},});$(function(){
             $("#order-form").submit(function(e){e.preventDefault();var order=$(this);$.ajax({type:"post",url:"/order",data:order.serialize()}).done(function(){order.trigger("reset");setTimeout(function(){closeModal($('.mask__order'));$('.mask__thanks').addClass('active')},1000)})});sGlobal.on('slideChange',function(){if(sGlobal.activeIndex!==0){$('.sp-global').show()}else{$('.sp-global').hide()}});function closeModal(el){el.removeClass("active")}
-            $(".modal__order-close, .mask__order").on("click",function(){closeModal($('.mask__order'))});$(".modal__thanks-close, .mask__thanks").on("click",function(){closeModal($('.mask__thanks'))});$(document).keyup(function(e){if(e.keyCode===27&&sGlobal.activeIndex!==1){closeModal()}});$(".form__tel").mask("+380(99) 999-99-99")})
+            $(".modal__order-close, .mask__order").on("click",function(){closeModal($('.mask__order'))});$(".modal__thanks-close, .mask__thanks").on("click",function(){closeModal($('.mask__thanks'))});$(".modal__message-close, .mask__message").on("click",function(){closeModal($('.mask__message'))});$(document).keyup(function(e){if(e.keyCode===27&&sGlobal.activeIndex!==1){closeModal()}});$(".form__tel").mask("+380(99) 999-99-99")})
     </script>
-    {{--<script src="dist/js/build.min.js"></script>--}}
-    <script src="app/js/build.js"></script>
+    <script src="dist/js/build.min.js"></script>
     </body>
 </html>

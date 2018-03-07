@@ -24,10 +24,11 @@
                 </a>
                 <a href="javascript:void(0);" class="menu__item" v-on:click="modalOpen">
                     <span class="menu__icon icon mail-icon-dunco-black"></span>
-                    <span class="menu__caption menu__caption7">Подписать договор</span>
+                    <span class="menu__caption menu__caption7">Отправить сообщение</span>
                 </a>
                 <a href="tel:+380688332020" class="menu__item">
                     <span class="menu__icon icon tel-icon-dunco-black"></span>
+                    <img src="dist/img/tel-icon-dunco-black-image.svg" alt="telephone icon" class="tel-icon-dunco-black-img">
                     <span class="menu__caption">Вызов мастера</span>
                 </a>
             </div>
@@ -41,7 +42,8 @@
             return {
                 show: true,
                 posChange: 'bottom',
-                windowWidth: 0
+                windowWidth: 0,
+                mod: 'active'
             };
         },
         mounted (){
@@ -75,7 +77,7 @@
                 }
             },
             modalOpen: function (){
-                $('.mask__order').addClass('active');
+                $('.mask__message').addClass('active');
             }
         }
     }
@@ -90,5 +92,48 @@
     }
     .fade-enter, .fade-leave-to{
         opacity: 0
+    }
+
+
+    .menu__item{
+        position: relative;
+
+        &:last-of-type{
+            margin-top: -4px;
+        }
+    }
+    .tel-icon-dunco-black {
+        width: 60px;
+        height: 60px;
+        background: #111a37;
+        border-radius: 50%;
+        animation: pulse-border 1500ms ease-out infinite;
+        position: absolute;
+        z-index: 0;
+        left: 50%;
+        top: 31%;
+        transform: translateX(-50%) translateY(-50%);
+
+        /*&:hover{*/
+            /*animation: none;*/
+        /*}*/
+    }
+
+    .tel-icon-dunco-black-img {
+        border-radius: 50%;
+        cursor: pointer;
+        /*box-shadow: 0 0 0 0 #111a37;*/
+        z-index: 1;
+    }
+
+    @keyframes pulse-border {
+        0% {
+            transform: translateX(-50%) translateY(-50%) translateZ(0) scale(1);
+            opacity: 1;
+        }
+        100% {
+            transform: translateX(-50%) translateY(-50%) translateZ(0) scale(1.5);
+            opacity: 0;
+        }
     }
 </style>

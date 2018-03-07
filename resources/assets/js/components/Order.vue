@@ -48,15 +48,14 @@
                         <img class="s-partners__img s-partners9" src="dist/img/partner9.png" alt="Логотип9 партнера компании Данко">
                     </div>
                 </div>
-                <!--<div class="swiper-slide">-->
-                    <!--<div class="s-partners__logo s-partners10">-->
-                        <!--<img class="s-partners__img s-partners10" src="app/img/partner10.png" alt="Логотип партнера компании Данко">-->
-                    <!--</div>-->
-                <!--</div>-->
             </div>
             <!-- Add Arrows -->
-            <div class="swiper-button-next sbn-partners"></div>
-            <div class="swiper-button-prev sbp-partners"></div>
+            <div class="swiper-button-next sbn-partners sbn-hover">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 27 44"><path d="M27 22L5 44l-2.1-2.1L22.8 22 2.9 2.1 5 0l22 22z" fill="#5840c2"></path></svg>
+            </div>
+            <div class="swiper-button-prev sbp-partners sbn-hover">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 27 44"><path d="M0,22L22,0l2.1,2.1L4.2,22l19.9,19.9L22,44L0,22L0,22L0,22z" fill="#5840c2"></path></svg>
+            </div>
         </div>
         <div class="order order__flex">
             <video class="video" autoplay loop muted preload v-if="showVideoBottom">
@@ -154,7 +153,7 @@
                 }
             },
             modalOpen: function (){
-                $('.mask__order').addClass('active');
+                $('.mask__message').addClass('active');
             }
         }
     }

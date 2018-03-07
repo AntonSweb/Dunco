@@ -116,3 +116,18 @@ section{
   width: 100%;
   text-align: center;
 }
+
+.sbn-hover{
+  background-image: none!important;
+  width: 22px;
+  &:hover{
+
+    svg{
+      transform: scale(1.1);
+
+      path{
+        fill: #A5446D;
+      }
+    }
+  }
+}

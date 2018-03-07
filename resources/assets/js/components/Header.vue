@@ -67,14 +67,25 @@
         data: function() {
             return {
                 showMenu: false,
-                isActive: false
+                isActive: false,
+                indexTo: ''
             };
+        },
+        mounted (){
+            let that = this;
+            sGlobal.on('slideChangeTransitionEnd', function(){
+
+                if(sGlobal.activeIndex === 0 && that.indexTo === '0'){
+                    that.animateCounter();
+                    that.indexTo = '';
+                }
+            });
         },
         methods: {
             changeSlideTo: function (e){
                 if (e){
-                    let indexTo = e.target.id;
-                    sGlobal.slideTo(indexTo, 1000);
+                    this.indexTo = e.target.id;
+                    sGlobal.slideTo(this.indexTo, 1000);
                 }
             },
             changeSlideToContacts: function (){
@@ -87,6 +98,21 @@
             },
             closeMenu: function(){
                 this.showMenu = false
+            },
+            animateCounter: function (){
+                $('.sale-counter__numbers')
+                    .animate({zoom: 1.1},{
+                    step: function() {
+                        $(this).css('box-shadow', '15px 15px 20px 0px rgba(255,255,255,0.6), -15px -15px 20px 0px rgba(255,255,255,0.6)');
+                    },
+                    duration: 300
+                }, 'linear')
+                .animate({zoom: 1},{
+                    step: function() {
+                        $(this).css('box-shadow', '0 0 0 0 rgba(255, 255, 255, 0.5)');
+                    },
+                    duration: 200
+                }, 'linear');
             }
         },
     }

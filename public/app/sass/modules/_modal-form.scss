@@ -63,6 +63,18 @@
         }
     }
 
+    &__message{
+        margin-top: -300px;
+        min-height: 600px;
+        @media screen and(max-width: 768px){
+            left: 10%;
+            top: 50px;
+            margin: 0;
+            width: 80%;
+            height: auto;
+        }
+    }
+
     &__thanks{
         margin-top: -220px;
         height: 440px;
@@ -136,6 +148,10 @@
         margin-bottom: 10px
     }
 
+    &__field-text{
+        margin-top: 25px;
+    }
+
     &__in{
         display: block;
         font-family: $Roboto;
@@ -155,6 +171,24 @@
         height: 50px;
         background: 0 0;
         border-bottom: 2px solid #eee;
+
+        &:focus{
+            border-color: $btn-left-border;
+            transition: border-color .5s ease-in-out;
+
+            &::placeholder{
+                color: transparent;
+            }
+        }
+    }
+
+    &__textarea{
+        padding: 10px 15px;
+        height: 130px;
+        text-align: left;
+        font-size: 16px;
+        font-weight: 300;
+        border: 2px solid #eee;
 
         &:focus{
             border-color: $btn-left-border;
