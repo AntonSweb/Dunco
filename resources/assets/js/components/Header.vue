@@ -10,7 +10,7 @@
                     <a href="javascript:void(0);" id="5" class="nav__link nav__link-gallery" v-on:click="changeSlideTo">Галерея</a>
                     <a href="javascript:void(0);" id="6" class="nav__link nav__link-contacts" v-on:click="changeSlideTo">Контакти</a>
                 </nav>
-                <span class="header__tel">(068) 833-20-20</span>
+                <a href="tel:+380688332020" class="header__tel">(068) 833-20-20</a>
                 <div class="header__right-side">
                     <span class="header__search"></span>
                     <span class="header__menu" v-on:click="showMenu = !showMenu"></span>
@@ -20,8 +20,8 @@
         <transition name="fade">
             <div class="menu-mob flex menu-mob-g__flex" v-show="showMenu">
                 <div class="menu-mob__top">
-                    <img src="dist/img/dunco-logo_big.png" alt="Логотип компании Дунко" class="menu-mob__logo">
-                    <span class="menu-mob__caption">Компетенции, Инновации, Безопасность</span>
+                    <img src="dist/img/dunco-logo_big.png" alt="Логотип компании Данко" class="menu-mob__logo">
+                    <span class="menu-mob__caption">КОМПЕТЕНЦИИ, ИННОВАЦИИ, БЕЗОПАСТНОСТЬ</span>
                 </div>
                 <div class="flex menu-mob__flex">
                     <a href="javascript:void(0);" class="menu__item menu-mob__item" data-num="4" v-on:click="changeSlideToProducts">

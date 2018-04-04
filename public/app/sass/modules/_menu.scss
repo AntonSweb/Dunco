@@ -55,6 +55,12 @@
       .menu__icon{
         transition: transform .2s ease-in-out;
         transform: scale(1.1);
+
+        &:before{
+          box-shadow: 1px 1px 5px 0 rgb(245, 239, 205), -1px -1px 5px 0 rgb(245, 239, 205);
+          background-color: rgb(245, 239, 205);
+          border-radius: 50%;
+        }
       }
     }
   }

@@ -150,13 +150,18 @@
 
 .video__logo {
   max-width: 200px; }
+  @media screen and (max-height: 900px) {
+    .video__logo {
+      max-width: 150px; } }
 
 .section__title-video {
   margin: 10px 0;
   color: #fff; }
   @media screen and (max-width: 768px) {
     .section__title-video {
-      font-size: 26px;
+      font-size: 18px;
+      font-weight: 400;
+      letter-spacing: 1px;
       -webkit-box-ordinal-group: 2;
       -webkit-order: 1;
           -ms-flex-order: 1;
@@ -168,7 +173,7 @@
   height: 200px; }
   @media screen and (max-width: 768px) {
     .play-video__wrap {
-      margin: 15px 0; } }
+      margin: 5px 0; } }
 
 .video-play-button {
   position: absolute;

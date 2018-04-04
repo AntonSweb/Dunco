@@ -55,7 +55,7 @@
     export default {
         data: function() {
             let now = new Date();
-            let newYear = new Date(2018, 3, 1, 15);
+            let newYear = new Date(2018, 3, 30, 15);
 
             return {
                 time: newYear - now

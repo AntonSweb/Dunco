@@ -3,7 +3,7 @@
     <transition name="fade">
         <footer class="footer" v-show="show">
             <div class="flex footer__flex">
-                <a href="skype:0688332020?call" target="_blank" class="flex footer__circle footer__circle-skype">
+                <a href="skype:+380688332020?call" class="flex footer__circle footer__circle-skype">
                     <img src="dist/img/skype-icon.png" alt="dunco footer skype icon" class="footer__icon footer__icon-skype">
                 </a>
                 <a href="https://www.facebook.com/DuncoUA/" target="_blank" class="flex footer__circle">

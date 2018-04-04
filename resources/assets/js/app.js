@@ -33,10 +33,10 @@ new Vue({
     el: '.section__menu',
     render: h => h(Vuemenu)
 });
-new Vue({
-    el: '.section__snow',
-    render: h => h(Vuesnow)
-});
+// new Vue({
+//     el: '.section__snow',
+//     render: h => h(Vuesnow)
+// });
 new Vue({
    el: '.section__video',
     render: h => h(Vuevideo)

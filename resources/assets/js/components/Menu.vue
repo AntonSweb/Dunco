@@ -122,7 +122,6 @@
     .tel-icon-dunco-black-img {
         border-radius: 50%;
         cursor: pointer;
-        /*box-shadow: 0 0 0 0 #111a37;*/
         z-index: 1;
     }
 

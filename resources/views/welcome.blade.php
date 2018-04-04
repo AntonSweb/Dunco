@@ -7,6 +7,7 @@
         <meta name="description" content="Компания «Данко» (DUNCO) специализируется по таким направлениям как: окна и балконные конструкции, распашные и раздвижные входные и межофисные двери из ПВХ и алюминия, индивидуальное архитектурное проектирование конструкций для остекления фасадов жилых и промышленных зданий, торговых центров, витрин и др."/>
         <meta name="keywords" content="компания dunco, dunco окна, dunco, данко, купить пластиковые окна, купить окна, купить окна в киеве, купить окна от производителя, пластиковые окна цена, окна пвх, металопластиковые окна"/>
         <title>Компания «Данко» (DUNCO)</title>
+        <style>.front-slide1 .front-slide__bg{background-image: url("../dist/img/slide-window-front.jpg");}</style>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.6/css/swiper.min.css">
         <link rel="stylesheet" href="dist/css/main.min.css">
         <script>
@@ -86,7 +87,7 @@
         </div>
     </div>
     <header class="header" is="vue-header"></header>
-    <section class="section__snow"></section>
+    {{--<section class="section__snow"></section>--}}
     <section class="section__menu"></section>
         <div class="swiper-container s-global">
         <div class="swiper-wrapper">

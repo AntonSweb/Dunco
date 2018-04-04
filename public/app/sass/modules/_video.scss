@@ -45,13 +45,18 @@
 
 .video__logo{
   max-width: 200px;
+  @media screen and(max-height: $height){
+    max-width: 150px;
+  }
 }
 
 .section__title-video{
   margin: 10px 0;
   color: #fff;
   @media screen and(max-width: 768px){
-    font-size: 26px;
+    font-size: 18px;
+    font-weight: 400;
+    letter-spacing: 1px;
     order: 1;
   }
 }
@@ -61,7 +66,7 @@
   width: 100%;
   height: 200px;
   @media screen and(max-width: 768px){
-    margin: 15px 0;
+    margin: 5px 0;
   }
 }
 
